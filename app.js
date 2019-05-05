@@ -1,49 +1,47 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const Sequelize = require('sequelize');
+const express = require('express')
+const logger = require('morgan')
+const bodyParser = require('body-parser')
+const connectorDB = require('./db/connectorDB')
 
-const app = express();
+const app = express()
 
-const sequelize = new Sequelize("postgres://postgres:postgres@database:5432/postgres");
-sequelize.authenticate()
-.then(() => console.log('Connection has been established successfully.'))
-.catch(err => console.error('Unable to connect to the database:', err));
+connectorDB.connect()
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.text());
-app.use(bodyParser.json({ type: 'application/json'}));
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Authorization, Content-Type, Accept')
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
+  next()
+})
 
-const handleCorsHeaders = function (req, res, next) {
-  if (req.get("Origin") != null)
-  {
-    res.header('Access-Control-Allow-Origin', req.get('Origin'));
-    res.header('Access-Control-Allow-Credentials', 'true');
-    if (req.get('Access-Control-Request-Method')) {
-        res.header('Access-Control-Allow-Methods', req.get('Access-Control-Request-Method'));
-    }
-    if (req.get('Access-Control-Request-Headers')) {
-        res.header('Access-Control-Allow-Headers', req.get('Access-Control-Request-Headers'));
-    }
-    if (req.method === 'OPTIONS') {
-        res.status(200).send();
-    } else {
-        next()
-    }
-  } else {
-      next()
-  }
-};
-
-app.use(handleCorsHeaders);
-
-function getPort(){
-	return process.env.PORT || 3000;
+if (process.env.PRODUCTION_LOG) {
+  const fs = require('fs')
+  const path = require('path')
+  // create a write stream (in append mode)
+  let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+  // setup the logger
+  app.use(logger('combined', { stream: accessLogStream }))
+} else {
+  app.use(logger('dev'))
 }
 
-const port = getPort();
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
-app.listen(port)
+// error handler
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message
+  res.locals.error = req
+    .app
+    .get('env') === 'development'
+    ? err
+    : {}
+  // send an error message
+  res
+    .status(err.status || 500)
+    .send(err)
+})
 
-module.exports = app;
+module.exports = app
