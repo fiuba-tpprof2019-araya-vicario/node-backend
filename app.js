@@ -2,6 +2,7 @@ const express = require('express')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const connectorDB = require('./db/connectorDB')
+const authRoute = require('./modules/auth/route')
 
 const app = express()
 
@@ -28,6 +29,8 @@ if (process.env.PRODUCTION_LOG) {
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use('/auth', authRoute)
 
 // error handler
 app.use(function (err, req, res, next) {
