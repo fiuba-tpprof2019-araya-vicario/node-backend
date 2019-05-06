@@ -1,34 +1,12 @@
 const { check } = require('express-validator/check')
 
-const messageFaltaNombre = () => {
-  return 'Falta el nombre'
-}
+const MISS_ID_TOKEN = 'Falta el token'
 
-const messageFaltaDescripcion = () => {
-  return 'Falta la descripcion'
-}
-
-const messageFaltaIdPermiso = () => {
-  return 'Falta el permiso'
-}
-
-module.exports = () => {
-  return {
-    messageFaltaNombre: messageFaltaNombre(),
-    messageFaltaDescripcion: messageFaltaDescripcion(),
-    messageFaltaIdPermiso: messageFaltaIdPermiso(),
-    createValidations: [
-      check('nombre')
-        .exists()
-        .withMessage(messageFaltaNombre()),
-      check('descripcion')
-        .exists()
-        .withMessage(messageFaltaDescripcion())
-    ],
-    addPermisoARolValidation: [
-      check('permiso_id')
-        .exists()
-        .withMessage(messageFaltaIdPermiso())
-    ]
-  }
+module.exports = {
+  messageFaltaNombre: MISS_ID_TOKEN,
+  authValidations: [
+    check('id_token')
+      .exists()
+      .withMessage(MISS_ID_TOKEN)
+  ]
 }
