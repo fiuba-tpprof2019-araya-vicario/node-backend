@@ -30,6 +30,9 @@ if (process.env.PRODUCTION_LOG) {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.get('/', function (req, res, next) {
+  res.status(200).send('Hello World')
+})
 app.use('/auth', authRoute)
 
 // error handler
