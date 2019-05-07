@@ -1,11 +1,10 @@
-const keys = require('../../keystore.json')
 const { OAuth2Client } = require('google-auth-library')
-const client = new OAuth2Client(keys.web.client_id, keys.web.client_secret, '')
+const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
 const errorGetter = require('../util/error')
 
 const validateGoogleToken = (idToken) => {
   let promise = new Promise((resolve, reject) => {
-    let audience = keys.web.client_id
+    let audience = process.env.AUDIENCE
     return client.verifyIdToken({
       idToken: idToken,
       audience: audience

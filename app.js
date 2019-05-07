@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.get('/', function (req, res, next) {
   res.status(200).send('Hello World')
 })
-app.use('/v0/api/token', authRoute)
+app.use('/v0/api/auth', authRoute)
 
 // error handler
 app.use(function (err, req, res, next) {
