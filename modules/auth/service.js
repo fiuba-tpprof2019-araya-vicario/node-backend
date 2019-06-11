@@ -1,6 +1,6 @@
-const { OAuth2Client } = require('google-auth-library')
+import { OAuth2Client } from 'google-auth-library';
+import { getServiceError } from '../util/error';
 const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
-const errorGetter = require('../util/error')
 
 const validateGoogleToken = (idToken) => {
   let promise = new Promise((resolve, reject) => {
@@ -21,12 +21,10 @@ const validateGoogleToken = (idToken) => {
         return resolve({ tokenUser: tokenUser, email: email })
       })
       .catch((e) => {
-        return reject(errorGetter.getServiceError(e.errors))
+        return reject(getServiceError(e.errors))
       })
   })
   return promise
 }
 
-module.exports = {
-  validateGoogleToken: validateGoogleToken
-}
+module.export = { validateGoogleToken }

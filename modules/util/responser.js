@@ -1,5 +1,3 @@
-'use strict'
-
 const createErrorResponse = (code, message, data) => {
   let status = (code >= 500)
     ? this.status.FAIL

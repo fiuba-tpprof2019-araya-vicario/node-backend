@@ -1,12 +1,10 @@
-const service = require('./service')
-const responser = require('../util/responser')
+import { validateGoogleToken } from './service'
+import { codes, createSuccessResponse } from '../util/responser'
 
 const auth = async function (req, res) {
-  let response = await service.validateGoogleToken(req.body.id_token)
-  res.statusCode = responser.codes.CREATED
-  res.json(responser.createSuccessResponse(res.statusCode, response))
+  let response = await validateGoogleToken(req.body.id_token)
+  res.statusCode = codes.CREATED
+  res.json(createSuccessResponse(res.statusCode, response))
 }
 
-module.exports = {
-  auth: auth
-}
+module.exports = { auth }
