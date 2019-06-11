@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize')
+import Sequelize from 'sequelize'
 
 class ConnectorDB {
   static connect () {
@@ -9,4 +9,4 @@ class ConnectorDB {
   }
 }
 
-module.exports = ConnectorDB
+export default ConnectorDB
