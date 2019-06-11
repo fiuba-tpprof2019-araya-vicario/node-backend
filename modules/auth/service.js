@@ -1,5 +1,7 @@
-import { OAuth2Client } from 'google-auth-library';
-import { getServiceError } from '../util/error';
+import { OAuth2Client } from 'google-auth-library'
+import { getServiceError, getUsuarioNoExistente } from '../util/error'
+import UserRepository from './repository'
+
 const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
 
 const validateGoogleToken = (idToken) => {
@@ -20,11 +22,21 @@ const validateGoogleToken = (idToken) => {
 
         return resolve({ tokenUser: tokenUser, email: email })
       })
-      .catch((e) => {
-        return reject(getServiceError(e.errors))
+      .catch(err => {
+        return reject(getServiceError(err.message))
       })
   })
   return promise
 }
 
-module.export = { validateGoogleToken }
+const validateUser = (token, email) => {
+  return Promise(async (resolve, reject) => {
+    let user = await UserRepository.getByEmailAndToken(token, email)
+    if (user != null) {
+      return resolve(user)
+    }
+    return reject(getUsuarioNoExistente())
+  })
+}
+
+module.export = { validateGoogleToken, validateUser }

@@ -4,6 +4,12 @@ const getUsuarioNoAutorizado = () => {
   return err
 }
 
+const getUsuarioNoExistente = () => {
+  var err = new Error('Usuario no existente')
+  err.status = 402
+  return err
+}
+
 const getTokenExpired = () => {
   var err = new Error('El token expiro')
   err.status = 404
@@ -77,3 +83,4 @@ exports.getServiceErrorNotMatch = getServiceErrorNotMatch
 exports.getServiceErrorBadRequest = getServiceErrorBadRequest
 exports.getServiceErrorLostParams = getServiceErrorLostParams
 exports.getServiceErrorAlreadyModified = getServiceErrorAlreadyModified
+exports.getUsuarioNoExistente = getUsuarioNoExistente

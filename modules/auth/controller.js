@@ -1,8 +1,9 @@
-import { validateGoogleToken } from './service'
+import { validateGoogleToken, validateUser } from './service'
 import { codes, createSuccessResponse } from '../util/responser'
 
 const auth = async function (req, res) {
-  let response = await validateGoogleToken(req.body.id_token)
+  let googleData = await validateGoogleToken(req.body.id_token)
+  let response = await validateUser(googleData.tokenUser, googleData.email)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
