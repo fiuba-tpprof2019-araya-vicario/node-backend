@@ -1,8 +1,10 @@
 import Sequelize from 'sequelize'
+import { DB_CONNECTION } from './config/config'
 
 class ConnectorDB {
   static connect () {
-    const sequelize = new Sequelize(process.env.DB_CONNECTION)
+    console.log(DB_CONNECTION)
+    const sequelize = new Sequelize(DB_CONNECTION)
     sequelize.authenticate()
       .then(() => console.log('Connection has been established successfully.'))
       .catch(err => console.error('Unable to connect to the database:', err))

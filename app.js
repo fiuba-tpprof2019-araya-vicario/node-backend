@@ -1,12 +1,12 @@
 import express from 'express'
 import logger from 'morgan'
 import { json, urlencoded } from 'body-parser'
-import { connect } from './db/connectorDB'
+import ConnectorDB from './db/connectorDB'
 import authRoute from './modules/auth/route'
 
 const app = express()
 
-connect()
+ConnectorDB.connect()
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')

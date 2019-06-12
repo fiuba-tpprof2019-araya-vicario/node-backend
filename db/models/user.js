@@ -1,4 +1,3 @@
-import { hash, genSaltSync, compare } from 'bcrypt'
 import { STRING, NUMBER } from 'sequelize'
 
 export default function (sequelize) {
@@ -102,31 +101,6 @@ export default function (sequelize) {
   User.getTelefonoRegex = function () {
     return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{2,6}$/im
   }
-
-  User.beforeCreate((user) => {
-    return hash(user.password, genSaltSync(10))
-      .then(hashedPw => {
-        user.password = hashedPw
-      })
-  })
-
-  User.beforeUpdate((user) => {
-    return hash(user.password, genSaltSync(10))
-      .then(hashedPw => {
-        user.password = hashedPw
-      })
-  })
-
-  User.verifyGoogleId((googleId) => {
-    let currentGoogleId = this.google_id
-    return new Promise((resolve, reject) => {
-      compare(googleId, currentGoogleId, (err, isMatch) => {
-        if (err) return reject(err)
-        if (!isMatch) return reject(new Error(this.getMsgPwdsNoMatch()))
-        resolve()
-      })
-    })
-  })
 
   User.obtenerPermisos = function () {
     let credentials = []

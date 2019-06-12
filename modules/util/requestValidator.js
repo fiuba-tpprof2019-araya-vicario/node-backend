@@ -26,7 +26,7 @@ const validateWithExpress = function (req, res, next) {
   next()
 }
 
-exports.module = {
+module.exports = {
   validate,
   validateWithExpress
 }

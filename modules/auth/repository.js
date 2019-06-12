@@ -1,4 +1,4 @@
-import { User } from '../../db/models'
+import { User } from '../../db/models/user'
 
 class UserRepository {
   static get (id) {
