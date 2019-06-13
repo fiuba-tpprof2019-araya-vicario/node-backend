@@ -9,7 +9,7 @@ export default function (sequelize) {
     }
   }, {
     underscored: true,
-    tableName: 'profile_credential'
+    tableName: 'Profile_credential'
   })
 
   return ProfileCredential

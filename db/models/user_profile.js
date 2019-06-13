@@ -9,7 +9,7 @@ export default function (sequelize) {
     }
   }, {
     underscored: true,
-    tableName: 'user_profile'
+    tableName: 'User_profile'
   })
 
   return UserProfile

@@ -31,7 +31,7 @@ export default function (sequelize) {
   }, {
     timestamps: true,
     underscored: true,
-    tableName: 'profiles',
+    tableName: 'Profiles',
     indexes: [// Create a unique index
       {
         unique: true,

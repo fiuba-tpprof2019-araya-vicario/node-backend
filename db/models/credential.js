@@ -7,7 +7,7 @@ export default function (sequelize) {
   }, {
     timestamps: true,
     underscored: true,
-    tableName: 'credentials'
+    tableName: 'Credentials'
   })
 
   Credential.getMsgInexistente = function () {

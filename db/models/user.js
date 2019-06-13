@@ -1,4 +1,4 @@
-import { STRING, NUMBER } from 'sequelize'
+import { STRING, INTEGER } from 'sequelize'
 
 export default function (sequelize) {
   var User = sequelize.define('User', {
@@ -44,7 +44,7 @@ export default function (sequelize) {
         notEmpty: true
       }
     },
-    padron: NUMBER,
+    padron: INTEGER,
     google_id: {
       type: STRING,
       validate: {
@@ -54,7 +54,7 @@ export default function (sequelize) {
   }, {
     timestamps: true,
     underscored: true,
-    tableName: 'users',
+    tableName: 'Users',
     indexes: [
       {
         unique: true,
@@ -66,10 +66,7 @@ export default function (sequelize) {
   // Adding a class level method
   User.associate = function (models) {
     User.belongsToMany(models.Profile, {
-      as: {
-        singular: 'Profile',
-        plural: 'Profiles'
-      },
+      as: 'Profiles',
       through: {
         model: models.UserProfile
       },
