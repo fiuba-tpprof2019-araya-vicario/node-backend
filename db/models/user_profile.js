@@ -1,7 +1,7 @@
 import { INTEGER } from 'sequelize'
 
 export default function (sequelize) {
-  const UserProfile = sequelize.define('UserProfile', {
+  const UserProfile = sequelize.define('User_profiles', {
     id: {
       type: INTEGER,
       primaryKey: true,
@@ -9,7 +9,7 @@ export default function (sequelize) {
     }
   }, {
     underscored: true,
-    tableName: 'User_profile'
+    tableName: 'User_profiles'
   })
 
   return UserProfile
