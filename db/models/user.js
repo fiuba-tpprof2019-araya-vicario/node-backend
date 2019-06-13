@@ -45,12 +45,7 @@ export default function (sequelize) {
       }
     },
     padron: INTEGER,
-    google_id: {
-      type: STRING,
-      validate: {
-        notEmpty: true
-      }
-    }
+    google_id: STRING
   }, {
     timestamps: true,
     underscored: true,
