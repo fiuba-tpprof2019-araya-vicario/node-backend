@@ -1,8 +1,21 @@
 import { OAuth2Client } from 'google-auth-library'
+import jwt from 'jsonwebtoken'
 import { getServiceError, getUsuarioNoExistente } from '../util/error'
 import UserRepository from './repository'
 
 const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
+
+const createToken = (id, email, profile, credentials) => {
+  let payload = {
+    id: id,
+    email: email,
+    profile: profile,
+    credentials: credentials,
+    iat: Math.now().unix(),
+    exp: Math.now().add(30, 'days').unix()
+  }
+  return jwt.sign(payload, process.env.TOKEN_SECRET)
+}
 
 const validateGoogleToken = (idToken) => {
   let promise = new Promise((resolve, reject) => {
@@ -33,7 +46,16 @@ const validateUser = (token, email) => {
   return Promise(async (resolve, reject) => {
     let user = await UserRepository.getByEmailAndToken(token, email)
     if (user != null) {
-      return resolve(user)
+      let token = createToken(user.id, user.email, user.Profiles[0], user.gerCredentials())
+      return resolve({
+        token: token,
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        surname: user.surname,
+        profile: user.Profiles[0],
+        credentials: user.getCredentials
+      })
     }
     return reject(getUsuarioNoExistente())
   })

@@ -94,7 +94,7 @@ export default function (sequelize) {
     return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{2,6}$/im
   }
 
-  User.obtenerPermisos = function () {
+  User.getCredentials = function () {
     let credentials = []
     for (let profile of this.Profiles) {
       for (let credential of profile.Credentials) {
