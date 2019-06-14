@@ -1,7 +1,8 @@
 import { STRING, INTEGER } from 'sequelize'
 
-export default function (sequelize) {
-  var User = sequelize.define('User', {
+module.exports = (sequelize) => {
+  console.log(sequelize)
+  const User = sequelize.define('User', {
     email: {
       type: STRING,
       allowNull: false,

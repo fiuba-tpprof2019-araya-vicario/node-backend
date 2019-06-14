@@ -1,6 +1,6 @@
 import { User } from '../../db/models/user'
-import { Profile } from '../../db/models/profile'
-import { Credential } from '../../db/models/credential'
+import Profile from '../../db/models/profile'
+import Credential from '../../db/models/credential'
 
 class UserRepository {
   static get (id) {
@@ -30,6 +30,8 @@ class UserRepository {
   }
 
   static getByEmailAndToken (email, token) {
+
+    console.log(User)
     return User.findOne({
       where: {
         email: email,
@@ -47,6 +49,21 @@ class UserRepository {
           ]
         }
       ]
+    })
+  }
+
+  static create (email, name, surname, padron, type) {
+    return User.create({
+      email: email,
+      name: name,
+      surname: surname,
+      padron: padron
+    },
+    {
+      include: [{
+        association: User.Profiles,
+        include: [ type ]
+      }]
     })
   }
 }

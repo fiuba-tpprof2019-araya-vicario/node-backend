@@ -1,4 +1,4 @@
-const getUsuarioNoAutorizado = () => {
+const getAuthorizationFail = () => {
   var err = new Error('Usuario no autorizado')
   err.status = 401
   return err
@@ -74,7 +74,7 @@ const getServiceErrorLostParams = (params) => {
   return err
 }
 
-exports.getUsuarioNoAutorizado = getUsuarioNoAutorizado
+exports.getAuthorizationFail = getAuthorizationFail
 exports.getTokenExpired = getTokenExpired
 exports.getServiceError = getServiceError
 exports.getServiceErrorNotFound = getServiceErrorNotFound
