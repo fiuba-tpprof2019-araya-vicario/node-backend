@@ -1,6 +1,6 @@
-import { User } from '../../db/models/user'
-import Profile from '../../db/models/profile'
-import Credential from '../../db/models/credential'
+const User = require('../../db/models').User
+const Profile = require('../../db/models').Profile
+const Credential = require('../../db/models').Credential
 
 class UserRepository {
   static get (id) {
@@ -22,33 +22,51 @@ class UserRepository {
 
   static getByEmail (email) {
     return User.findOne({
-      attributes: ['google_id', 'name', 'surname', 'padron'],
       where: {
         email: email
-      }
+      },
+      include: [{
+        model: Profile,
+        as: 'Profiles',
+        attributes: ['name', 'description'],
+        include: [
+          {
+            model: Credential,
+            as: 'Credentials'
+          }
+        ]
+      }],
+      raw: true,
+      nest: true
     })
   }
 
   static getByEmailAndToken (email, token) {
-
-    console.log(User)
     return User.findOne({
       where: {
-        email: email,
+        email,
         google_id: token
       },
-      include: [
-        {
-          model: Profile,
-          as: 'Profiles',
-          include: [
-            {
-              model: Credential,
-              as: 'Credentials'
+      include: [{
+        model: Profile,
+        as: 'Profiles',
+        attributes: ['name', 'description'],
+        through: {
+          attributes: []
+        },
+        include: [
+          {
+            model: Credential,
+            as: 'Credentials',
+            attributes: ['name', 'description'],
+            through: {
+              attributes: []
             }
-          ]
-        }
-      ]
+          }
+        ]
+      }],
+      attributes: ['id', 'email', 'name', 'surname', 'padron']
+      // raw: true
     })
   }
 

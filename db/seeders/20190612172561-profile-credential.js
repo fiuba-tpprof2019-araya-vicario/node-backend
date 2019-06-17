@@ -19,6 +19,14 @@ export function up (queryInterface) {
   {
     profile_id: 2,
     credential_id: 1
+  },
+  {
+    profile_id: 3,
+    credential_id: 1
+  },
+  {
+    profile_id: 4,
+    credential_id: 1
   }], {})
 }
 export function down () {

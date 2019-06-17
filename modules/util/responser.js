@@ -1,17 +1,24 @@
+const status = {
+  SUCCESS: 'success',
+  ERROR: 'error',
+  FAIL: 'fail'
+}
+
 const createErrorResponse = (code, message, data) => {
-  let status = (code >= 500)
-    ? this.status.FAIL
-    : this.status.ERROR
-  return { code, status, message, data }
+  let statusAux = (code >= 500)
+    ? status.FAIL
+    : status.ERROR
+  return { code, statusAux, message, data }
 }
 const createSuccessResponse = (code, data) => {
-  return { code, status: this.status.SUCCESS, message: '', data }
+  console.log('createSuccessResponse data: ', data)
+  return { code, status: status.SUCCESS, message: '', data }
 }
 
 const createSuccessResponseWithMetadata = (code, data, name, version) => {
   version = version || '0'
   let response = { code,
-    status: this.status.SUCCESS,
+    status: status.SUCCESS,
     message: '',
     metadata: { version: version } }
   response[name] = data
@@ -21,7 +28,7 @@ const createSuccessResponseWithMetadata = (code, data, name, version) => {
 const createSuccessResponseWithMetadataCollection = (code, data, name, version) => {
   version = version || '0'
   let response = { code,
-    status: this.status.SUCCESS,
+    status: status.SUCCESS,
     message: '',
     metadata: { total: data.length, version: version } }
   response[name] = data
@@ -29,13 +36,7 @@ const createSuccessResponseWithMetadataCollection = (code, data, name, version) 
 }
 
 const createSuccessResponseWithPagination = (code, data, pagination) => {
-  return { code, status: this.status.SUCCESS, message: '', data, pagination }
-}
-
-const status = {
-  SUCCESS: 'success',
-  ERROR: 'error',
-  FAIL: 'fail'
+  return { code, status: status.SUCCESS, message: '', data, pagination }
 }
 
 const codes = {

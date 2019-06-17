@@ -1,6 +1,6 @@
 import { INTEGER } from 'sequelize'
 
-export default function (sequelize) {
+module.exports = (sequelize) => {
   const ProfileCredential = sequelize.define('ProfileCredential', {
     id: {
       type: INTEGER,
@@ -9,7 +9,7 @@ export default function (sequelize) {
     }
   }, {
     underscored: true,
-    tableName: 'Profile_credential'
+    tableName: 'Profile_credentials'
   })
 
   return ProfileCredential

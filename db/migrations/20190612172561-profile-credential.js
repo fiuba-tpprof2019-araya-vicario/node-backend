@@ -17,7 +17,7 @@ export async function up (queryInterface, Sequelize) {
       ['credential_id'],
       {
         type: 'foreign key',
-        name: 'profile_credential_credential_id_fk',
+        name: 'profile_credentials_credential_id_fk',
         references: {
           table: 'Credentials',
           field: 'id'
@@ -31,7 +31,7 @@ export async function up (queryInterface, Sequelize) {
       ['profile_id'],
       {
         type: 'foreign key',
-        name: 'profile_credential_profile_fk',
+        name: 'profile_credentials_profile_fk',
         references: {
           table: 'Profiles',
           field: 'id'

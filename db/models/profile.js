@@ -1,6 +1,6 @@
 import { STRING } from 'sequelize'
 
-export default function (sequelize) {
+module.exports = (sequelize) => {
   const Profile = sequelize.define('Profile', {
     name: {
       type: STRING,

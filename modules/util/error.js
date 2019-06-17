@@ -5,9 +5,10 @@ const getAuthorizationFail = () => {
 }
 
 const getUsuarioNoExistente = () => {
-  var err = new Error('Usuario no existente')
-  err.status = 402
-  return err
+  return {
+    msg: 'Usuario no existente',
+    status: 402
+  }
 }
 
 const getTokenExpired = () => {

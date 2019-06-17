@@ -1,7 +1,7 @@
 import { INTEGER } from 'sequelize'
 
-export default function (sequelize) {
-  const UserProfile = sequelize.define('User_profiles', {
+module.exports = (sequelize) => {
+  const UserProfile = sequelize.define('UserProfile', {
     id: {
       type: INTEGER,
       primaryKey: true,

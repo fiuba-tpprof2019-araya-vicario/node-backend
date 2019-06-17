@@ -8,8 +8,9 @@ const validate = function (handler) {
     try {
       await handler(req, res)
     } catch (e) {
-      res.statusCode = e.status
-      res.json(createErrorResponse(e.status, e, null))
+      console.log(e)
+      res.statusCode = 500
+      res.json(createErrorResponse(500, e, null))
     }
   }
 }
