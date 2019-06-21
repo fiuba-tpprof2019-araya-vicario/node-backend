@@ -8,9 +8,12 @@ const validate = function (handler) {
     try {
       await handler(req, res)
     } catch (e) {
-      console.log(e)
-      res.statusCode = 500
-      res.json(createErrorResponse(500, e, null))
+      if (e.status === undefined) {
+        e.status = 500
+        e.message = 'Server Internal Error'
+      }
+      res.statusCode = e.status
+      res.json(createErrorResponse(e.status, e, null))
     }
   }
 }

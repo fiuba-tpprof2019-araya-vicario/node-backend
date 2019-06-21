@@ -61,7 +61,6 @@ const getCredentials = function (user) {
 
 const validateUser = async (token, email) => {
   return new Promise(async (resolve, reject) => {
-    console.log(email, token)
     return UserRepository.getByEmailAndToken(email, null)
       .then(user => {
         user = user.get()
@@ -71,13 +70,11 @@ const validateUser = async (token, email) => {
           })
           return profile.get()
         })
-        console.log('User: ', user)
         if (user == null) return reject(getUsuarioNoExistente())
         let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
         return resolve(getResponseUser(user, authToken))
       })
-      .catch((err) => {
-        console.log('user service error: ', err)
+      .catch(() => {
         return reject(getUsuarioNoExistente())
       })
   })

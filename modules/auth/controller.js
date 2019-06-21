@@ -3,10 +3,8 @@ import { codes, createSuccessResponse } from '../util/responser'
 
 const auth = async function (req, res) {
   let googleData = await validateGoogleToken(req.body.id_token)
-  console.log('llego')
   let response = await validateUser(googleData.tokenUser, googleData.email)
-  console.log('estuvo')
-  res.statusCode = codes.ACCEPTED
+  res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
