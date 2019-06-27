@@ -70,10 +70,11 @@ class UserRepository {
     })
   }
 
-  static create (email, name, surname, padron, type) {
+  static create (email, name, surname, token, padron, type) {
     return User.create({
       email: email,
       name: name,
+      google_id: token,
       surname: surname,
       padron: padron
     },

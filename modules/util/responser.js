@@ -11,7 +11,6 @@ const createErrorResponse = (code, message, data) => {
   return { code, statusAux, message, data }
 }
 const createSuccessResponse = (code, data) => {
-  console.log('createSuccessResponse data: ', data)
   return { code, status: status.SUCCESS, message: '', data }
 }
 

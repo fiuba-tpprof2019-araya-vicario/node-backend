@@ -4,6 +4,8 @@ import { getServiceError, getUsuarioNoExistente } from '../util/error'
 import UserRepository from './repository'
 import moment from 'moment'
 
+const STUDIENT = 1
+
 const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
 
 const createToken = (id, email, profile, credentials) => {
@@ -59,18 +61,24 @@ const getCredentials = function (user) {
   return credentials
 }
 
+const getUserInfo = (user) => {
+  user = user.get()
+  user.Profiles = user.Profiles.map((profile) => {
+    profile.Credentials = profile.Credentials.map((credential) => {
+      return credential.get()
+    })
+    return profile.get()
+  })
+
+  return user
+}
+
 const validateUser = async (token, email) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.getByEmailAndToken(email, null)
+    return UserRepository.getByEmailAndToken(email, token)
       .then(user => {
-        user = user.get()
-        user.Profiles = user.Profiles.map((profile) => {
-          profile.Credentials = profile.Credentials.map((credential) => {
-            return credential.get()
-          })
-          return profile.get()
-        })
-        if (user == null) return reject(getUsuarioNoExistente())
+        if (user == null) return createUser(email, 'hola', 'hola', token, null, STUDIENT)
+        user = getUserInfo(user)
         let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
         return resolve(getResponseUser(user, authToken))
       })
@@ -80,10 +88,14 @@ const validateUser = async (token, email) => {
   })
 }
 
-const createUser = async (email, name, surname, padron, type) => {
+const createUser = async (email, name, surname, token, padron, type) => {
+  console.log('createUser')
+  console.log(email, name, surname, token, padron, type)
   return new Promise(async (resolve, reject) => {
-    return UserRepository.create(email, name, surname, padron, type)
+    return UserRepository.create(email, name, surname, token, padron, type)
       .then(user => {
+        if (user == null) return reject(getUsuarioNoExistente())
+        user = getUserInfo(user)
         let authToken = createToken(user.id, user.email, user.Profiles[0], user.getCredentials())
         return resolve(getResponseUser(user, authToken))
       })
