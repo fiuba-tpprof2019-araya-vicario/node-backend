@@ -4,8 +4,6 @@ import { getServiceError, getUsuarioNoExistente } from '../util/error'
 import UserRepository from './repository'
 import moment from 'moment'
 
-const STUDIENT = 1
-
 const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
 
 const createToken = (id, email, profile, credentials) => {
@@ -31,10 +29,12 @@ const validateGoogleToken = async (idToken) => {
         let payload = ticket.getPayload()
         let email = payload.email
         let tokenUser = payload.sub
+        let name = payload.given_name
+        let surname = payload.family_name
         console.log('payload google ', payload)
         console.log('token user google ', tokenUser)
         console.log('email google ', email)
-        return resolve({ tokenUser: tokenUser, email: email })
+        return resolve({ tokenUser, email, name, surname })
       }).catch(err => { return reject(getServiceError(err.message)) })
   })
 }
@@ -77,15 +77,7 @@ const validateUser = async (token, email) => {
   return new Promise(async (resolve, reject) => {
     return UserRepository.getByEmailAndToken(email, token)
       .then(user => {
-        if (user == null) {
-          return UserRepository.create(email, 'hola', 'hola', token, null, [STUDIENT])
-            .then(user => {
-              user = getUserInfo(user)
-              let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
-              return resolve(getResponseUser(user, authToken))
-            })
-        }
-        console.log('paso validate')
+        if (user == null) return resolve(user)
         user = getUserInfo(user)
         let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
         return resolve(getResponseUser(user, authToken))
@@ -96,4 +88,17 @@ const validateUser = async (token, email) => {
   })
 }
 
-module.exports = { validateGoogleToken, validateUser }
+const createUser = async (email, name, surname, token, padron, type) => {
+  return new Promise(async (resolve, reject) => {
+    return UserRepository.create(email, name, surname, token, padron, type)
+      .then(user => {
+        if (user == null) return reject(getUsuarioNoExistente())
+        user = getUserInfo(user)
+        let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
+        return resolve(getResponseUser(user, authToken))
+      })
+      .catch(() => { return reject(getUsuarioNoExistente()) })
+  })
+}
+
+module.exports = { validateGoogleToken, validateUser, createUser }

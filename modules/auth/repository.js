@@ -1,7 +1,6 @@
 const User = require('../../db/models').User
 const Profile = require('../../db/models').Profile
 const Credential = require('../../db/models').Credential
-const UserProfile = require('../../db/models').UserProfile
 
 class UserRepository {
   static get (id) {
@@ -100,13 +99,8 @@ class UserRepository {
     let promiseProfiles = UserRepository.getProfiles(profiles)
     return Promise.all([promiseUser, promiseProfiles])
       .then(([user, profiles]) => {
-        console.log('user', user)
-        console.log('profiles', profiles)
         return user.addProfiles(profiles)
           .then(result => {
-            console.log(result)
-            console.log(user.get())
-            console.log(user.get().id)
             return UserRepository.get(user.get().id)
           })
           .catch(err => {

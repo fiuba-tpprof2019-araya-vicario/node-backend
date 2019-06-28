@@ -2,10 +2,11 @@ import { validateGoogleToken, validateUser, createUser } from './service'
 import { codes, createSuccessResponse } from '../util/responser'
 
 const auth = async function (req, res) {
-  let googleData = await validateGoogleToken(req.body.id_token)
-  let response = await validateUser(googleData.tokenUser, googleData.email)
+  let userData = await validateGoogleToken(req.body.id_token)
+  let user = await validateUser(userData.tokenUser, userData.email)
+  if (user == null) user = await createUser(userData.email, userData.name, userData.surname, userData.tokenUser, userData.padron, [2])
   res.statusCode = codes.CREATED
-  res.json(createSuccessResponse(res.statusCode, response))
+  res.json(createSuccessResponse(res.statusCode, user))
 }
 
 const create = async function (req, res) {
