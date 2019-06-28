@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
         isUnique: function (value, next) {
           var self = this
           User
-            .find({
+            .findOne({
               where: {
                 email: value
               }

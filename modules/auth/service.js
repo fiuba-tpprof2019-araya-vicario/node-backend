@@ -77,7 +77,15 @@ const validateUser = async (token, email) => {
   return new Promise(async (resolve, reject) => {
     return UserRepository.getByEmailAndToken(email, token)
       .then(user => {
-        if (user == null) return createUser(email, 'hola', 'hola', token, null, STUDIENT)
+        if (user == null) {
+          return UserRepository.create(email, 'hola', 'hola', token, null, [STUDIENT])
+            .then(user => {
+              user = getUserInfo(user)
+              let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
+              return resolve(getResponseUser(user, authToken))
+            })
+        }
+        console.log('paso validate')
         user = getUserInfo(user)
         let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
         return resolve(getResponseUser(user, authToken))
@@ -88,19 +96,4 @@ const validateUser = async (token, email) => {
   })
 }
 
-const createUser = async (email, name, surname, token, padron, type) => {
-  console.log('createUser')
-  console.log(email, name, surname, token, padron, type)
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.create(email, name, surname, token, padron, type)
-      .then(user => {
-        if (user == null) return reject(getUsuarioNoExistente())
-        user = getUserInfo(user)
-        let authToken = createToken(user.id, user.email, user.Profiles[0], user.getCredentials())
-        return resolve(getResponseUser(user, authToken))
-      })
-      .catch(() => { return reject(getUsuarioNoExistente()) })
-  })
-}
-
-module.exports = { validateGoogleToken, validateUser, createUser }
+module.exports = { validateGoogleToken, validateUser }
