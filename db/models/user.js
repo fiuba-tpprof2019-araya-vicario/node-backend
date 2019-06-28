@@ -8,6 +8,7 @@ module.exports = (sequelize) => {
       isUnique: true,
       validate: {
         isEmail: true,
+        is: /@fi.uba.ar$/i,
         notEmpty: true,
         len: [
           1, 255
