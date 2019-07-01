@@ -1,4 +1,4 @@
-import { INTEGER } from 'sequelize'
+import { INTEGER, ENUM } from 'sequelize'
 
 module.exports = (sequelize) => {
   const ProjectStudent = sequelize.define('ProjectStudent', {
@@ -6,6 +6,13 @@ module.exports = (sequelize) => {
       type: INTEGER,
       primaryKey: true,
       autoIncrement: true
+    },
+    student_type: {
+      type: ENUM,
+      values: [
+        'Creador',
+        'Integrante'
+      ]
     }
   }, {
     underscored: true,

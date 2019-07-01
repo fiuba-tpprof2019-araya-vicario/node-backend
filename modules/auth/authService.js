@@ -1,7 +1,7 @@
 import { OAuth2Client } from 'google-auth-library'
 import jwt from 'jsonwebtoken'
 import { getServiceError, getUsuarioNoExistente } from '../util/error'
-import UserRepository from './repository'
+import UserRepository from './authRepository'
 import moment from 'moment'
 
 const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')

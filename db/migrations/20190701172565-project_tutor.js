@@ -10,7 +10,14 @@ export async function up (queryInterface, Sequelize) {
       created_at: Sequelize.DATE,
       updated_at: Sequelize.DATE,
       project_id: Sequelize.INTEGER,
-      user_id: Sequelize.INTEGER
+      user_id: Sequelize.INTEGER,
+      tutor_type: {
+        type: Sequelize.ENUM,
+        values: [
+          'Tutor',
+          'Co-tutor'
+        ]
+      }
     }),
     await queryInterface.addConstraint(
       'Project_tutors',

@@ -2,7 +2,7 @@ import express from 'express'
 import logger from 'morgan'
 import { json, urlencoded } from 'body-parser'
 import ConnectorDB from './db/connectorDB'
-import authRoute from './modules/auth/route'
+import authRoute from './modules/auth/authRoute'
 
 const app = express()
 

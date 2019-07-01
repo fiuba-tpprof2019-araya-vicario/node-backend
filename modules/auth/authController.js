@@ -1,4 +1,4 @@
-import { validateGoogleToken, validateUser, createUser } from './service'
+import { validateGoogleToken, validateUser, createUser } from './authService'
 import { codes, createSuccessResponse } from '../util/responser'
 
 const auth = async function (req, res) {

@@ -7,7 +7,13 @@ module.exports = (sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
-    tutor_type: INTEGER
+    tutor_type: {
+      type: ENUM,
+      values: [
+        'Tutor',
+        'Co-tutor'
+      ]
+    }
   }, {
     underscored: true,
     tableName: 'Profile_tutors'
