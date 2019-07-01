@@ -72,6 +72,30 @@ module.exports = (sequelize) => {
         unique: true
       }
     })
+
+    User.belongsToMany(models.Project, {
+      as: 'Projects',
+      through: {
+        model: models.ProjectStudent
+      },
+      foreignKey: {
+        name: 'user_id',
+        allowNull: true,
+        unique: true
+      }
+    })
+
+    User.belongsToMany(models.Project, {
+      as: 'Tutorials',
+      through: {
+        model: models.ProjectTutor
+      },
+      foreignKey: {
+        name: 'user_id',
+        allowNull: true,
+        unique: true
+      }
+    })
   }
 
   User.getMsgEmailsNoMatch = function () {
