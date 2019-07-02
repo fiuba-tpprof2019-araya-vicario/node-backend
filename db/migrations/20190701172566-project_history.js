@@ -10,7 +10,7 @@ export async function up (queryInterface, Sequelize) {
       created_at: Sequelize.DATE,
       updated_at: Sequelize.DATE,
       project_id: Sequelize.INTEGER,
-      user_id: Sequelize.INTEGER,
+      created_by: Sequelize.INTEGER,
       state_id: Sequelize.INTEGER
     }),
     await queryInterface.addConstraint(
@@ -29,10 +29,10 @@ export async function up (queryInterface, Sequelize) {
     ),
     await queryInterface.addConstraint(
       'Project_history',
-      ['user_id'],
+      ['created_by'],
       {
         type: 'foreign key',
-        name: 'project_history_user_id_fk',
+        name: 'project_history_created_by_fk',
         references: {
           table: 'Users',
           field: 'id'

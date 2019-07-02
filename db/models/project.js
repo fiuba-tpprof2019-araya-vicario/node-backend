@@ -42,10 +42,6 @@ module.exports = (sequelize) => {
   // Adding a class level method
   Project.associate = function (models) {
     Project.belongsTo(models.ProjectType, {
-      as: 'ProjectType',
-      through: {
-        model: models.ProjectType
-      },
       foreignKey: {
         name: 'type_id',
         allowNull: false,

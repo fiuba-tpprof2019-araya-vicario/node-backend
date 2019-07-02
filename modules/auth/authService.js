@@ -75,7 +75,9 @@ const getUserInfo = (user) => {
 
 const validateUser = async (token, email) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.getByEmailAndToken(email, token)
+    // TODO: CAMBIAR ESTE HARDCODEO
+    // return UserRepository.getByEmailAndToken(email, token)
+    return UserRepository.getByEmailAndToken(email, null)
       .then(user => {
         if (user == null) return resolve(user)
         user = getUserInfo(user)
@@ -90,7 +92,9 @@ const validateUser = async (token, email) => {
 
 const createUser = async (email, name, surname, token, padron, type) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.create(email, name, surname, token, padron, type)
+    // TODO: CAMBIAR ESTE HARDCODEO
+    // return UserRepository.create(email, name, surname, token, padron, type)
+    return UserRepository.create(email, name, surname, null, padron, type)
       .then(user => {
         if (user == null) return reject(getUsuarioNoExistente())
         user = getUserInfo(user)
