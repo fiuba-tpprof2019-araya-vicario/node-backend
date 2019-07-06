@@ -1,11 +1,12 @@
-const express = require('express')
-const logger = require('morgan')
-const bodyParser = require('body-parser')
-const connectorDB = require('./db/connectorDB')
+import express from 'express'
+import logger from 'morgan'
+import { json, urlencoded } from 'body-parser'
+import ConnectorDB from './db/connectorDB'
+import authRoute from './modules/auth/authRoute'
 
 const app = express()
 
-connectorDB.connect()
+ConnectorDB.connect()
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -26,8 +27,13 @@ if (process.env.PRODUCTION_LOG) {
   app.use(logger('dev'))
 }
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(json())
+app.use(urlencoded({ extended: false }))
+
+app.get('/', function (req, res, next) {
+  res.status(200).send('Hello World')
+})
+app.use('/v0/api/auth', authRoute)
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -44,4 +50,4 @@ app.use(function (err, req, res, next) {
     .send(err)
 })
 
-module.exports = app
+export default app

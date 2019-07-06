@@ -3,9 +3,11 @@
 /**
  * Module dependencies.
  */
-import app, { set } from '../app'
+import app from '../app'
 import { createServer } from 'http'
-require('dotenv').config()
+import dotenv from 'dotenv'
+
+dotenv.config()
 var debug = require('debug')('parlamentapp:server')
 
 /**
@@ -13,7 +15,7 @@ var debug = require('debug')('parlamentapp:server')
  */
 
 var port = normalizePort(process.env.PORT || '3000')
-set('port', port)
+app.set('port', port)
 
 /**
  * Create HTTP server.
