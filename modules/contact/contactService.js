@@ -42,7 +42,7 @@ const sendMail = async (email, name, description) => {
     let mailOptions = getMailOptions(email, name, description)
     return transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return reject(getServiceError())
+        return reject(getServiceError(error))
       } else {
         return resolve(info)
       }

@@ -1,7 +1,7 @@
 import { check } from 'express-validator/check'
 
-const MISS_NAME = 'Falta el token'
-const MISS_EMAIL = 'Falta el token'
+const MISS_NAME = 'Falta el nombre'
+const MISS_EMAIL = 'Falta el email'
 const MISS_DESCRIPTION = 'Falta el mensaje'
 
 export const contactValidations = [
