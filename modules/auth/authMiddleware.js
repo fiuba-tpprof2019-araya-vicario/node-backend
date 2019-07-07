@@ -7,7 +7,7 @@ const checkIsLoggedWithCredentials = function (askedCredentials) {
   return function (req, res, next) {
     if (req.headers && req.headers.authorization) {
       try {
-        let payload = jwt.verify(req.headers.authorization, process.env.TOKEN_SECRET)
+        let payload = jwt.verify(req.headers.authorization, process.env.TOKEN_SECRET_JWT)
 
         if (payload.exp <= moment().unix()) {
           next(getTokenExpired())

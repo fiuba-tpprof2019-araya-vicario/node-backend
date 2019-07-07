@@ -28,7 +28,7 @@ const getMailOptions = (email, name, description) => {
 
   const mailOptions = {
     from: email, // sender address
-    to: process.env.EMAIL, // receiver email
+    to: process.env.EMAIL_DEST, // receiver email
     subject: `${SUBJECT} ${name}`, // Subject line
     html: body // plain text body
   }
