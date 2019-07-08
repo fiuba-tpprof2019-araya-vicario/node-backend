@@ -35,4 +35,4 @@ CLIENT_GOOGLE_SECRET=<Client secret del json del OAuth Client del proyecto de go
 EMAIL_SERVICE=<Servicio de envio de mails> Ej: gmail
 EMAIL_DEST=<Email de destino>
 EMAIL_USR=<Usuario de email> Ej: example@gmail.com
-EMAIL_PWD=<Password de usuario de email>```
+EMAIL_PWD=<Password de usuario de email>
