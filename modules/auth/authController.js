@@ -1,4 +1,4 @@
-import { validateGoogleToken, validateUser, createUser } from './authService'
+import { validateGoogleToken, validateUser, createUser, getUserById } from './authService'
 import { codes, createSuccessResponse } from '../util/responser'
 
 const auth = async function (req, res) {
@@ -9,11 +9,18 @@ const auth = async function (req, res) {
   res.json(createSuccessResponse(res.statusCode, user))
 }
 
-const create = async function (req, res) {
-  let body = req.body
-  let response = await createUser(body.email, body.name, body.surname, body.padron, body.type)
-  res.statusCode = codes.CREATED
+// const create = async function (req, res) {
+//   let body = req.body
+//   let response = await createUser(body.email, body.name, body.surname, body.padron, body.type)
+//   res.statusCode = codes.CREATED
+//   res.json(createSuccessResponse(res.statusCode, response))
+// }
+
+const getUser = async function (req, res) {
+  let userId = req.params.id
+  let response = await getUserById(userId)
+  res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
-module.exports = { auth, create }
+module.exports = { auth, getUser }

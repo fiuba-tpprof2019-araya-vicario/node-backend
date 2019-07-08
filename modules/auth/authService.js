@@ -6,11 +6,10 @@ import moment from 'moment'
 
 const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
 
-const createToken = (id, email, profile, credentials) => {
+const createToken = (id, email, credentials) => {
   let payload = {
     id: id,
     email: email,
-    profile: profile,
     credentials: credentials,
     iat: moment().unix(),
     exp: moment().add(30, 'days').unix()
@@ -46,7 +45,6 @@ const getResponseUser = (user, token) => {
     email: user.email,
     name: user.name,
     surname: user.surname,
-    profile: user.Profiles[0],
     credentials: getCredentials(user)
   }
 }
@@ -54,23 +52,9 @@ const getResponseUser = (user, token) => {
 const getCredentials = function (user) {
   let credentials = []
   for (let profile of user.Profiles) {
-    for (let credential of profile.Credentials) {
-      credentials.push(credential.name)
-    }
+    credentials = [...credentials, ...profile.Credentials.map(credential => credential.name)]
   }
-  return credentials
-}
-
-const getUserInfo = (user) => {
-  user = user.get()
-  user.Profiles = user.Profiles.map((profile) => {
-    profile.Credentials = profile.Credentials.map((credential) => {
-      return credential.get()
-    })
-    return profile.get()
-  })
-
-  return user
+  return [...new Set(credentials)]
 }
 
 const validateUser = async (token, email) => {
@@ -80,8 +64,8 @@ const validateUser = async (token, email) => {
     return UserRepository.getByEmailAndToken(email, null)
       .then(user => {
         if (user == null) return resolve(user)
-        user = getUserInfo(user)
-        let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
+        user = user.dataValues
+        let authToken = createToken(user.id, user.email, getCredentials(user))
         return resolve(getResponseUser(user, authToken))
       })
       .catch(() => {
@@ -97,12 +81,23 @@ const createUser = async (email, name, surname, token, padron, type) => {
     return UserRepository.create(email, name, surname, null, padron, type)
       .then(user => {
         if (user == null) return reject(getUsuarioNoExistente())
-        user = getUserInfo(user)
-        let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
+        user = user.dataValues
+        let authToken = createToken(user.id, user.email, getCredentials(user))
         return resolve(getResponseUser(user, authToken))
       })
       .catch(() => { return reject(getUsuarioNoExistente()) })
   })
 }
 
-module.exports = { validateGoogleToken, validateUser, createUser }
+const getUserById = async (userId) => {
+  return new Promise(async (resolve, reject) => {
+    return UserRepository.get(userId)
+      .then(user => {
+        if (user == null) return reject(getUsuarioNoExistente())
+        return resolve(user)
+      })
+      .catch(() => { return reject(getUsuarioNoExistente()) })
+  })
+}
+
+module.exports = { validateGoogleToken, validateUser, createUser, getUserById }

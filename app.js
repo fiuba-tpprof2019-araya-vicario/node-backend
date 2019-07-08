@@ -4,6 +4,7 @@ import { json, urlencoded } from 'body-parser'
 import ConnectorDB from './db/connectorDB'
 import authRoute from './modules/auth/authRoute'
 import contactRoute from './modules/contact/contactRoute'
+import projectRoute from './modules/project/projectRoute'
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.get('/', function (req, res, next) {
   res.status(200).send('Hello World')
 })
 app.use('/v0/api/auth', authRoute)
+app.use('/v0/api/project', projectRoute)
 app.use('/v0/api/contact', contactRoute)
 
 // error handler

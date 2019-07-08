@@ -17,6 +17,22 @@ export function up (queryInterface) {
     credential_id: 4
   },
   {
+    profile_id: 1,
+    credential_id: 5
+  },
+  {
+    profile_id: 1,
+    credential_id: 6
+  },
+  {
+    profile_id: 1,
+    credential_id: 7
+  },
+  {
+    profile_id: 1,
+    credential_id: 8
+  },
+  {
     profile_id: 2,
     credential_id: 1
   },

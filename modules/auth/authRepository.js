@@ -5,25 +5,23 @@ const Credential = require('../../db/models').Credential
 class UserRepository {
   static get (id) {
     return User.findByPk(id, {
+      attributes: {
+        exclude: ['google_id']
+      },
       include: [{
         model: Profile,
         as: 'Profiles',
-        attributes: ['name', 'description'],
-        through: {
-          attributes: []
-        },
         include: [
           {
             model: Credential,
             as: 'Credentials',
-            attributes: ['name', 'description'],
-            through: {
-              attributes: []
-            }
+            attributes: {
+              exclude: ['id', 'description', 'createdAt', 'updatedAt', 'ProfileCredential']
+            },
+            through: { attributes: [] }
           }
         ]
-      }],
-      attributes: ['id', 'email', 'name', 'surname', 'padron']
+      }]
     })
   }
 
@@ -32,19 +30,23 @@ class UserRepository {
       where: {
         email: email
       },
+      attributes: {
+        exclude: ['google_id']
+      },
       include: [{
         model: Profile,
         as: 'Profiles',
-        attributes: ['name', 'description'],
         include: [
           {
             model: Credential,
-            as: 'Credentials'
+            as: 'Credentials',
+            attributes: {
+              exclude: ['id', 'description', 'createdAt', 'updatedAt', 'ProfileCredential']
+            },
+            through: { attributes: [] }
           }
         ]
-      }],
-      raw: true,
-      nest: true
+      }]
     })
   }
 
@@ -54,25 +56,23 @@ class UserRepository {
         email,
         google_id: token
       },
+      attributes: {
+        exclude: ['google_id']
+      },
       include: [{
         model: Profile,
         as: 'Profiles',
-        attributes: ['name', 'description'],
-        through: {
-          attributes: []
-        },
         include: [
           {
             model: Credential,
             as: 'Credentials',
-            attributes: ['name', 'description'],
-            through: {
-              attributes: []
-            }
+            attributes: {
+              exclude: ['id', 'description', 'createdAt', 'updatedAt', 'ProfileCredential']
+            },
+            through: { attributes: [] }
           }
         ]
-      }],
-      attributes: ['id', 'email', 'name', 'surname', 'padron']
+      }]
     })
   }
 

@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
     }
   }, {
     underscored: true,
-    tableName: 'Profile_tutors'
+    tableName: 'Project_tutors'
   })
 
   return ProjectTutor

@@ -1,7 +1,8 @@
 const getAuthorizationFail = () => {
-  var err = new Error('Usuario no autorizado')
-  err.status = 401
-  return err
+  return {
+    msg: 'Usuario no autorizado',
+    status: 401
+  }
 }
 
 const getUsuarioNoExistente = () => {
