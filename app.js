@@ -36,8 +36,8 @@ app.get('/', function (req, res, next) {
   res.status(200).send('Hello World')
 })
 app.use('/v0/api/auth', authRoute)
-app.use('/v0/api/project', projectRoute)
-app.use('/v0/api/contact', contactRoute)
+app.use('/v0/api/projects', projectRoute)
+app.use('/v0/api/contacts', contactRoute)
 
 // error handler
 app.use(function (err, req, res, next) {
