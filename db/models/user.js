@@ -65,11 +65,6 @@ module.exports = (sequelize) => {
       as: 'Profiles',
       through: {
         model: models.UserProfile
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
       }
     })
 
@@ -77,11 +72,6 @@ module.exports = (sequelize) => {
       as: 'Projects',
       through: {
         model: models.ProjectStudent
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
       }
     })
 
@@ -89,11 +79,6 @@ module.exports = (sequelize) => {
       as: 'Tutorials',
       through: {
         model: models.ProjectTutor
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
       }
     })
   }

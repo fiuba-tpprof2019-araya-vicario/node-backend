@@ -1,11 +1,6 @@
 export async function up (queryInterface, Sequelize) {
   return [
     await queryInterface.createTable('User_profiles', {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
       // Timestamps
       created_at: Sequelize.DATE,
       updated_at: Sequelize.DATE,

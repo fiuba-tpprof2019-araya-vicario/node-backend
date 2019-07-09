@@ -3,6 +3,7 @@ import logger from 'morgan'
 import { json, urlencoded } from 'body-parser'
 import ConnectorDB from './db/connectorDB'
 import authRoute from './modules/auth/authRoute'
+import userRoute from './modules/user/userRoute'
 import contactRoute from './modules/contact/contactRoute'
 import projectRoute from './modules/project/projectRoute'
 
@@ -36,6 +37,7 @@ app.get('/', function (req, res, next) {
   res.status(200).send('Hello World')
 })
 app.use('/v0/api/auth', authRoute)
+app.use('/v0/api/users', userRoute)
 app.use('/v0/api/projects', projectRoute)
 app.use('/v0/api/contacts', contactRoute)
 

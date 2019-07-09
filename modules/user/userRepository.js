@@ -25,6 +25,21 @@ class UserRepository {
     })
   }
 
+  static getByProfile (profileId) {
+    return User.findAll({
+      include: [{
+        model: Profile,
+        as: 'Profiles',
+        attributes: {
+          exclude: ['google_id']
+        },
+        where: {
+          id: profileId
+        }
+      }]
+    })
+  }
+
   static getByEmail (email) {
     return User.findOne({
       where: {

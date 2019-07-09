@@ -14,18 +14,16 @@ const getProjects = async (userId) => {
   })
 }
 
-const addProject = async (email, name, surname, token, padron, type) => {
+const addProject = async (creatorId, name, type, description, students, tutors) => {
   return new Promise(async (resolve, reject) => {
-    // TODO: CAMBIAR ESTE HARDCODEO
-    // return UserRepository.create(email, name, surname, token, padron, type)
-    // return UserRepository.create(email, name, surname, null, padron, type)
-    //   .then(user => {
-    //     if (user == null) return reject(getUsuarioNoExistente())
-    //     user = getUserInfo(user)
-    //     let authToken = createToken(user.id, user.email, user.Profiles[0], getCredentials(user))
-    //     return resolve(getResponseUser(user, authToken))
-    //   })
-    //   .catch(() => { return reject(getServiceError()) })
+    return ProjectRepository.create(creatorId, name, type, description, students, tutors)
+      .then(project => {
+        if (project == null) return reject(getServiceError())
+        return resolve(project)
+      })
+      .catch(() => {
+        return reject(getServiceError())
+      })
   })
 }
 

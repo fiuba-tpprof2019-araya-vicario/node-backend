@@ -1,12 +1,7 @@
-import { INTEGER, ENUM } from 'sequelize'
+import { ENUM } from 'sequelize'
 
 module.exports = (sequelize) => {
   const ProjectTutor = sequelize.define('ProjectTutor', {
-    id: {
-      type: INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
     tutor_type: {
       type: ENUM,
       values: [
