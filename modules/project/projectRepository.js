@@ -1,4 +1,5 @@
 const Project = require('../../db/models').Project
+const ProjectType = require('../../db/models').ProjectType
 const User = require('../../db/models').User
 
 class ProjectRepository {
@@ -17,6 +18,10 @@ class ProjectRepository {
         attributes: {
           exclude: ['google_id']
         }
+      },
+      {
+        model: ProjectType,
+        as: 'Type'
       }]
     })
   }
@@ -39,6 +44,10 @@ class ProjectRepository {
         attributes: {
           exclude: ['google_id']
         }
+      },
+      {
+        model: ProjectType,
+        as: 'Type'
       }]
     })
   }
