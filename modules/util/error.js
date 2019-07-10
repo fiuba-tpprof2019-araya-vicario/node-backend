@@ -12,6 +12,13 @@ const getUsuarioNoExistente = () => {
   }
 }
 
+const getBadRequest = () => {
+  return {
+    msg: 'Alguno de los campos no es correcto',
+    status: 402
+  }
+}
+
 const getTokenExpired = () => {
   var err = new Error('El token expiro')
   err.status = 404
@@ -86,3 +93,4 @@ exports.getServiceErrorBadRequest = getServiceErrorBadRequest
 exports.getServiceErrorLostParams = getServiceErrorLostParams
 exports.getServiceErrorAlreadyModified = getServiceErrorAlreadyModified
 exports.getUsuarioNoExistente = getUsuarioNoExistente
+exports.getBadRequest = getBadRequest

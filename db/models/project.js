@@ -1,4 +1,4 @@
-import { STRING } from 'sequelize'
+import { STRING, TEXT } from 'sequelize'
 
 module.exports = (sequelize) => {
   const Project = sequelize.define('Project', {
@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
       }
     },
     description: {
-      type: STRING,
+      type: TEXT,
       validate: {
         notEmpty: true
       }

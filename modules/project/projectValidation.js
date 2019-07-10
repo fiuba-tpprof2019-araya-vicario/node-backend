@@ -1,4 +1,7 @@
 import { check } from 'express-validator/check'
+import { getBadRequest } from '../util/error'
+import UserRepository from '../user/userRepository'
+import ProjectRepository from './projectRepository'
 
 const MISS_NAME = 'Falta el nombre'
 const MISS_DESCRIPTION = 'Falta la descripción'
@@ -24,4 +27,21 @@ const createValidations = [
     .withMessage(MISS_TUTORS)
 ]
 
-module.exports = { createValidations }
+const checkStudentsAndTutors = () => {
+  return async (req, res, next) => {
+    try {
+      let existStudents = await UserRepository.existStudents(req.body.students)
+      let existTutors = await UserRepository.existTutors(req.body.tutors)
+      let existProjectType = await ProjectRepository.existProjectType(req.body.type)
+      if (existStudents && existTutors && existProjectType) {
+        next()
+      } else {
+        next(getBadRequest())
+      }
+    } catch (e) {
+      next(getBadRequest())
+    }
+  }
+}
+
+export { createValidations, checkStudentsAndTutors }

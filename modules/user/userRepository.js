@@ -109,21 +109,52 @@ class UserRepository {
     })
   }
 
-  static create (email, name, surname, token, padron, profiles) {
-    let promiseUser = UserRepository.createUser(email, name, surname, token, padron)
-    let promiseProfiles = UserRepository.getProfiles(profiles)
-    return Promise.all([promiseUser, promiseProfiles])
-      .then(([user, profiles]) => {
-        return user.addProfiles(profiles)
-          .then(result => {
-            return UserRepository.get(user.get().id)
-          })
-          .catch(err => {
-            console.log(err)
-          })
+  static async create (email, name, surname, token, padron, profilesId) {
+    try {
+      let userWithoutProfiles = await UserRepository.createUser(email, name, surname, token, padron)
+      await userWithoutProfiles.addProfiles(profilesId)
+      let user = await UserRepository.get(userWithoutProfiles.dataValues.id)
+      return user
+    } catch (e) {
+      return null
+    }
+  }
+
+  static existTutors (tutorsId) {
+    return User.count({
+      where: { id: tutorsId },
+      include: {
+        model: Profile,
+        as: 'Profiles',
+        where: {
+          id: 3
+        }
+      }
+    })
+      .then(count => {
+        if (count === tutorsId.length) {
+          return true
+        }
+        return false
       })
-      .catch(err => {
-        console.log(err)
+  }
+
+  static existStudents (studentsId) {
+    return User.count({
+      where: { id: studentsId },
+      include: {
+        model: Profile,
+        as: 'Profiles',
+        where: {
+          id: 2
+        }
+      }
+    })
+      .then(count => {
+        if (count === studentsId.length) {
+          return true
+        }
+        return false
       })
   }
 }

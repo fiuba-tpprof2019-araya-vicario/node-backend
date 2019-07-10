@@ -71,22 +71,28 @@ class ProjectRepository {
 
   static async create (creatorId, name, type, description, students, tutors) {
     try {
-      console.log('paso')
-      console.log(creatorId, name, type, description, students, tutors)
       let project = await ProjectRepository.createProject(name, type, description)
-      // let project = await ProjectRepository.get(project1.dataValues.id)
-      console.log(project)
       let p1 = project.addStudent(creatorId, { through: { student_type: 'Creador' } })
       let p2 = project.addStudents(students, { through: { student_type: 'Integrante' } })
       let p3 = project.addTutors(tutors, { through: { tutor_type: 'Tutor' } })
       let p4 = ProjectRepository.registerProjectState(project.dataValues.id, creatorId, 1)
-      console.log('estuvo')
-      let projectFinish = await Promise.all([p1, p2, p3, p4])
-      return projectFinish
+      await Promise.all([p1, p2, p3, p4])
+      return project.dataValues.id
     } catch (e) {
-      console.log(e)
       return null
     }
+  }
+
+  static existProjectType (type) {
+    return ProjectType.count({
+      where: { id: type }
+    })
+      .then(count => {
+        if (count > 0) {
+          return true
+        }
+        return false
+      })
   }
 }
 
