@@ -20,11 +20,13 @@ const checkIsLoggedWithCredentials = function (askedCredentials) {
         next()
       } catch (e) {
         let error = getAuthorizationFail()
-        next(createErrorResponse(error.status, error.message, error))
+        res.statusCode = error.status
+        res.json(createErrorResponse(error.status, error, null))
       }
     } else {
       let error = getAuthorizationFail()
-      next(createErrorResponse(error.status, error.message, error))
+      res.statusCode = error.status
+      res.json(createErrorResponse(error.status, error, null))
     }
   }
 }
