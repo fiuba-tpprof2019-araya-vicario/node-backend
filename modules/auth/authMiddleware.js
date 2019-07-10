@@ -17,7 +17,6 @@ const checkIsLoggedWithCredentials = function (askedCredentials) {
         req.id = payload.id
         req.credentials = payload.credentials
         req.email = payload.email
-
         next()
       } catch (e) {
         let error = getAuthorizationFail()

@@ -32,20 +32,25 @@ const getActiveProject = (projects) => {
   return projects.find(project => { return project.dataValues.state_id !== STATE_ID_LAST })
 }
 
+const processUserResponse = (user, resolve) => {
+  user = user.dataValues
+  let authToken = createToken(user.id, user.email, getCredentials(user))
+  let response = getResponseUser(user, authToken)
+  if (isStudent(user)) {
+    let activeProject = getActiveProject(user.Projects)
+    if (activeProject != null) response.projectId = activeProject.dataValues.id
+  }
+  return resolve(response)
+}
+
 const validateUser = async (token, email) => {
   return new Promise(async (resolve, reject) => {
     // TODO: CAMBIAR ESTE HARDCODEO
     // return UserRepository.getByEmailAndToken(email, token)
     return UserRepository.getByEmailAndToken(email, null)
       .then(user => {
-        console.log(user)
         if (user == null) return resolve(user)
-        user = user.dataValues
-        let authToken = createToken(user.id, user.email, getCredentials(user))
-        let response = getResponseUser(user, authToken)
-        console.log(response)
-        if (isStudent(user)) response.projectId = getActiveProject(user.Projects).dataValues.id
-        return resolve(response)
+        return processUserResponse(user, resolve)
       })
       .catch((e) => {
         console.error(e)
@@ -53,19 +58,6 @@ const validateUser = async (token, email) => {
       })
   })
 }
-
-// const validateUser = async (token, email) => {
-//   // TODO: CAMBIAR ESTE HARDCODEO
-//   // let user = UserRepository.getByEmailAndToken(email, token)
-//   let user = UserRepository.getByEmailAndToken(email, null)
-//   if (user == null) return user;
-//   user = user.dataValues
-//   let authToken = createToken(user.id, user.email, getCredentials(user))
-//   let response = getResponseUser(user, authToken)
-//   if (isStudent(user))
-//     response.projectId = await UserRepository.getActiveProject(user.id)
-//   return response
-// }
 
 const getUserById = async (userId) => {
   return new Promise(async (resolve, reject) => {
@@ -100,9 +92,7 @@ const createUser = async (email, name, surname, token, padron, type) => {
     return UserRepository.create(email, name, surname, null, padron, type)
       .then(user => {
         if (user == null) return reject(getServiceError())
-        user = user.dataValues
-        let authToken = createToken(user.id, user.email, getCredentials(user))
-        return resolve(getResponseUser(user, authToken))
+        return processUserResponse(user, resolve)
       })
       .catch((e) => { return reject(getServiceError()) })
   })
