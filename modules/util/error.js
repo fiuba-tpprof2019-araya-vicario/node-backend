@@ -8,14 +8,14 @@ const getAuthorizationFail = () => {
 const getUsuarioNoExistente = () => {
   return {
     msg: 'Usuario no existente',
-    status: 402
+    status: 400
   }
 }
 
 const getBadRequest = () => {
   return {
     msg: 'Alguno de los campos no es correcto',
-    status: 402
+    status: 400
   }
 }
 

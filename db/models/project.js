@@ -50,6 +50,15 @@ module.exports = (sequelize) => {
       }
     })
 
+    Project.belongsTo(models.State, {
+      as: 'State',
+      foreignKey: {
+        name: 'state_id',
+        allowNull: false,
+        unique: true
+      }
+    })
+
     Project.belongsToMany(models.User, {
       as: 'Students',
       through: {

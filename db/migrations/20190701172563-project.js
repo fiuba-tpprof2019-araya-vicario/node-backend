@@ -12,9 +12,19 @@ export function up (queryInterface, Sequelize) {
     description: Sequelize.TEXT,
     type_id: {
       type: Sequelize.INTEGER,
-      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
       references: {
         model: 'Project_types',
+        key: 'id'
+      }
+    },
+    state_id: {
+      type: Sequelize.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+      references: {
+        model: 'States',
         key: 'id'
       }
     }

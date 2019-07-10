@@ -1,13 +1,16 @@
+import { getServiceError } from '../util/error'
+
 const User = require('../../db/models').User
 const Profile = require('../../db/models').Profile
 const Credential = require('../../db/models').Credential
+const Project = require('../../db/models').Project
+const ProjectType = require('../../db/models').ProjectType
+const State = require('../../db/models').State
 
 class UserRepository {
   static get (id) {
     return User.findByPk(id, {
-      attributes: {
-        exclude: ['google_id']
-      },
+      attributes: { exclude: ['google_id'] },
       include: [{
         model: Profile,
         as: 'Profiles',
@@ -21,46 +24,24 @@ class UserRepository {
             through: { attributes: [] }
           }
         ]
+      },
+      {
+        model: Project,
+        as: 'Projects',
+        through: { attributes: [] }
       }]
     })
   }
 
   static getByProfile (profileId) {
+    let whereCondition = {}
+    if (profileId != null) whereCondition['id'] = profileId
     return User.findAll({
       include: [{
         model: Profile,
         as: 'Profiles',
-        attributes: {
-          exclude: ['google_id']
-        },
-        where: {
-          id: profileId
-        }
-      }]
-    })
-  }
-
-  static getByEmail (email) {
-    return User.findOne({
-      where: {
-        email: email
-      },
-      attributes: {
-        exclude: ['google_id']
-      },
-      include: [{
-        model: Profile,
-        as: 'Profiles',
-        include: [
-          {
-            model: Credential,
-            as: 'Credentials',
-            attributes: {
-              exclude: ['id', 'description', 'createdAt', 'updatedAt', 'ProfileCredential']
-            },
-            through: { attributes: [] }
-          }
-        ]
+        attributes: { exclude: ['google_id'] },
+        where: whereCondition
       }]
     })
   }
@@ -71,9 +52,7 @@ class UserRepository {
         email,
         google_id: token
       },
-      attributes: {
-        exclude: ['google_id']
-      },
+      attributes: { exclude: ['google_id'] },
       include: [{
         model: Profile,
         as: 'Profiles',
@@ -87,6 +66,11 @@ class UserRepository {
             through: { attributes: [] }
           }
         ]
+      },
+      {
+        model: Project,
+        as: 'Projects',
+        through: { attributes: [] }
       }]
     })
   }
@@ -136,7 +120,7 @@ class UserRepository {
           return true
         }
         return false
-      })
+      }).catch(() => { return getServiceError() })
   }
 
   static existStudents (studentsId) {
@@ -155,7 +139,39 @@ class UserRepository {
           return true
         }
         return false
-      })
+      }).catch(() => { return getServiceError() })
+  }
+
+  static getStudentProjects (id) {
+    return User.findByPk(id, {
+      include: [{
+        model: Project,
+        as: 'Projects',
+        through: { attributes: [] },
+        include: [{
+          model: ProjectType,
+          as: 'Type'
+        },
+        {
+          model: State,
+          as: 'State'
+        },
+        {
+          model: User,
+          as: 'Students',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        },
+        {
+          model: User,
+          as: 'Tutors',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        }]
+      }]
+    })
+      .then(user => { return user.Projects })
+      .catch(() => { return getServiceError() })
   }
 }
 

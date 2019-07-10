@@ -1,9 +1,10 @@
 import { getServiceError } from '../util/error'
 import ProjectRepository from './projectRepository'
+import UserRepository from '../user/userRepository'
 
 const getProjects = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.getByUser(userId)
+    return UserRepository.getStudentProjects(userId)
       .then(projects => {
         return resolve(projects)
       })
