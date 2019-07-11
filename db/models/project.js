@@ -6,25 +6,7 @@ module.exports = (sequelize) => {
       type: STRING,
       isUnique: true,
       validate: {
-        notEmpty: true,
-        isUnique: function (value, next) {
-          var self = this
-          Project
-            .findOne({
-              where: {
-                name: value
-              }
-            })
-            .then(function (project) {
-              if (project && self.id !== project.id) {
-                return next('Nombre ya en uso por otro proyecto')
-              }
-              return next()
-            })
-            .catch(function (err) {
-              return next(err)
-            })
-        }
+        notEmpty: true
       }
     },
     description: {

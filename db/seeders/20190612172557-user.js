@@ -25,6 +25,22 @@ export function up (queryInterface) {
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    name: 'Ricardo',
+    surname: 'Veiga',
+    email: 'rveiga@fi.uba.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Alejandro',
+    surname: 'Molinari',
+    email: 'amolinari@fi.uba.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {
