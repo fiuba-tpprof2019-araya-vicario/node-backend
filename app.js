@@ -1,7 +1,7 @@
 import express from 'express'
 import logger from 'morgan'
 import { json, urlencoded } from 'body-parser'
-import ConnectorDB from './db/connectorDB'
+import { connect } from './db/connectorDB'
 import authRoute from './modules/auth/authRoute'
 import userRoute from './modules/user/userRoute'
 import contactRoute from './modules/contact/contactRoute'
@@ -9,7 +9,7 @@ import projectRoute from './modules/project/projectRoute'
 
 const app = express()
 
-ConnectorDB.connect()
+connect()
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
