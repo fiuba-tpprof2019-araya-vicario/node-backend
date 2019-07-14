@@ -1,3 +1,4 @@
+import { sequelize } from '../../db/connectorDB'
 import { getServiceError } from '../util/error'
 
 const User = require('../../db/models').User
@@ -8,8 +9,8 @@ const ProjectType = require('../../db/models').ProjectType
 const State = require('../../db/models').State
 
 class UserRepository {
-  static get (id) {
-    return User.findByPk(id, {
+  static get (id, transaction) {
+    let options = {
       attributes: { exclude: ['google_id'] },
       include: [{
         model: Profile,
@@ -30,7 +31,13 @@ class UserRepository {
         as: 'Projects',
         through: { attributes: [] }
       }]
-    })
+    }
+
+    if (transaction !== undefined) {
+      options['transaction'] = transaction
+    }
+
+    return User.findByPk(id, options)
   }
 
   static getByProfile (profileId) {
@@ -93,15 +100,51 @@ class UserRepository {
     })
   }
 
+  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors) {
+    return sequelize.transaction(transaction => {
+      return Project.findByPk(projectId, { transaction })
+        .then(project => {
+          let p1 = project.setStudents([creatorId], { through: { student_type: 'Creador' }, transaction })
+          let p2 = project.setTutors([tutorId], { through: { tutor_type: 'Tutor' }, transaction })
+          let p3 = Project.update(
+            { name, description, type_id: type },
+            { where: { id: projectId }, transaction }
+          )
+          return Promise.all([p1, p2, p3]).then(() => {
+            let p1 = project.addStudents(students, { through: { student_type: 'Integrante' }, transaction })
+            let p2 = project.addTutors(cotutors, { through: { tutor_type: 'Co-tutor' }, transaction })
+            return Promise.all([p1, p2])
+          })
+        })
+        .then(result => {
+          return projectId
+        }).catch(() => {
+          return null
+        })
+    })
+  }
+
   static async create (email, name, surname, token, padron, profilesId) {
-    try {
-      let userWithoutProfiles = await UserRepository.createUser(email, name, surname, token, padron)
-      await userWithoutProfiles.addProfiles(profilesId)
-      let user = await UserRepository.get(userWithoutProfiles.dataValues.id)
-      return user
-    } catch (e) {
-      return null
-    }
+    return sequelize.transaction(transaction => {
+      return User.create({
+        email: email,
+        name: name,
+        google_id: token,
+        surname: surname,
+        padron: padron
+      }, { transaction })
+        .then(userWithoutProfiles => {
+          return userWithoutProfiles.addProfiles(profilesId)
+            .then(() => {
+              return UserRepository.get(userWithoutProfiles.dataValues.id, transaction)
+            })
+        })
+        .then(user => {
+          return user
+        }).catch(() => {
+          return null
+        })
+    })
   }
 
   static existTutors (tutorsId) {

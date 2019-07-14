@@ -1,4 +1,7 @@
 import { sequelize } from '../../db/connectorDB'
+import Sequelize from 'sequelize'
+import _ from 'lodash'
+
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
 const User = require('../../db/models').User
@@ -14,13 +17,13 @@ class ProjectRepository {
         model: User,
         as: 'Students',
         attributes: { exclude: ['google_id'] },
-        through: { attributes: [] }
+        through: { attributes: ['student_type'] }
       },
       {
         model: User,
         as: 'Tutors',
         attributes: { exclude: ['google_id'] },
-        through: { attributes: [] }
+        through: { attributes: ['tutor_type'] }
       },
       {
         model: ProjectType,
@@ -30,6 +33,23 @@ class ProjectRepository {
         model: State,
         as: 'State'
       }]
+    }).then(project => {
+      console.log(project)
+      console.log(project.dataValues.Students[0])
+      project.dataValues.creator = _.remove(
+        project.dataValues.Students,
+        student => {
+          return student.dataValues.ProjectStudent.dataValues.student_type === 'Creador'
+        }).pop()
+
+      project.dataValues.tutor = _.remove(
+        project.dataValues.Tutors,
+        tutor => {
+          return tutor.dataValues.ProjectTutor.dataValues.tutor_type === 'Tutor'
+        }).pop()
+
+      return project
+      // project.creator = _.remove(project.dataValues.Students, student => return student.dataValues)
     })
   }
 
@@ -120,7 +140,7 @@ class ProjectRepository {
             return Promise.all([p1, p2])
           })
         })
-        .then(result => {
+        .then(() => {
           return projectId
         }).catch(() => {
           return null
