@@ -1,4 +1,4 @@
-import { addProject, getStudentProjects, getSpecificProject, editProject } from './projectService'
+import { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject } from './projectService'
 import { codes, createSuccessResponse } from '../util/responser'
 
 const createProject = async function (req, res) {
@@ -8,15 +8,21 @@ const createProject = async function (req, res) {
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
-const getMyProjects = async function (req, res) {
-  let response = await getStudentProjects(req.id)
+const getProject = async function (req, res) {
+  let projectId = req.params.id
+  let response = await getSpecificProject(projectId)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
-const getProject = async function (req, res) {
-  let projectId = req.params.id
-  let response = await getSpecificProject(projectId)
+const getStudentProjects = async function (req, res) {
+  let response = await getAllStudentProjects(req.id)
+  res.statusCode = codes.OK
+  res.json(createSuccessResponse(res.statusCode, response))
+}
+
+const getTutorProjects = async function (req, res) {
+  let response = await getAllTutorProjects(req.id)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
@@ -28,4 +34,4 @@ const putProject = async function (req, res) {
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
-module.exports = { createProject, getMyProjects, getProject, putProject }
+module.exports = { createProject, getProject, getStudentProjects, getTutorProjects, putProject }

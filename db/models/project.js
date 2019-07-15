@@ -23,6 +23,24 @@ module.exports = (sequelize) => {
 
   // Adding a class level method
   Project.associate = function (models) {
+    Project.belongsTo(models.User, {
+      as: 'Creator',
+      foreignKey: {
+        name: 'creator_id',
+        allowNull: false,
+        unique: true
+      }
+    })
+
+    Project.belongsTo(models.User, {
+      as: 'Tutor',
+      foreignKey: {
+        name: 'tutor_id',
+        allowNull: false,
+        unique: true
+      }
+    })
+
     Project.belongsTo(models.ProjectType, {
       as: 'Type',
       foreignKey: {
@@ -49,9 +67,9 @@ module.exports = (sequelize) => {
     })
 
     Project.belongsToMany(models.User, {
-      as: 'Tutors',
+      as: 'Cotutors',
       through: {
-        model: models.ProjectTutor
+        model: models.ProjectCotutor
       }
     })
 

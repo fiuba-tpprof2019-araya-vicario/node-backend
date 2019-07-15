@@ -28,8 +28,21 @@ class UserRepository {
       },
       {
         model: Project,
-        as: 'Projects',
+        as: 'Participations',
         through: { attributes: [] }
+      },
+      {
+        model: Project,
+        as: 'Creations'
+      },
+      {
+        model: Project,
+        as: 'Cotutorials',
+        through: { attributes: [] }
+      },
+      {
+        model: Project,
+        as: 'Tutorials'
       }]
     }
 
@@ -100,31 +113,7 @@ class UserRepository {
     })
   }
 
-  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors) {
-    return sequelize.transaction(transaction => {
-      return Project.findByPk(projectId, { transaction })
-        .then(project => {
-          let p1 = project.setStudents([creatorId], { through: { student_type: 'Creador' }, transaction })
-          let p2 = project.setTutors([tutorId], { through: { tutor_type: 'Tutor' }, transaction })
-          let p3 = Project.update(
-            { name, description, type_id: type },
-            { where: { id: projectId }, transaction }
-          )
-          return Promise.all([p1, p2, p3]).then(() => {
-            let p1 = project.addStudents(students, { through: { student_type: 'Integrante' }, transaction })
-            let p2 = project.addTutors(cotutors, { through: { tutor_type: 'Co-tutor' }, transaction })
-            return Promise.all([p1, p2])
-          })
-        })
-        .then(result => {
-          return projectId
-        }).catch(() => {
-          return null
-        })
-    })
-  }
-
-  static async create (email, name, surname, token, padron, profilesId) {
+  static create (email, name, surname, token, padron, profilesId) {
     return sequelize.transaction(transaction => {
       return User.create({
         email: email,
@@ -189,9 +178,18 @@ class UserRepository {
     return User.findByPk(id, {
       include: [{
         model: Project,
-        as: 'Projects',
-        through: { attributes: [] },
+        as: 'Creations',
         include: [{
+          model: User,
+          as: 'Creator',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
+          model: User,
+          as: 'Tutor',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
           model: ProjectType,
           as: 'Type'
         },
@@ -207,13 +205,126 @@ class UserRepository {
         },
         {
           model: User,
-          as: 'Tutors',
+          as: 'Cotutors',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        }]
+      },
+      {
+        model: Project,
+        as: 'Participations',
+        through: { attributes: [] },
+        include: [{
+          model: User,
+          as: 'Creator',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
+          model: User,
+          as: 'Tutor',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
+          model: ProjectType,
+          as: 'Type'
+        },
+        {
+          model: State,
+          as: 'State'
+        },
+        {
+          model: User,
+          as: 'Students',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        },
+        {
+          model: User,
+          as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
           through: { attributes: [] }
         }]
       }]
     })
-      .then(user => { return user.Projects })
+      .then(user => { return { 'Creations': user.Creations, 'Participations': user.Participations } })
+      .catch((e) => { 
+        console.log(e)
+        return getServiceError() })
+  }
+
+  static getTutorProjects (id) {
+    return User.findByPk(id, {
+      include: [{
+        model: Project,
+        as: 'Tutorials',
+        include: [{
+          model: User,
+          as: 'Creator',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
+          model: User,
+          as: 'Tutor',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
+          model: ProjectType,
+          as: 'Type'
+        },
+        {
+          model: State,
+          as: 'State'
+        },
+        {
+          model: User,
+          as: 'Students',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        },
+        {
+          model: User,
+          as: 'Cotutors',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        }]
+      },
+      {
+        model: Project,
+        as: 'Cotutorials',
+        through: { attributes: [] },
+        include: [{
+          model: User,
+          as: 'Creator',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
+          model: User,
+          as: 'Tutor',
+          attributes: { exclude: ['google_id'] }
+        },
+        {
+          model: ProjectType,
+          as: 'Type'
+        },
+        {
+          model: State,
+          as: 'State'
+        },
+        {
+          model: User,
+          as: 'Students',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        },
+        {
+          model: User,
+          as: 'Cotutors',
+          attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        }]
+      }]
+    })
+      .then(user => { return { 'Tutorials': user.Tutorials, 'Cotutorials': user.Cotutorials } })
       .catch(() => { return getServiceError() })
   }
 }

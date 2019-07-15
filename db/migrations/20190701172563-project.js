@@ -27,6 +27,24 @@ export function up (queryInterface, Sequelize) {
         model: 'States',
         key: 'id'
       }
+    },
+    creator_id: {
+      type: Sequelize.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
+    tutor_id: {
+      type: Sequelize.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     }
   })
 }

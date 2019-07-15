@@ -2,8 +2,21 @@ import { getServiceError } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
 
-const getStudentProjects = async (userId) => {
+const getSpecificProject = async (projectId) => {
   return new Promise(async (resolve, reject) => {
+    return ProjectRepository.getProjectById(projectId)
+      .then(projects => {
+        return resolve(projects)
+      })
+      .catch(() => {
+        return reject(getServiceError())
+      })
+  })
+}
+
+const getAllStudentProjects = async (userId) => {
+  return new Promise(async (resolve, reject) => {
+    console.log(userId)
     return UserRepository.getStudentProjects(userId)
       .then(projects => {
         return resolve(projects)
@@ -14,11 +27,11 @@ const getStudentProjects = async (userId) => {
   })
 }
 
-const getSpecificProject = async (projectId) => {
+const getAllTutorProjects = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.getProjectById(projectId)
-      .then(project => {
-        return resolve(project)
+    return UserRepository.getTutorProjects(userId)
+      .then(projects => {
+        return resolve(projects)
       })
       .catch(() => {
         return reject(getServiceError())
@@ -52,4 +65,4 @@ const editProject = async (creatorId, projectId, name, type, description, studen
   })
 }
 
-module.exports = { addProject, getStudentProjects, getSpecificProject, editProject }
+module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject }
