@@ -89,8 +89,21 @@ class UserRepository {
       },
       {
         model: Project,
-        as: 'Projects',
+        as: 'Participations',
         through: { attributes: [] }
+      },
+      {
+        model: Project,
+        as: 'Creations'
+      },
+      {
+        model: Project,
+        as: 'Cotutorials',
+        through: { attributes: [] }
+      },
+      {
+        model: Project,
+        as: 'Tutorials'
       }]
     })
   }

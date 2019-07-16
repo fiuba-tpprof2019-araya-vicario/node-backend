@@ -28,8 +28,10 @@ const isStudent = (user) => {
   return user.Profiles.find(profile => { return profile.id === STUDENT_PROFILE_ID }) != null
 }
 
-const getActiveProject = (projects) => {
-  return projects.find(project => { return project.dataValues.state_id !== STATE_ID_LAST })
+const getActiveProject = (creations, participations) => {
+  let activeProject = creations.find(creation => { return creation.dataValues.state_id !== STATE_ID_LAST })
+  if (!activeProject) return activeProject
+  return participations.find(participation => { return participation.dataValues.state_id !== STATE_ID_LAST })
 }
 
 const processUserResponse = (user, resolve) => {
@@ -37,7 +39,7 @@ const processUserResponse = (user, resolve) => {
   let authToken = createToken(user.id, user.email, getCredentials(user))
   let response = getResponseUser(user, authToken)
   if (isStudent(user)) {
-    let activeProject = getActiveProject(user.Projects)
+    let activeProject = getActiveProject(user.Creations, user.Participations)
     if (activeProject != null) response.projectId = activeProject.dataValues.id
   }
   return resolve(response)
