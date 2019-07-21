@@ -54,10 +54,7 @@ const validateUser = async (token, email) => {
         if (user == null) return resolve(user)
         return processUserResponse(user, resolve)
       })
-      .catch((e) => {
-        console.error(e)
-        return reject(getServiceError())
-      })
+      .catch(() => { return reject(getServiceError()) })
   })
 }
 

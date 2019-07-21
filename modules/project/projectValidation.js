@@ -1,4 +1,4 @@
-import { check } from 'express-validator/check'
+import { check, param } from 'express-validator/check'
 import { getBadRequest } from '../util/error'
 import UserRepository from '../user/userRepository'
 import ProjectRepository from './projectRepository'
@@ -34,7 +34,7 @@ const createValidations = [
 ]
 
 const getValidations = [
-  check('id')
+  param('id')
     .exists()
     .withMessage(MISS_PROJECT_ID)
 ]

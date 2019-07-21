@@ -260,9 +260,7 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Creations': user.Creations, 'Participations': user.Participations } })
-      .catch((e) => { 
-        console.log(e)
-        return getServiceError() })
+      .catch(() => { return getServiceError() })
   }
 
   static getTutorProjects (id) {

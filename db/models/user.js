@@ -91,6 +91,16 @@ module.exports = (sequelize) => {
       as: 'Tutorials',
       foreignKey: 'tutor_id'
     })
+
+    User.hasMany(models.ProjectRequestTutor, {
+      as: 'TutorRequest',
+      foreignKey: 'user_id'
+    })
+
+    User.hasMany(models.ProjectRequestStudent, {
+      as: 'StudentRequest',
+      foreignKey: 'user_id'
+    })
   }
 
   User.getMsgEmailsNoMatch = function () {

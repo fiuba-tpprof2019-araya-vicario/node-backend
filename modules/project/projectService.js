@@ -5,8 +5,9 @@ import UserRepository from '../user/userRepository'
 const getSpecificProject = async (projectId) => {
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.getProjectById(projectId)
-      .then(projects => {
-        return resolve(projects)
+      .then(project => {
+        console.log(project.dataValues.TutorRequests)
+        return resolve(project)
       })
       .catch(() => {
         return reject(getServiceError())
@@ -16,7 +17,6 @@ const getSpecificProject = async (projectId) => {
 
 const getAllStudentProjects = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    console.log(userId)
     return UserRepository.getStudentProjects(userId)
       .then(projects => {
         return resolve(projects)

@@ -76,6 +76,16 @@ module.exports = (sequelize) => {
     Project.hasMany(models.ProjectHistory, {
       as: 'ProjectHistory'
     })
+
+    Project.hasMany(models.ProjectRequestTutor, {
+      as: 'TutorRequests',
+      foreignKey: 'project_id'
+    })
+
+    Project.hasMany(models.ProjectRequestStudent, {
+      as: 'StudentRequests',
+      foreignKey: 'project_id'
+    })
   }
 
   return Project
