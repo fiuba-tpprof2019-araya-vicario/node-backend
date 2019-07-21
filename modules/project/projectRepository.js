@@ -163,13 +163,42 @@ class ProjectRepository {
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
-          let p1 = project.setStudents(students, { transaction })
-          let p2 = project.setCotutors(cotutors, { transaction })
-          let p3 = Project.update(
-            { name, description, creator_id: creatorId, tutor_id: tutorId, type_id: type },
-            { where: { id: projectId }, transaction }
-          )
-          return Promise.all([p1, p2, p3])
+          let p1 = ProjectRequestStudent.destroy({
+            where: { project_id: project.dataValues.id }, transaction
+          })
+          let p2 = ProjectRequestTutor.destroy({
+            where: { project_id: project.dataValues.id }, transaction
+          })
+          return Promise.all([p1, p2]).then(() => {
+            let p1 = project.setStudents(students, { transaction })
+            let p2 = project.setCotutors(cotutors, { transaction })
+            let p3 = Project.update(
+              { name, description, creator_id: creatorId, tutor_id: tutorId, type_id: type },
+              { where: { id: projectId }, transaction }
+            )
+            let p4 = ProjectRequestTutor.create({
+              project_id: project.dataValues.id,
+              user_id: tutorId,
+              status: STATUS_REQUEST.PENDING,
+              type: TYPE_TUTOR_REQUEST.TUTOR
+            }, { transaction })
+            let p5 = students.map(student => {
+              return ProjectRequestStudent.create({
+                project_id: project.dataValues.id,
+                user_id: student,
+                status: STATUS_REQUEST.PENDING
+              }, { transaction })
+            })
+            let p6 = cotutors.map(cotutor => {
+              return ProjectRequestTutor.create({
+                project_id: project.dataValues.id,
+                user_id: cotutor,
+                status: STATUS_REQUEST.PENDING,
+                type: TYPE_TUTOR_REQUEST.COTUTOR
+              }, { transaction })
+            })
+            return Promise.all([p1, p2, p3, p4, p5, p6])
+          })
         })
         .then(() => {
           return projectId
