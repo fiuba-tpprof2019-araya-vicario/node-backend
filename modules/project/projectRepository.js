@@ -1,5 +1,4 @@
 import { sequelize } from '../../db/connectorDB'
-import _ from 'lodash'
 
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
@@ -28,12 +27,7 @@ class ProjectRepository {
       include: [{
         model: User,
         as: 'Creator',
-        attributes: { exclude: ['google_id'] },
-        include: [{
-          model: ProjectRequestStudent,
-          as: 'StudentRequests',
-          where: { project_id: id }
-        }]
+        attributes: { exclude: ['google_id'] }
       },
       {
         model: User,
