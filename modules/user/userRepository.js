@@ -7,6 +7,8 @@ const Credential = require('../../db/models').Credential
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
 const State = require('../../db/models').State
+const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
+const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 
 class UserRepository {
   static get (id, transaction) {
@@ -336,6 +338,28 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Tutorials': user.Tutorials, 'Cotutorials': user.Cotutorials } })
+      .catch(() => { return getServiceError() })
+  }
+
+  static getStudentRequests (id) {
+    return User.findByPk(id, {
+      include: [{
+        model: ProjectRequestStudent,
+        as: 'StudentRequests'
+      }]
+    })
+      .then(user => { return user.StudentRequests })
+      .catch(() => { return getServiceError() })
+  }
+
+  static getTutorRequests (id) {
+    return User.findByPk(id, {
+      include: [{
+        model: ProjectRequestTutor,
+        as: 'TutorRequests'
+      }]
+    })
+      .then(user => { return user.TutorRequests })
       .catch(() => { return getServiceError() })
   }
 }

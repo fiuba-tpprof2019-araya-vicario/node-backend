@@ -93,12 +93,12 @@ module.exports = (sequelize) => {
     })
 
     User.hasMany(models.ProjectRequestTutor, {
-      as: 'TutorRequest',
+      as: 'TutorRequests',
       foreignKey: 'user_id'
     })
 
     User.hasMany(models.ProjectRequestStudent, {
-      as: 'StudentRequest',
+      as: 'StudentRequests',
       foreignKey: 'user_id'
     })
   }

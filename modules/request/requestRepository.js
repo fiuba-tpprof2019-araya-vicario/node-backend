@@ -1,5 +1,4 @@
 import { sequelize } from '../../db/connectorDB'
-import _ from 'lodash'
 
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
@@ -22,50 +21,38 @@ const TYPE_TUTOR_REQUEST = {
   COTUTOR: 'cotutor'
 }
 
-class ProjectRepository {
+class RequestRepository {
   static getProjectById (id) {
     return Project.findByPk(id, {
       include: [{
         model: User,
         as: 'Creator',
-        attributes: { exclude: ['google_id'] },
-        include: [{
-          model: ProjectRequestStudent,
-          as: 'StudentRequests',
-          where: { project_id: id }
-        }]
+        attributes: { exclude: ['google_id'] }
       },
       {
         model: User,
         as: 'Tutor',
-        attributes: { exclude: ['google_id'] },
-        include: [{
-          model: ProjectRequestTutor,
-          as: 'TutorRequests',
-          where: { project_id: id }
-        }]
+        attributes: { exclude: ['google_id'] }
       },
       {
         model: User,
         as: 'Students',
         attributes: { exclude: ['google_id'] },
-        through: { attributes: [] },
-        include: [{
-          model: ProjectRequestStudent,
-          as: 'StudentRequests',
-          where: { project_id: id }
-        }]
+        through: { attributes: [] }
       },
       {
         model: User,
         as: 'Cotutors',
         attributes: { exclude: ['google_id'] },
-        through: { attributes: [] },
-        include: [{
-          model: ProjectRequestTutor,
-          as: 'TutorRequests',
-          where: { project_id: id }
-        }]
+        through: { attributes: [] }
+      },
+      {
+        model: ProjectRequestTutor,
+        as: 'TutorRequests'
+      },
+      {
+        model: ProjectRequestStudent,
+        as: 'StudentRequests'
       },
       {
         model: ProjectType,
@@ -221,4 +208,4 @@ class ProjectRepository {
   }
 }
 
-export default ProjectRepository
+export default RequestRepository
