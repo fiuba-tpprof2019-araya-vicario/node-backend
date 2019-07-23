@@ -30,7 +30,7 @@ const isStudent = (user) => {
 
 const getActiveProject = (creations, participations) => {
   let activeProject = creations.find(creation => { return creation.dataValues.state_id !== STATE_ID_LAST })
-  if (!activeProject) return activeProject
+  if (activeProject != null) return activeProject
   return participations.find(participation => { return participation.dataValues.state_id !== STATE_ID_LAST })
 }
 
