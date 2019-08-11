@@ -1,37 +1,43 @@
+// STUDENT 2
+
+// 'CREATE_PROJECT' 1
+// 'EDIT_PROJECT' 2
+// 'GET_PROJECTS' 3
+// 'CREATE_USER' 4
+// 'GET_USERS' 5
+// 'EDIT_USERS' 6
+// 'CREATE_PROFILE' 7
+// 'GET_PROFILES' 8
+// 'EDIT_PROFILES 9
 
 export function up (queryInterface) {
-  return queryInterface.bulkInsert('Profiles', [{
-    id: 1,
-    name: 'Admin',
-    description: 'Administrador general',
+  return queryInterface.bulkInsert('Profile_credentials', [{
+    profile_id: 2,
+    credential_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    id: 2,
-    name: 'Estudiante',
-    description: 'Estudiante FIUBA',
+    profile_id: 2,
+    credential_id: 2,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    id: 3,
-    name: 'Tutor',
-    description: 'Docente Tutor FIUBA',
+    profile_id: 2,
+    credential_id: 3,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    id: 4,
-    name: 'Comision',
-    description: 'Comision Curricular FIUBA',
+    profile_id: 2,
+    credential_id: 5,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    id: 5,
-    name: 'Interesado',
-    description: 'Intermediario perfil externo',
+    profile_id: 2,
+    credential_id: 6,
     created_at: new Date(),
     updated_at: new Date()
   }], {})

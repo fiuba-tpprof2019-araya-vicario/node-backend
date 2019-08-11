@@ -65,36 +65,41 @@ module.exports = (sequelize) => {
       as: 'Profiles',
       through: {
         model: models.UserProfile
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
       }
     })
 
     User.belongsToMany(models.Project, {
-      as: 'Projects',
+      as: 'Participations',
       through: {
         model: models.ProjectStudent
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
       }
     })
 
     User.belongsToMany(models.Project, {
-      as: 'Tutorials',
+      as: 'Cotutorials',
       through: {
-        model: models.ProjectTutor
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
+        model: models.ProjectCotutor
       }
+    })
+
+    User.hasMany(models.Project, {
+      as: 'Creations',
+      foreignKey: 'creator_id'
+    })
+
+    User.hasMany(models.Project, {
+      as: 'Tutorials',
+      foreignKey: 'tutor_id'
+    })
+
+    User.hasMany(models.ProjectRequestTutor, {
+      as: 'TutorRequests',
+      foreignKey: 'user_id'
+    })
+
+    User.hasMany(models.ProjectRequestStudent, {
+      as: 'StudentRequests',
+      foreignKey: 'user_id'
     })
   }
 

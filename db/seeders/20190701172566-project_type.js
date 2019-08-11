@@ -1,37 +1,19 @@
-// ADMIN 1
-// STUDENT 2
-// TUTOR 3
-// COMISION 4
-// INTERESADO 5
-
 export function up (queryInterface) {
-  return queryInterface.bulkInsert('User_profiles', [{
-    user_id: 1,
-    profile_id: 2,
+  return queryInterface.bulkInsert('Project_types', [{
+    id: 1,
+    name: 'Trabajo Profesional',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    user_id: 2,
-    profile_id: 2,
+    id: 2,
+    name: 'Tesis',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    user_id: 3,
-    profile_id: 3,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
-    user_id: 4,
-    profile_id: 3,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
-    user_id: 5,
-    profile_id: 3,
+    id: 3,
+    name: 'Trabajo Práctico',
     created_at: new Date(),
     updated_at: new Date()
   }], {})

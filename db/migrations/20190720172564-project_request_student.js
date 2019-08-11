@@ -1,20 +1,29 @@
 export async function up (queryInterface, Sequelize) {
   return [
-    await queryInterface.createTable('User_profiles', {
+    await queryInterface.createTable('Project_request_students', {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      status: {
+        type: Sequelize.ENUM,
+        values: ['pending', 'accepted', 'rejected']
+      },
       // Timestamps
       created_at: Sequelize.DATE,
       updated_at: Sequelize.DATE,
-      profile_id: Sequelize.INTEGER,
+      project_id: Sequelize.INTEGER,
       user_id: Sequelize.INTEGER
     }),
     await queryInterface.addConstraint(
-      'User_profiles',
-      ['profile_id'],
+      'Project_request_students',
+      ['project_id'],
       {
         type: 'foreign key',
-        name: 'user_profile_profile_id_fk',
+        name: 'project_request_student_project_id_fk',
         references: {
-          table: 'Profiles',
+          table: 'Projects',
           field: 'id'
         },
         onDelete: 'cascade',
@@ -22,11 +31,11 @@ export async function up (queryInterface, Sequelize) {
       }
     ),
     await queryInterface.addConstraint(
-      'User_profiles',
+      'Project_request_students',
       ['user_id'],
       {
         type: 'foreign key',
-        name: 'user_profile_user_id_fk',
+        name: 'project_request_student_user_id_fk',
         references: {
           table: 'Users',
           field: 'id'
@@ -38,5 +47,5 @@ export async function up (queryInterface, Sequelize) {
   ]
 }
 export function down (queryInterface) {
-  return queryInterface.dropTable('User_profiles')
+  return queryInterface.dropTable('Project_request_students')
 }

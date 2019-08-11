@@ -1,13 +1,21 @@
 const getAuthorizationFail = () => {
-  var err = new Error('Usuario no autorizado')
-  err.status = 401
-  return err
+  return {
+    msg: 'Usuario no autorizado',
+    status: 401
+  }
 }
 
 const getUsuarioNoExistente = () => {
   return {
     msg: 'Usuario no existente',
-    status: 402
+    status: 400
+  }
+}
+
+const getBadRequest = () => {
+  return {
+    msg: 'Alguno de los campos no es correcto',
+    status: 400
   }
 }
 
@@ -85,3 +93,4 @@ exports.getServiceErrorBadRequest = getServiceErrorBadRequest
 exports.getServiceErrorLostParams = getServiceErrorLostParams
 exports.getServiceErrorAlreadyModified = getServiceErrorAlreadyModified
 exports.getUsuarioNoExistente = getUsuarioNoExistente
+exports.getBadRequest = getBadRequest

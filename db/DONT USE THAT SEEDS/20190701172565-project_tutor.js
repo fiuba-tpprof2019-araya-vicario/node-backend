@@ -1,12 +1,8 @@
 export function up (queryInterface) {
-  return queryInterface.bulkInsert('Project_types', [{
-    name: 'TRABAJO_PROFESIONAL'
-  },
-  {
-    name: 'TESIS'
-  },
-  {
-    name: 'TRABAJO_PRACTICO'
+  return queryInterface.bulkInsert('Project_cotutors', [{
+    user_id: 3,
+    project_id: 1,
+    tutor_type: 'Tutor'
   }], {})
 }
 export function down () {

@@ -6,7 +6,7 @@
     "host": "database",
     "dialect": "postgres",
     "operatorsAliases": false,
-    "TOKEN_SECRET": "mySecret"
+    "TOKEN_SECRET_JWT": "mySecret"
   },
   "test": {
     "username": "postgres",
@@ -15,7 +15,7 @@
     "host": "db",
     "dialect": "postgres",
     "operatorsAliases": false,
-    "TOKEN_SECRET": "mySecret"
+    "TOKEN_SECRET_JWT": "mySecret"
   },
   "production": {
     "username": "odvzpsykavggrf",
@@ -24,7 +24,7 @@
     "host": "ec2-54-243-137-182.compute-1.amazonaws.com",
     "dialect": "postgres",
     "operatorsAliases": false,
-    "TOKEN_SECRET": "mySecret"
+    "TOKEN_SECRET_JWT": "mySecret"
   },
   "test_production": {
     "username": "naraya",
@@ -39,6 +39,6 @@
          "require":true
       }
     },
-    "TOKEN_SECRET": "mySecret"
+    "TOKEN_SECRET_JWT": "mySecret"
   }
 }

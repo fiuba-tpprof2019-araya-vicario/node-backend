@@ -1,37 +1,31 @@
-// ADMIN 1
-// STUDENT 2
 // TUTOR 3
-// COMISION 4
-// INTERESADO 5
+
+// 'CREATE_PROJECT' 1
+// 'EDIT_PROJECT' 2
+// 'GET_PROJECTS' 3
+// 'CREATE_USER' 4
+// 'GET_USERS' 5
+// 'EDIT_USERS' 6
+// 'CREATE_PROFILE' 7
+// 'GET_PROFILES' 8
+// 'EDIT_PROFILES 9
 
 export function up (queryInterface) {
-  return queryInterface.bulkInsert('User_profiles', [{
-    user_id: 1,
-    profile_id: 2,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
-    user_id: 2,
-    profile_id: 2,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
-    user_id: 3,
+  return queryInterface.bulkInsert('Profile_credentials', [{
     profile_id: 3,
+    credential_id: 3,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    user_id: 4,
     profile_id: 3,
+    credential_id: 5,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    user_id: 5,
     profile_id: 3,
+    credential_id: 6,
     created_at: new Date(),
     updated_at: new Date()
   }], {})
