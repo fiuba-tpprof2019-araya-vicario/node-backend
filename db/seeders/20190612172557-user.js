@@ -41,6 +41,14 @@ export function up (queryInterface) {
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    name: 'Arrow',
+    surname: 'GameMaster',
+    email: 'arrowgamemaster@gmail.com',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {

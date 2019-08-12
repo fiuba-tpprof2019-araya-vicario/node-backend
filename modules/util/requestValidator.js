@@ -12,6 +12,7 @@ const validate = function (handler) {
         e.status = 500
         e.message = 'Server Internal Error'
       }
+      console.log('Error in request validator: ', e)
       res.statusCode = e.status
       res.json(createErrorResponse(e.status, e, null))
     }

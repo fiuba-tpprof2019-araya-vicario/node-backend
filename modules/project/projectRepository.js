@@ -213,6 +213,15 @@ class ProjectRepository {
         })
     })
   }
+
+  static deleteProjectById (id) {
+    return Project.destroy({
+      where: { id }
+    })
+      .then(() => {
+        return id
+      })
+  }
 }
 
 export default ProjectRepository

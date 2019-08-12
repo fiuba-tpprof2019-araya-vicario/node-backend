@@ -19,6 +19,13 @@ const getBadRequest = () => {
   }
 }
 
+const getNotFound = () => {
+  return {
+    msg: 'Recurso solicitado inexistente',
+    status: 404
+  }
+}
+
 const getTokenExpired = () => {
   var err = new Error('El token expiro')
   err.status = 404
@@ -94,3 +101,4 @@ exports.getServiceErrorLostParams = getServiceErrorLostParams
 exports.getServiceErrorAlreadyModified = getServiceErrorAlreadyModified
 exports.getUsuarioNoExistente = getUsuarioNoExistente
 exports.getBadRequest = getBadRequest
+exports.getNotFound = getNotFound

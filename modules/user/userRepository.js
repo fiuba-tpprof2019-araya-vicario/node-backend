@@ -138,7 +138,7 @@ class UserRepository {
         padron: padron
       }, { transaction })
         .then(userWithoutProfiles => {
-          return userWithoutProfiles.addProfiles(profilesId)
+          return userWithoutProfiles.addProfiles(profilesId, { transaction })
             .then(() => {
               return UserRepository.get(userWithoutProfiles.dataValues.id, transaction)
             })
