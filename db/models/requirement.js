@@ -1,4 +1,4 @@
-import { STRING, TEXT } from 'sequelize'
+import { STRING, TEXT, ENUM } from 'sequelize'
 
 module.exports = (sequelize) => {
   const Requirement = sequelize.define('Requirement', {
@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
       validate: {
         notEmpty: true
       }
+    },
+    status: {
+      type: ENUM,
+      values: ['inactive', 'active', 'requested', 'implemented', 'deleted']
     }
   }, {
     timestamps: true,

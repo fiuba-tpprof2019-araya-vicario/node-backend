@@ -26,5 +26,5 @@ export function up (queryInterface, Sequelize) {
   })
 }
 export function down (queryInterface) {
-  return queryInterface.dropTable('Projects')
+  return queryInterface.dropTable('Requirements')
 }
