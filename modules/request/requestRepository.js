@@ -1,4 +1,5 @@
 import { sequelize } from '../../db/connectorDB'
+import ProjectRepository from '../project/projectRepository'
 
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
@@ -20,11 +21,11 @@ const TYPE_TUTOR_REQUEST = {
 
 class RequestRepository {
   static modifyStatusRequestStudent (id, status) {
-    return ProjectRequestStudent.update({ status }, { where: { id } })
+    return ProjectRequestStudent.update({ status }, { where: { id, status: 'pending' } })
   }
 
   static modifyStatusRequestTutor (id, status, transaction) {
-    return ProjectRequestTutor.update({ status }, { where: { id }, transaction })
+    return ProjectRequestTutor.update({ status }, { where: { id, status: 'pending' }, transaction })
   }
 
   static getRequestStudentById (id, include) {
@@ -44,7 +45,7 @@ class RequestRepository {
       }
     })
     return sequelize.transaction(transaction => {
-      let p1 = ProjectRequestTutor.update({ status: 'accepted' }, { where: { id: requestId }, transaction })
+      let p1 = ProjectRepository.modifyStatusRequestTutor(requestId, 'accepted', transaction)
       let p2 = Project.update(
         { state_id: projectTypeState.dataValues.secondary_state },
         { where: { id: request.dataValues.project_id }, transaction }

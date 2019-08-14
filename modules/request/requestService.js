@@ -1,7 +1,6 @@
 import { getServiceError, getBadRequest } from '../util/error'
 import UserRepository from '../user/userRepository'
 import RequestRepository from './requestRepository'
-import ProjectRepository from '../project/projectRepository'
 
 const getAllStudentRequests = async (userId) => {
   return new Promise(async (resolve, reject) => {
@@ -30,8 +29,9 @@ const getAllTutorRequests = async (userId) => {
 const modifyStudentRequest = async (requestId, status) => {
   return new Promise(async (resolve, reject) => {
     return RequestRepository.modifyStatusRequestStudent(requestId, status)
-      .then(requests => {
-        return resolve(requests)
+      .then(result => {
+        if (result[0] > 0) return resolve(requestId)
+        else reject(getBadRequest())
       })
       .catch(() => {
         return reject(getServiceError())
@@ -42,8 +42,9 @@ const modifyStudentRequest = async (requestId, status) => {
 const modifyTutorRequest = async (requestId, status) => {
   return new Promise(async (resolve, reject) => {
     return RequestRepository.modifyStatusRequestTutor(requestId, status)
-      .then(() => {
-        return resolve(requestId)
+      .then((result) => {
+        if (result[0] > 0) return resolve(requestId)
+        else reject(getBadRequest())
       })
       .catch(() => {
         return reject(getServiceError())
