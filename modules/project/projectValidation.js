@@ -44,46 +44,4 @@ const modifyValidations = [
   ...getValidations
 ]
 
-const checkStudentsAndTutors = () => {
-  return async (req, res, next) => {
-    try {
-      let existStudents = await UserRepository.existStudents(req.body.students)
-      let existTutors = await UserRepository.existTutors([req.body.tutor_id, ...req.body.cotutors])
-      let existProjectType = await ProjectRepository.existProjectType(req.body.type)
-      let creatorIsStudent = req.body.students.includes(req.id)
-      let tutorIsCotutor = req.body.cotutors.includes(req.body.tutor_id)
-      if (existStudents && existTutors && existProjectType && !creatorIsStudent && !tutorIsCotutor) {
-        next()
-      } else {
-        let error = getBadRequest()
-        res.statusCode = error.status
-        res.json(createErrorResponse(error.status, error, null))
-      }
-    } catch (e) {
-      let error = getBadRequest()
-      res.statusCode = error.status
-      res.json(createErrorResponse(error.status, error, null))
-    }
-  }
-}
-
-const checkExistProject = () => {
-  return async (req, res, next) => {
-    try {
-      let existProject = await ProjectRepository.existProject(req.params.id)
-      if (existProject) {
-        next()
-      } else {
-        let error = getBadRequest()
-        res.statusCode = error.status
-        res.json(createErrorResponse(error.status, error, null))
-      }
-    } catch (e) {
-      let error = getBadRequest()
-      res.statusCode = error.status
-      res.json(createErrorResponse(error.status, error, null))
-    }
-  }
-}
-
-export { createValidations, checkStudentsAndTutors, getValidations, modifyValidations, checkExistProject }
+export { createValidations, getValidations, modifyValidations }

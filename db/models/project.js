@@ -1,7 +1,7 @@
 import { STRING, TEXT } from 'sequelize'
 
 module.exports = (sequelize) => {
-  const Project = sequelize.define('Project', {
+  var Project = sequelize.define('Project', {
     name: {
       type: STRING,
       isUnique: true,
@@ -20,6 +20,10 @@ module.exports = (sequelize) => {
     underscored: true,
     tableName: 'Projects'
   })
+
+  Project.prototype.inRevision = function () {
+    return this.state_id === 2
+  }
 
   // Adding a class level method
   Project.associate = function (models) {
@@ -46,6 +50,15 @@ module.exports = (sequelize) => {
       foreignKey: {
         name: 'type_id',
         allowNull: false,
+        unique: true
+      }
+    })
+
+    Project.belongsTo(models.Requirement, {
+      as: 'Requirement',
+      foreignKey: {
+        name: 'requirement_id',
+        allowNull: true,
         unique: true
       }
     })

@@ -40,6 +40,12 @@ export function up (queryInterface) {
     credential_id: 6,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    profile_id: 2,
+    credential_id: 10,
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {

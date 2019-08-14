@@ -5,10 +5,8 @@
  */
 import app from '../app'
 import { createServer } from 'http'
-import dotenv from 'dotenv'
 
-dotenv.config()
-var debug = require('debug')('parlamentapp:server')
+var debug = require('debug')('backend-api:server')
 
 /**
  * Get port from environment and store in Express.

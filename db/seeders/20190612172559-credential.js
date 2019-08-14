@@ -53,6 +53,12 @@ export function up (queryInterface) {
     description: 'Posibilidad de editar los datos de un perfil',
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    name: 'GET_REQUIREMENTS',
+    description: 'Posibilidad de obtener los requerimientos',
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {
