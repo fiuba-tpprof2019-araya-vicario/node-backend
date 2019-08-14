@@ -1,4 +1,4 @@
-import { getServiceError, getNotFound } from '../util/error'
+import { getServiceError, getNotFound, getBadRequest } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
 
@@ -40,14 +40,15 @@ const getAllTutorProjects = async (userId) => {
 }
 
 const addProject = async (creatorId, name, type, description, students, tutorId, cotutors) => {
+  if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
+
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.create(creatorId, name, type, description, students, tutorId, cotutors)
       .then(projectId => {
-        if (projectId == null) return reject(getServiceError())
         return resolve(projectId)
       })
       .catch(() => {
-        return reject(getServiceError())
+        return reject(getBadRequest())
       })
   })
 }
@@ -56,11 +57,10 @@ const editProject = async (creatorId, projectId, name, type, description, studen
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.edit(creatorId, projectId, name, type, description, students, tutorId, cotutors)
       .then(projectId => {
-        if (projectId == null) return reject(getNotFound())
         return resolve(projectId)
       })
       .catch(() => {
-        return reject(getServiceError())
+        return reject(getBadRequest())
       })
   })
 }

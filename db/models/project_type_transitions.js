@@ -1,7 +1,7 @@
 import { INTEGER } from 'sequelize'
 
 module.exports = (sequelize) => {
-  const ProfileTypeTransaction = sequelize.define('ProfileTypeTransaction', {
+  const ProjectTypeTransaction = sequelize.define('ProjectTypeTransaction', {
     project_type_id: {
       type: INTEGER,
       primaryKey: true
@@ -12,11 +12,11 @@ module.exports = (sequelize) => {
     }
   }, {
     underscored: true,
-    tableName: 'Profile_type_transactions'
+    tableName: 'Project_type_transactions'
   })
 
-  ProfileTypeTransaction.associate = function (models) {
-    ProfileTypeTransaction.belongsTo(models.ProjectType, {
+  ProjectTypeTransaction.associate = function (models) {
+    ProjectTypeTransaction.belongsTo(models.ProjectType, {
       through: {
         model: models.ProjectType
       },
@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
       }
     })
 
-    ProfileTypeTransaction.belongsTo(models.State, {
+    ProjectTypeTransaction.belongsTo(models.State, {
       through: {
         model: models.State
       },
@@ -38,7 +38,7 @@ module.exports = (sequelize) => {
       }
     })
 
-    ProfileTypeTransaction.belongsTo(models.State, {
+    ProjectTypeTransaction.belongsTo(models.State, {
       through: {
         model: models.State
       },
@@ -50,5 +50,5 @@ module.exports = (sequelize) => {
     })
   }
 
-  return ProfileTypeTransaction
+  return ProjectTypeTransaction
 }

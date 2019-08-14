@@ -5,17 +5,15 @@
     "database": "postgres",
     "host": "database",
     "dialect": "postgres",
-    "operatorsAliases": false,
-    "TOKEN_SECRET_JWT": "mySecret"
+    "operatorsAliases": false
   },
   "test": {
     "username": "postgres",
-    "password": "example",
-    "database": "postgres_test",
-    "host": "db",
+    "password": "postgres",
+    "database": "postgres",
+    "host": "database",
     "dialect": "postgres",
-    "operatorsAliases": false,
-    "TOKEN_SECRET_JWT": "mySecret"
+    "operatorsAliases": false
   },
   "production": {
     "username": "odvzpsykavggrf",
@@ -23,8 +21,7 @@
     "database": "d4c0apjb700buk",
     "host": "ec2-54-243-137-182.compute-1.amazonaws.com",
     "dialect": "postgres",
-    "operatorsAliases": false,
-    "TOKEN_SECRET_JWT": "mySecret"
+    "operatorsAliases": false
   },
   "test_production": {
     "username": "naraya",
@@ -38,7 +35,6 @@
       "ssl":{
          "require":true
       }
-    },
-    "TOKEN_SECRET_JWT": "mySecret"
+    }
   }
 }

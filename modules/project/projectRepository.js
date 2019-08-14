@@ -132,13 +132,10 @@ class ProjectRepository {
           })
           return Promise.all([p1, p2, p3, p4, p5, p6])
         })
-        .then(() => {
-          return projectId
-        }).catch((e) => {
-          console.error(e)
-          return null
-        })
     })
+      .then(() => {
+        return projectId
+      })
   }
 
   static existProjectType (type) {
@@ -206,12 +203,10 @@ class ProjectRepository {
             return Promise.all([p1, p2, p3, p4, p5, p6])
           })
         })
-        .then(() => {
-          return projectId
-        }).catch(() => {
-          return null
-        })
     })
+      .then(() => {
+        return projectId
+      })
   }
 
   static deleteProjectById (id) {
@@ -220,6 +215,13 @@ class ProjectRepository {
     })
       .then(() => {
         return id
+      })
+  }
+
+  static creatorHasProject (creatorId) {
+    Project.findOne({ where: { creator_id: creatorId } })
+      .then(project => {
+        return project != null
       })
   }
 }

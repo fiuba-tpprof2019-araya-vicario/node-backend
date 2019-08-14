@@ -1,4 +1,4 @@
-import { getAllStudentRequests, getAllTutorRequests, modifyStudentRequest, modifyTutorRequest } from './requestService'
+import { getAllStudentRequests, getAllTutorRequests, modifyStudentRequest, modifyTutorRequest, acceptTutorRequest } from './requestService'
 import { codes, createSuccessResponse } from '../util/responser'
 
 const getStudentRequests = async function (req, res) {
@@ -22,7 +22,9 @@ const putStudentRequest = async function (req, res) {
 
 const putTutorRequest = async function (req, res) {
   let body = req.body
-  let response = await modifyTutorRequest(req.params.id, body.status)
+  let response
+  if (body.status === 'accepted' && body.type === 'tutor') response = await acceptTutorRequest(req.params.id)
+  else response = await modifyTutorRequest(req.params.id, body.status)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }

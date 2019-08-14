@@ -1,7 +1,7 @@
 import { STRING, TEXT } from 'sequelize'
 
 module.exports = (sequelize) => {
-  const Project = sequelize.define('Project', {
+  var Project = sequelize.define('Project', {
     name: {
       type: STRING,
       isUnique: true,
@@ -20,6 +20,10 @@ module.exports = (sequelize) => {
     underscored: true,
     tableName: 'Projects'
   })
+
+  Project.prototype.inRevision = function () {
+    return this.state_id === 2
+  }
 
   // Adding a class level method
   Project.associate = function (models) {
