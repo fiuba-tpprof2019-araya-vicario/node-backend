@@ -3,7 +3,7 @@ import { sequelize } from '../../db/connectorDB'
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const Project = require('../../db/models').Project
-const ProjectTypeState = require('../../db/models').ProjectTypeState
+const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 
 const STATE_ID_START = 1
 
@@ -36,17 +36,17 @@ class RequestRepository {
   }
 
   static async acceptTutorRequest (requestId) {
-    let request = await RequestRepository.getRequestTutorById(requestId, { include: [{ model: Project, where: { state_id: 2 } }] })
-    let projectTypeState = await ProjectTypeState.findOne({
+    let request = await RequestRepository.getRequestTutorById(requestId, [{ model: Project, where: { state_id: 1 } }])
+    let projectTypeState = await ProjectTypeTransaction.findOne({
       where: {
-        project_type_id: request.dataValues.Project.dataValues.type_id,
-        primary_state_id: request.dataValues.Project.dataValues.type_id
+        project_type: request.dataValues.Project.dataValues.type_id,
+        primary_state: request.dataValues.Project.dataValues.type_id
       }
     })
     return sequelize.transaction(transaction => {
       let p1 = ProjectRequestTutor.update({ status: 'accepted' }, { where: { id: requestId }, transaction })
       let p2 = Project.update(
-        { state_id: projectTypeState.dataValues.secondary_state_id },
+        { state_id: projectTypeState.dataValues.secondary_state },
         { where: { id: request.dataValues.project_id }, transaction }
       )
       return Promise.all([p1, p2])

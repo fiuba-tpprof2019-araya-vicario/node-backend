@@ -1,85 +1,85 @@
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Project_type_transactions', [{
-    project_type_id: 1,
-    primary_state_id: 1,
-    secondary_state_id: 2,
+    project_type: 1,
+    primary_state: 1,
+    secondary_state: 2,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 1,
-    primary_state_id: 2,
-    secondary_state_id: 3,
+    project_type: 1,
+    primary_state: 2,
+    secondary_state: 3,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 1,
-    primary_state_id: 3,
-    secondary_state_id: 4,
+    project_type: 1,
+    primary_state: 3,
+    secondary_state: 4,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 1,
-    primary_state_id: 4,
-    secondary_state_id: 5,
+    project_type: 1,
+    primary_state: 4,
+    secondary_state: 5,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 1,
-    primary_state_id: 5,
-    secondary_state_id: 6,
+    project_type: 1,
+    primary_state: 5,
+    secondary_state: 6,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 1,
-    primary_state_id: 6,
-    secondary_state_id: 7,
+    project_type: 1,
+    primary_state: 6,
+    secondary_state: 7,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 2,
-    primary_state_id: 1,
-    secondary_state_id: 2,
+    project_type: 2,
+    primary_state: 1,
+    secondary_state: 2,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 2,
-    primary_state_id: 2,
-    secondary_state_id: 3,
+    project_type: 2,
+    primary_state: 2,
+    secondary_state: 3,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 2,
-    primary_state_id: 3,
-    secondary_state_id: 4,
+    project_type: 2,
+    primary_state: 3,
+    secondary_state: 4,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 2,
-    primary_state_id: 4,
-    secondary_state_id: 5,
+    project_type: 2,
+    primary_state: 4,
+    secondary_state: 5,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 2,
-    primary_state_id: 5,
-    secondary_state_id: 6,
+    project_type: 2,
+    primary_state: 5,
+    secondary_state: 6,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type_id: 2,
-    primary_state_id: 6,
-    secondary_state_id: 7,
+    project_type: 2,
+    primary_state: 6,
+    secondary_state: 7,
     created_at: new Date(),
     updated_at: new Date()
   }], {})

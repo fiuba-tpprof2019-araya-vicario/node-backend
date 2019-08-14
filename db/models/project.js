@@ -54,6 +54,15 @@ module.exports = (sequelize) => {
       }
     })
 
+    Project.belongsTo(models.Requirement, {
+      as: 'Requirement',
+      foreignKey: {
+        name: 'requirement_id',
+        allowNull: true,
+        unique: true
+      }
+    })
+
     Project.belongsTo(models.State, {
       as: 'State',
       foreignKey: {

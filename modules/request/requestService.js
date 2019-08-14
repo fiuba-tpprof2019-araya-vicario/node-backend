@@ -52,7 +52,6 @@ const modifyTutorRequest = async (requestId, status) => {
 }
 
 const acceptTutorRequest = async (requestId) => {
-  console.log('paso con: ', requestId)
   return new Promise(async (resolve, reject) => {
     return RequestRepository.acceptTutorRequest(requestId)
       .then(() => {

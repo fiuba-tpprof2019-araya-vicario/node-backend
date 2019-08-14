@@ -2,11 +2,11 @@ import { INTEGER } from 'sequelize'
 
 module.exports = (sequelize) => {
   const ProjectTypeTransaction = sequelize.define('ProjectTypeTransaction', {
-    project_type_id: {
+    project_type: {
       type: INTEGER,
       primaryKey: true
     },
-    primary_state_id: {
+    primary_state: {
       type: INTEGER,
       primaryKey: true
     }
