@@ -11,5 +11,33 @@ module.exports = (sequelize) => {
     tableName: 'Project_request_students'
   })
 
+  ProjectRequestStudent.prototype.pending = function () {
+    return this.status === 'pending'
+  }
+
+  ProjectRequestStudent.associate = function (models) {
+    ProjectRequestStudent.belongsTo(models.Project, {
+      through: {
+        model: models.Project
+      },
+      foreignKey: {
+        name: 'project_id',
+        allowNull: false,
+        unique: true
+      }
+    })
+
+    ProjectRequestStudent.belongsTo(models.User, {
+      through: {
+        model: models.User
+      },
+      foreignKey: {
+        name: 'user_id',
+        allowNull: false,
+        unique: true
+      }
+    })
+  }
+
   return ProjectRequestStudent
 }

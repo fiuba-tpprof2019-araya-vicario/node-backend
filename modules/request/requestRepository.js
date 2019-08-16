@@ -1,9 +1,11 @@
 import { sequelize } from '../../db/connectorDB'
 import ProjectRepository from '../project/projectRepository'
+import { getBadRequest } from '../util/error';
 
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const Project = require('../../db/models').Project
+const User = require('../../db/models').User
 const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 
 const STATE_ID_START = 1
@@ -36,16 +38,36 @@ class RequestRepository {
     return ProjectRequestTutor.findByPk(id, { include })
   }
 
+  static getStudentRequests (userId) {
+    return ProjectRequestStudent.findAll({
+      where: {
+        user_id: userId
+      },
+      include: [ { model: Project }, { model: User } ]
+    })
+  }
+
+  static getTutorRequests (userId) {
+    return ProjectRequestTutor.findAll({
+      where: {
+        user_id: userId
+      },
+      include: [ { model: Project }, { model: User } ]
+    })
+  }
+
   static async acceptTutorRequest (requestId) {
     let request = await RequestRepository.getRequestTutorById(requestId, [{ model: Project, where: { state_id: 1 } }])
+    if (request == null) return Promise.reject(getBadRequest())
     let projectTypeState = await ProjectTypeTransaction.findOne({
       where: {
         project_type: request.dataValues.Project.dataValues.type_id,
         primary_state: request.dataValues.Project.dataValues.type_id
       }
     })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
     return sequelize.transaction(transaction => {
-      let p1 = ProjectRepository.modifyStatusRequestTutor(requestId, 'accepted', transaction)
+      let p1 = RequestRepository.modifyStatusRequestTutor(requestId, 'accepted', transaction)
       let p2 = Project.update(
         { state_id: projectTypeState.dataValues.secondary_state },
         { where: { id: request.dataValues.project_id }, transaction }

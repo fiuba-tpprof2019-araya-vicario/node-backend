@@ -1,10 +1,9 @@
 import { getServiceError, getBadRequest } from '../util/error'
-import UserRepository from '../user/userRepository'
 import RequestRepository from './requestRepository'
 
 const getAllStudentRequests = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.getStudentRequests(userId)
+    return RequestRepository.getStudentRequests(userId)
       .then(requests => {
         return resolve(requests)
       })
@@ -16,7 +15,7 @@ const getAllStudentRequests = async (userId) => {
 
 const getAllTutorRequests = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.getTutorRequests(userId)
+    return RequestRepository.getTutorRequests(userId)
       .then(requests => {
         return resolve(requests)
       })
@@ -59,7 +58,7 @@ const acceptTutorRequest = async (requestId) => {
         return resolve(requestId)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
         return reject(getServiceError())
       })
   })
