@@ -1,4 +1,4 @@
-import { check } from 'express-validator/check'
+import { check } from 'express-validator'
 
 const MISS_NAME = 'Falta el nombre'
 const MISS_EMAIL = 'Falta el email'

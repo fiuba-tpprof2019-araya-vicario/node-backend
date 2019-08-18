@@ -1,6 +1,5 @@
-import { check } from 'express-validator/check'
+import { check } from 'express-validator'
 import { getBadRequest } from '../util/error'
-import UserRepository from '../user/userRepository'
 import { createErrorResponse } from '../util/responser'
 
 const MISS_NAME = 'Falta el nombre'

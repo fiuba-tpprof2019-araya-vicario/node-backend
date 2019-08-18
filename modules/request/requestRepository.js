@@ -1,12 +1,13 @@
 import { sequelize } from '../../db/connectorDB'
 import ProjectRepository from '../project/projectRepository'
-import { getBadRequest } from '../util/error';
+import { getBadRequest } from '../util/error'
 
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const Project = require('../../db/models').Project
 const User = require('../../db/models').User
 const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
+const ProjectHistory = require('../../db/models').ProjectHistory
 
 const STATE_ID_START = 1
 
@@ -23,11 +24,11 @@ const TYPE_TUTOR_REQUEST = {
 
 class RequestRepository {
   static modifyStatusRequestStudent (id, status) {
-    return ProjectRequestStudent.update({ status }, { where: { id, status: 'pending' } })
+    return ProjectRequestStudent.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING } })
   }
 
   static modifyStatusRequestTutor (id, status, transaction) {
-    return ProjectRequestTutor.update({ status }, { where: { id, status: 'pending' }, transaction })
+    return ProjectRequestTutor.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING }, transaction })
   }
 
   static getRequestStudentById (id, include) {
@@ -41,7 +42,8 @@ class RequestRepository {
   static getStudentRequests (userId) {
     return ProjectRequestStudent.findAll({
       where: {
-        user_id: userId
+        user_id: userId,
+        status: STATUS_REQUEST.PENDING
       },
       include: [ { model: Project }, { model: User } ]
     })
@@ -50,7 +52,8 @@ class RequestRepository {
   static getTutorRequests (userId) {
     return ProjectRequestTutor.findAll({
       where: {
-        user_id: userId
+        user_id: userId,
+        status: STATUS_REQUEST.PENDING
       },
       include: [ { model: Project }, { model: User } ]
     })
@@ -67,12 +70,17 @@ class RequestRepository {
     })
     if (projectTypeState == null) return Promise.reject(getBadRequest())
     return sequelize.transaction(transaction => {
-      let p1 = RequestRepository.modifyStatusRequestTutor(requestId, 'accepted', transaction)
+      let p1 = RequestRepository.modifyStatusRequestTutor(requestId, STATUS_REQUEST.ACCEPTED, transaction)
       let p2 = Project.update(
         { state_id: projectTypeState.dataValues.secondary_state },
         { where: { id: request.dataValues.project_id }, transaction }
       )
-      return Promise.all([p1, p2])
+      let p3 = ProjectHistory.create({
+        project_id: request.dataValues.project_id,
+        created_by: request.dataValues.user_id,
+        state_id: projectTypeState.dataValues.secondary_state
+      }, { transaction })
+      return Promise.all([p1, p2, p3])
     })
       .then(() => {
         return requestId

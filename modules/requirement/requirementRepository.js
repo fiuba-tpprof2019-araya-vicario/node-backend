@@ -1,8 +1,11 @@
 const Requirement = require('../../db/models').Requirement
+const User = require('../../db/models').User
 
 class RequirementRepository {
   static getAll () {
-    return Requirement.findAll()
+    return Requirement.findAll({
+      include: [ { model: User, as: 'Creator', attributes: { exclude: ['google_id'] } } ]
+    })
   }
 
   static create (creatorId, name, description) {
