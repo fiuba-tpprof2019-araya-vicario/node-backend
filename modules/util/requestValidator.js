@@ -1,4 +1,4 @@
-import { validationResult } from 'express-validator/check'
+import { validationResult } from 'express-validator'
 import { createErrorResponse, codes } from './responser'
 
 // Usada como wrapper para el manejo de errores basicos de un request

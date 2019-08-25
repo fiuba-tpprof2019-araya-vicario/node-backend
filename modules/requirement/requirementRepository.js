@@ -1,8 +1,11 @@
 const Requirement = require('../../db/models').Requirement
+const User = require('../../db/models').User
 
 class RequirementRepository {
   static getAll () {
-    return Requirement.findAll()
+    return Requirement.findAll({
+      include: [ { model: User, as: 'Creator', attributes: { exclude: ['google_id'] } } ]
+    })
   }
 
   static create (creatorId, name, description) {
@@ -17,6 +20,35 @@ class RequirementRepository {
       }).catch((e) => {
         console.error(e)
         return null
+      })
+  }
+
+  static edit (creatorId, requirementId, name, description) {
+    return Requirement.update(
+      { name, description },
+      { where: { id: requirementId },
+        include: [ { model: User, as: 'Creator', where: { id: creatorId } } ] }
+    )
+      .then((result) => {
+        if (result[0] > 0) return Requirement.findByPk(requirementId, { include: [ { model: User, as: 'Creator' } ] })
+        else return null
+      })
+  }
+
+  static delete (id) {
+    return Requirement.destroy({
+      where: { id }
+    })
+      .then((result) => {
+        if (result > 0) return id
+        else return null
+      })
+  }
+
+  static isRequirementCreator (creatorId, requirementId) {
+    return Requirement.findOne({ where: { id: requirementId }, include: [ { model: User, as: 'Creator', where: { id: creatorId } } ] })
+      .then(requirement => {
+        return requirement != null
       })
   }
 }

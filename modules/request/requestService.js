@@ -1,11 +1,9 @@
 import { getServiceError, getBadRequest } from '../util/error'
-import UserRepository from '../user/userRepository'
 import RequestRepository from './requestRepository'
-import ProjectRepository from '../project/projectRepository'
 
 const getAllStudentRequests = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.getStudentRequests(userId)
+    return RequestRepository.getStudentRequests(userId)
       .then(requests => {
         return resolve(requests)
       })
@@ -17,7 +15,7 @@ const getAllStudentRequests = async (userId) => {
 
 const getAllTutorRequests = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.getTutorRequests(userId)
+    return RequestRepository.getTutorRequests(userId)
       .then(requests => {
         return resolve(requests)
       })
@@ -28,10 +26,13 @@ const getAllTutorRequests = async (userId) => {
 }
 
 const modifyStudentRequest = async (requestId, status) => {
+  if (!(await RequestRepository.hasRequestStudentPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
+
   return new Promise(async (resolve, reject) => {
     return RequestRepository.modifyStatusRequestStudent(requestId, status)
-      .then(requests => {
-        return resolve(requests)
+      .then(request => {
+        if (request != null) return resolve(request)
+        else reject(getBadRequest())
       })
       .catch(() => {
         return reject(getServiceError())
@@ -40,10 +41,13 @@ const modifyStudentRequest = async (requestId, status) => {
 }
 
 const modifyTutorRequest = async (requestId, status) => {
+  if (!(await RequestRepository.hasRequestTutorPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
+
   return new Promise(async (resolve, reject) => {
     return RequestRepository.modifyStatusRequestTutor(requestId, status)
-      .then(() => {
-        return resolve(requestId)
+      .then((request) => {
+        if (request != null) return resolve(request)
+        else reject(getBadRequest())
       })
       .catch(() => {
         return reject(getServiceError())
@@ -52,13 +56,15 @@ const modifyTutorRequest = async (requestId, status) => {
 }
 
 const acceptTutorRequest = async (requestId) => {
+  if (!(await RequestRepository.hasRequestTutorPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
+
   return new Promise(async (resolve, reject) => {
     return RequestRepository.acceptTutorRequest(requestId)
       .then(() => {
         return resolve(requestId)
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
         return reject(getServiceError())
       })
   })

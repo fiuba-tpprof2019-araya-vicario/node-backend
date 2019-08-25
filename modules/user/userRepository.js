@@ -340,28 +340,6 @@ class UserRepository {
       .then(user => { return { 'Tutorials': user.Tutorials, 'Cotutorials': user.Cotutorials } })
       .catch(() => { return getServiceError() })
   }
-
-  static getStudentRequests (id) {
-    return User.findByPk(id, {
-      include: [{
-        model: ProjectRequestStudent,
-        as: 'StudentRequests'
-      }]
-    })
-      .then(user => { return user.StudentRequests })
-      .catch(() => { return getServiceError() })
-  }
-
-  static getTutorRequests (id) {
-    return User.findByPk(id, {
-      include: [{
-        model: ProjectRequestTutor,
-        as: 'TutorRequests'
-      }]
-    })
-      .then(user => { return user.TutorRequests })
-      .catch(() => { return getServiceError() })
-  }
 }
 
 export default UserRepository

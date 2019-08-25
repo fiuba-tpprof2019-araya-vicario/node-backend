@@ -34,6 +34,17 @@ module.exports = (sequelize) => {
         unique: true
       }
     })
+
+    ProjectRequestTutor.belongsTo(models.User, {
+      through: {
+        model: models.User
+      },
+      foreignKey: {
+        name: 'user_id',
+        allowNull: false,
+        unique: true
+      }
+    })
   }
 
   return ProjectRequestTutor

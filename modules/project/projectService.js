@@ -53,6 +53,20 @@ const addProject = async (creatorId, name, type, description, students, tutorId,
   })
 }
 
+const addProjectWithRequirement = async (creatorId, requirementId, type, students, cotutors) => {
+  if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
+
+  return new Promise(async (resolve, reject) => {
+    return ProjectRepository.createWithRequirement(creatorId, requirementId, type, students, cotutors)
+      .then(projectId => {
+        return resolve(projectId)
+      })
+      .catch(() => {
+        return reject(getBadRequest())
+      })
+  })
+}
+
 const editProject = async (creatorId, projectId, name, type, description, students, tutorId, cotutors) => {
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.edit(creatorId, projectId, name, type, description, students, tutorId, cotutors)
@@ -77,4 +91,4 @@ const removeProject = async (projectId) => {
   })
 }
 
-module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject }
+module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject, addProjectWithRequirement }

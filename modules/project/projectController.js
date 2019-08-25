@@ -1,9 +1,11 @@
-import { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject } from './projectService'
+import { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject, addProjectWithRequirement } from './projectService'
 import { codes, createSuccessResponse } from '../util/responser'
 
 const createProject = async function (req, res) {
   let body = req.body
-  let response = await addProject(req.id, body.name, body.type, body.description, body.students, body.tutor_id, body.cotutors)
+  let response
+  if (body.requirementId != null) response = await addProjectWithRequirement(req.id, body.requirementId, body.type, body.students, body.cotutors)
+  else response = await addProject(req.id, body.name, body.type, body.description, body.students, body.tutor_id, body.cotutors)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }

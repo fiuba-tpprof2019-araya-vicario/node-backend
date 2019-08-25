@@ -12,9 +12,9 @@ const getUsuarioNoExistente = () => {
   }
 }
 
-const getBadRequest = () => {
+const getBadRequest = (msg) => {
   return {
-    msg: 'Alguno de los campos no es correcto',
+    msg: msg !== undefined ? msg : 'Alguno de los campos no es correcto',
     status: 400
   }
 }

@@ -1,4 +1,4 @@
-import { check } from 'express-validator/check'
+import { check } from 'express-validator'
 
 const MISS_ID_TOKEN = 'Falta el token'
 
