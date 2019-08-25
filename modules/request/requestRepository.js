@@ -1,5 +1,4 @@
 import { sequelize } from '../../db/connectorDB'
-import ProjectRepository from '../project/projectRepository'
 import { getBadRequest } from '../util/error'
 
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
@@ -25,10 +24,18 @@ const TYPE_TUTOR_REQUEST = {
 class RequestRepository {
   static modifyStatusRequestStudent (id, status) {
     return ProjectRequestStudent.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING } })
+      .then((result) => {
+        if (result[0] > 0) return ProjectRequestStudent.findByPk(id, { include: [ { model: Project }, { model: User } ] })
+        else return null
+      })
   }
 
   static modifyStatusRequestTutor (id, status, transaction) {
     return ProjectRequestTutor.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING }, transaction })
+      .then((result) => {
+        if (result[0] > 0) return ProjectRequestTutor.findByPk(id, { include: [ { model: Project }, { model: User } ] })
+        else return null
+      })
   }
 
   static getRequestStudentById (id, include) {
@@ -42,8 +49,7 @@ class RequestRepository {
   static getStudentRequests (userId) {
     return ProjectRequestStudent.findAll({
       where: {
-        user_id: userId,
-        status: STATUS_REQUEST.PENDING
+        user_id: userId
       },
       include: [ { model: Project }, { model: User } ]
     })
@@ -52,11 +58,24 @@ class RequestRepository {
   static getTutorRequests (userId) {
     return ProjectRequestTutor.findAll({
       where: {
-        user_id: userId,
-        status: STATUS_REQUEST.PENDING
+        user_id: userId
       },
       include: [ { model: Project }, { model: User } ]
     })
+  }
+
+  static hasRequestTutorPending (requestId) {
+    return ProjectRequestTutor.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: 1 } }] })
+      .then(request => {
+        return request != null
+      })
+  }
+
+  static hasRequestStudentPending (requestId) {
+    return ProjectRequestStudent.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: 1 } }] })
+      .then(project => {
+        return project != null
+      })
   }
 
   static async acceptTutorRequest (requestId) {

@@ -284,7 +284,7 @@ class ProjectRepository {
   }
 
   static creatorHasProject (creatorId) {
-    Project.findOne({ where: { creator_id: creatorId } })
+    return Project.findOne({ where: { creator_id: creatorId } })
       .then(project => {
         return project != null
       })

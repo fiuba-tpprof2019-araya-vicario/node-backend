@@ -26,10 +26,12 @@ const getAllTutorRequests = async (userId) => {
 }
 
 const modifyStudentRequest = async (requestId, status) => {
+  if (!(await RequestRepository.hasRequestStudentPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
+
   return new Promise(async (resolve, reject) => {
     return RequestRepository.modifyStatusRequestStudent(requestId, status)
-      .then(result => {
-        if (result[0] > 0) return resolve(requestId)
+      .then(request => {
+        if (request != null) return resolve(request)
         else reject(getBadRequest())
       })
       .catch(() => {
@@ -39,10 +41,12 @@ const modifyStudentRequest = async (requestId, status) => {
 }
 
 const modifyTutorRequest = async (requestId, status) => {
+  if (!(await RequestRepository.hasRequestTutorPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
+
   return new Promise(async (resolve, reject) => {
     return RequestRepository.modifyStatusRequestTutor(requestId, status)
-      .then((result) => {
-        if (result[0] > 0) return resolve(requestId)
+      .then((request) => {
+        if (request != null) return resolve(request)
         else reject(getBadRequest())
       })
       .catch(() => {
@@ -52,6 +56,8 @@ const modifyTutorRequest = async (requestId, status) => {
 }
 
 const acceptTutorRequest = async (requestId) => {
+  if (!(await RequestRepository.hasRequestTutorPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
+
   return new Promise(async (resolve, reject) => {
     return RequestRepository.acceptTutorRequest(requestId)
       .then(() => {
