@@ -9,6 +9,7 @@ const State = require('../../db/models').State
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const Requirement = require('../../db/models').Requirement
+const Department = require('../../db/models').Department
 
 const STATE_ID_START = 1
 
@@ -70,6 +71,11 @@ class ProjectRepository {
       {
         model: State,
         as: 'State'
+      },
+      {
+        model: Department,
+        as: 'Departments',
+        through: { attributes: [] }
       }]
     })
   }
@@ -91,7 +97,7 @@ class ProjectRepository {
     })
   }
 
-  static async createWithRequirement (creatorId, requirementId, type, students, cotutors) {
+  static async createWithRequirement (creatorId, requirementId, type, students, cotutors, departments) {
     let requirement = await Requirement.findOne(
       {
         where: {
@@ -120,25 +126,26 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(students, { transaction })
           let p2 = project.setCotutors(cotutors, { transaction })
-          let p3 = ProjectHistory.create({
+          let p3 = project.setDepartments(departments, { transaction })
+          let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
             state_id: project.dataValues.state_id
           }, { transaction })
-          let p4 = ProjectRequestTutor.create({
+          let p5 = ProjectRequestTutor.create({
             project_id: project.dataValues.id,
             user_id: requirement.Creator.dataValues.id,
             status: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
-          let p5 = students.map(student => {
+          let p6 = students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
               status: STATUS_REQUEST.PENDING
             }, { transaction })
           })
-          let p6 = cotutors.map(cotutor => {
+          let p7 = cotutors.map(cotutor => {
             return ProjectRequestTutor.create({
               project_id: project.dataValues.id,
               user_id: cotutor,
@@ -146,7 +153,7 @@ class ProjectRepository {
               type: TYPE_TUTOR_REQUEST.COTUTOR
             }, { transaction })
           })
-          return Promise.all([p1, p2, p3, p4, p5, p6])
+          return Promise.all([p1, p2, p3, p4, p5, p6, p7])
         })
     })
       .then(() => {
@@ -154,7 +161,7 @@ class ProjectRepository {
       })
   }
 
-  static create (creatorId, name, type, description, students, tutorId, cotutors) {
+  static create (creatorId, name, type, description, students, tutorId, cotutors, departments) {
     let projectId
     return sequelize.transaction(transaction => {
       return Project.create({
@@ -169,25 +176,26 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(students, { transaction })
           let p2 = project.setCotutors(cotutors, { transaction })
-          let p3 = ProjectHistory.create({
+          let p3 = project.setDepartments(departments, { transaction })
+          let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
             state_id: project.dataValues.state_id
           }, { transaction })
-          let p4 = ProjectRequestTutor.create({
+          let p5 = ProjectRequestTutor.create({
             project_id: project.dataValues.id,
             user_id: tutorId,
             status: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
-          let p5 = students.map(student => {
+          let p6 = students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
               status: STATUS_REQUEST.PENDING
             }, { transaction })
           })
-          let p6 = cotutors.map(cotutor => {
+          let p7 = cotutors.map(cotutor => {
             return ProjectRequestTutor.create({
               project_id: project.dataValues.id,
               user_id: cotutor,
@@ -195,7 +203,7 @@ class ProjectRepository {
               type: TYPE_TUTOR_REQUEST.COTUTOR
             }, { transaction })
           })
-          return Promise.all([p1, p2, p3, p4, p5, p6])
+          return Promise.all([p1, p2, p3, p4, p5, p6, p7])
         })
     })
       .then(() => {
@@ -227,7 +235,7 @@ class ProjectRepository {
       })
   }
 
-  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors) {
+  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors, departments) {
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
@@ -240,24 +248,25 @@ class ProjectRepository {
           return Promise.all([p1, p2]).then(() => {
             let p1 = project.setStudents(students, { transaction })
             let p2 = project.setCotutors(cotutors, { transaction })
-            let p3 = Project.update(
+            let p3 = project.setDepartments(departments, { transaction })
+            let p4 = Project.update(
               { name, description, creator_id: creatorId, tutor_id: tutorId, type_id: type },
               { where: { id: projectId }, transaction }
             )
-            let p4 = ProjectRequestTutor.create({
+            let p5 = ProjectRequestTutor.create({
               project_id: project.dataValues.id,
               user_id: tutorId,
               status: STATUS_REQUEST.PENDING,
               type: TYPE_TUTOR_REQUEST.TUTOR
             }, { transaction })
-            let p5 = students.map(student => {
+            let p6 = students.map(student => {
               return ProjectRequestStudent.create({
                 project_id: project.dataValues.id,
                 user_id: student,
                 status: STATUS_REQUEST.PENDING
               }, { transaction })
             })
-            let p6 = cotutors.map(cotutor => {
+            let p7 = cotutors.map(cotutor => {
               return ProjectRequestTutor.create({
                 project_id: project.dataValues.id,
                 user_id: cotutor,
@@ -265,7 +274,7 @@ class ProjectRepository {
                 type: TYPE_TUTOR_REQUEST.COTUTOR
               }, { transaction })
             })
-            return Promise.all([p1, p2, p3, p4, p5, p6])
+            return Promise.all([p1, p2, p3, p4, p5, p6, p7])
           })
         })
     })

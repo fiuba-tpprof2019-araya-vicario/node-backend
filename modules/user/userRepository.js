@@ -222,6 +222,11 @@ class UserRepository {
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
           through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
+          through: { attributes: [] }
         }]
       },
       {
@@ -256,6 +261,11 @@ class UserRepository {
           model: User,
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
           through: { attributes: [] }
         }]
       }]
@@ -298,6 +308,11 @@ class UserRepository {
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
           through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
+          through: { attributes: [] }
         }]
       },
       {
@@ -332,6 +347,11 @@ class UserRepository {
           model: User,
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
           through: { attributes: [] }
         }]
       }]

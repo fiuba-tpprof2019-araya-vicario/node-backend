@@ -103,7 +103,7 @@ module.exports = (sequelize) => {
     Project.belongsToMany(models.Department, {
       as: 'Departments',
       through: {
-        model: models.UserDepartment
+        model: models.ProjectDepartment
       }
     })
   }
