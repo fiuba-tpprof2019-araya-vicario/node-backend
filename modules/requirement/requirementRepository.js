@@ -40,7 +40,7 @@ class RequirementRepository {
       where: { id }
     })
       .then((result) => {
-        if (result[0] > 0) return id
+        if (result > 0) return id
         else return null
       })
   }
