@@ -102,6 +102,13 @@ module.exports = (sequelize) => {
       as: 'StudentRequests',
       foreignKey: 'user_id'
     })
+
+    User.belongsToMany(models.Department, {
+      as: 'Departments',
+      through: {
+        model: models.UserDepartment
+      }
+    })
   }
 
   User.getMsgEmailsNoMatch = function () {

@@ -8,6 +8,7 @@ import contactRoute from './modules/contact/contactRoute'
 import projectRoute from './modules/project/projectRoute'
 import requestRoute from './modules/request/requestRoute'
 import requirementRoute from './modules/requirement/requirementRoute'
+import departmentRoute from './modules/department/departmentRoute'
 
 const app = express()
 
@@ -43,6 +44,7 @@ app.use('/v0/api/users', userRoute)
 app.use('/v0/api/projects', projectRoute)
 app.use('/v0/api/requests', requestRoute)
 app.use('/v0/api/requirements', requirementRoute)
+app.use('/v0/api/departments', departmentRoute)
 app.use('/v0/api/contacts', contactRoute)
 
 // error handler

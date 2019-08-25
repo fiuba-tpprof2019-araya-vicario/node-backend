@@ -378,6 +378,118 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "DeleteDepartmentById",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/departments/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"departments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDepartments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/departments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"departments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateDepartment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Departamento Auxiliar\",\n\t\"description\": \"auxiliar\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/departments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"departments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditDepartment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"tp\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/departments/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"departments",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

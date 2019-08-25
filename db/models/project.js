@@ -99,6 +99,13 @@ module.exports = (sequelize) => {
       as: 'StudentRequests',
       foreignKey: 'project_id'
     })
+
+    Project.belongsToMany(models.Department, {
+      as: 'Departments',
+      through: {
+        model: models.UserDepartment
+      }
+    })
   }
 
   return Project

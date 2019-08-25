@@ -7,8 +7,7 @@ const Credential = require('../../db/models').Credential
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
 const State = require('../../db/models').State
-const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
-const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
+const Department = require('../../db/models').Department
 
 class UserRepository {
   static get (id, transaction) {
@@ -338,6 +337,17 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Tutorials': user.Tutorials, 'Cotutorials': user.Cotutorials } })
+      .catch(() => { return getServiceError() })
+  }
+
+  static getDepartments (id) {
+    return User.findByPk(id, {
+      include: [{
+        model: Department,
+        as: 'Departments'
+      }]
+    })
+      .then(user => { return { 'Departments': user.Departments } })
       .catch(() => { return getServiceError() })
   }
 }
