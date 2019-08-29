@@ -4,7 +4,7 @@ const MISS_ID_TOKEN = 'Falta el token'
 
 const authValidations = [
   check('id_token')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_ID_TOKEN)
 ]
 

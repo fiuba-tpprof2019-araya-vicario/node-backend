@@ -41,13 +41,14 @@ const getAllTutorProjects = async (userId) => {
 
 const addProject = async (creatorId, name, type, description, students, tutorId, cotutors, departments) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
-
+  console.log('Project create', creatorId, name, type, description, students, tutorId, cotutors, departments)
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.create(creatorId, name, type, description, students, tutorId, cotutors, departments)
       .then(projectId => {
         return resolve(projectId)
       })
-      .catch(() => {
+      .catch((e) => {
+        console.error(e)
         return reject(getBadRequest())
       })
   })

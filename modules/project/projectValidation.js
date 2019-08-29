@@ -13,33 +13,37 @@ const MISS_DEPARTMENTS = 'Faltan los departamentos'
 const baseCreateValidations = [
   check('type')
     .exists()
+    .not().isEmpty()
     .withMessage(MISS_TYPE),
   check('students')
     .exists()
+    .not().isEmpty()
     .withMessage(MISS_STUDENTS),
   check('cotutors')
     .exists()
+    .not().isEmpty()
     .withMessage(MISS_COTUTORS),
   check('departments')
     .exists()
+    .not().isEmpty()
     .withMessage(MISS_DEPARTMENTS)
 ]
 
 const createValidations = [
   // WITHOUT REQUIREMENT
   oneOf([[check('name')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_NAME),
   check('description')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_DESCRIPTION),
   check('tutor_id')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_TUTOR),
   ...baseCreateValidations],
   // WITH REQUIREMENT
   [check('requirementId')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_REQUIREMENT_ID),
   ...baseCreateValidations]
   ])
@@ -47,7 +51,7 @@ const createValidations = [
 
 const getValidations = [
   param('id')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_PROJECT_ID)
 ]
 
