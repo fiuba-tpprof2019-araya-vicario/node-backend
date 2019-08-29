@@ -24,6 +24,7 @@ const validate = function (handler) {
 const validateWithExpress = function (req, res, next) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
+    console.log('Error in validateWithExpress validator: ', errors.mapped())
     return res
       .status(codes.UNPROCESSABLE_ENTITY)
       .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, errors.mapped(), null))
