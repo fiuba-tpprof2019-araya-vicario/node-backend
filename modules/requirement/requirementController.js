@@ -16,7 +16,7 @@ const createRequirement = async function (req, res) {
 
 const putRequirement = async function (req, res) {
   let body = req.body
-  let response = await editRequirement(req.id, req.params.id, body.name, body.type, body.description)
+  let response = await editRequirement(req.id, req.params.id, body.name, body.description)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
