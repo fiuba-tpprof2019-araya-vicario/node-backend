@@ -25,25 +25,11 @@ module.exports = (sequelize) => {
 
   ProjectRequestTutor.associate = function (models) {
     ProjectRequestTutor.belongsTo(models.Project, {
-      through: {
-        model: models.Project
-      },
-      foreignKey: {
-        name: 'project_id',
-        allowNull: false,
-        unique: true
-      }
+      foreignKey: { name: 'project_id' }
     })
 
     ProjectRequestTutor.belongsTo(models.User, {
-      through: {
-        model: models.User
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: false,
-        unique: true
-      }
+      foreignKey: { name: 'user_id' }
     })
   }
 

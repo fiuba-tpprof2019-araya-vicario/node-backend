@@ -9,6 +9,7 @@ const MISS_COTUTORS = 'Faltan los cotutores'
 const MISS_PROJECT_ID = 'Falta el id del proyecto'
 const MISS_REQUIREMENT_ID = 'Falta el id del requerimiento'
 const MISS_DEPARTMENTS = 'Faltan los departamentos'
+const MISS_USER_ID = 'Falta el id del usuario'
 
 const baseCreateValidations = [
   check('type')
@@ -59,4 +60,11 @@ const modifyValidations = [
   ...getValidations
 ]
 
-export { createValidations, getValidations, modifyValidations }
+const deleteUserProjectValidations = [
+  ...getValidations,
+  param('user_id')
+    .exists().not().isEmpty()
+    .withMessage(MISS_USER_ID)
+]
+
+export { createValidations, getValidations, modifyValidations, deleteUserProjectValidations }

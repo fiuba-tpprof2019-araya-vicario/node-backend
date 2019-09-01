@@ -292,8 +292,29 @@ class ProjectRepository {
       })
   }
 
+  static deleteParticipantProject (projectId, userId) {
+    return sequelize.transaction(transaction => {
+      return Project.findByPk(projectId, { transaction })
+        .then(project => {
+          let p1 = project.removeStudent(userId, { transaction })
+          let p2 = ProjectRequestStudent.destroy({ where: { project_id: projectId, user_id: userId } })
+          return Promise.all([p1, p2])
+        })
+    })
+      .then(() => {
+        return projectId
+      })
+  }
+
   static creatorHasProject (creatorId) {
     return Project.findOne({ where: { creator_id: creatorId } })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static isProjectCreator (projectId, creatorId) {
+    return Project.findOne({ where: { id: projectId }, include: [{ model: User, as: 'Creator', where: { id: creatorId } }] })
       .then(project => {
         return project != null
       })

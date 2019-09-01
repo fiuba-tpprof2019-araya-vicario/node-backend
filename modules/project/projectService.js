@@ -41,14 +41,13 @@ const getAllTutorProjects = async (userId) => {
 
 const addProject = async (creatorId, name, type, description, students, tutorId, cotutors, departments) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
-  console.log('Project create', creatorId, name, type, description, students, tutorId, cotutors, departments)
+
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.create(creatorId, name, type, description, students, tutorId, cotutors, departments)
       .then(projectId => {
         return resolve(projectId)
       })
-      .catch((e) => {
-        console.error(e)
+      .catch(() => {
         return reject(getBadRequest())
       })
   })
@@ -93,4 +92,48 @@ const removeProject = async (projectId) => {
   })
 }
 
-module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject, addProjectWithRequirement }
+const removeStudentProject = async (projectId, userId) => {
+  if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+  if (await ProjectRepository.isProjectCreator(projectId, userId)) return removeCreatorProject(projectId, userId)
+  return removeParticipantProject(projectId, userId)
+}
+
+const removeParticipantProject = async (projectId, userId) => {
+  return new Promise(async (resolve, reject) => {
+    return ProjectRepository.deleteParticipantProject(projectId, userId)
+      .then(projectId => {
+        return resolve(projectId)
+      })
+      .catch(() => {
+        return reject(getServiceError())
+      })
+  })
+}
+
+const removeCreatorProject = async (projectId, userId) => {
+  return new Promise(async (resolve, reject) => {
+    return ProjectRepository.deleteProjectById(projectId)
+      .then(projectId => {
+        return resolve(projectId)
+      })
+      .catch(() => {
+        return reject(getServiceError())
+      })
+  })
+}
+
+const removeTutorProject = async (projectId, userId) => {
+  if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+
+  return new Promise(async (resolve, reject) => {
+    return ProjectRepository.deleteParticipantProject(projectId, userId)
+      .then(projectId => {
+        return resolve(projectId)
+      })
+      .catch(() => {
+        return reject(getServiceError())
+      })
+  })
+}
+
+module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject, addProjectWithRequirement, removeStudentProject, removeTutorProject }
