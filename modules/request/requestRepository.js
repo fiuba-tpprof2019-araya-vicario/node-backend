@@ -1,5 +1,7 @@
 import { sequelize } from '../../db/connectorDB'
 import { getBadRequest } from '../util/error'
+import { STATUS_REQUEST } from './requestUtils'
+import { Op } from 'sequelize'
 
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
@@ -7,14 +9,9 @@ const Project = require('../../db/models').Project
 const User = require('../../db/models').User
 const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 const ProjectHistory = require('../../db/models').ProjectHistory
+const State = require('../../db/models').State
 
 const STATE_ID_START = 1
-
-const STATUS_REQUEST = {
-  PENDING: 'pending',
-  ACCEPTED: 'accepted',
-  REJECTED: 'rejected'
-}
 
 const TYPE_TUTOR_REQUEST = {
   TUTOR: 'tutor',
@@ -65,20 +62,23 @@ class RequestRepository {
   }
 
   static hasRequestTutorPending (requestId) {
-    return ProjectRequestTutor.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: 1 } }] })
+    console.log(State.getMaxStateAcceptRequest())
+    return ProjectRequestTutor.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: { [Op.lte]: State.getMaxStateAcceptRequest() } } }] })
       .then(request => {
         return request != null
       })
   }
 
   static hasRequestStudentPending (requestId) {
-    return ProjectRequestStudent.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: 1 } }] })
+    return ProjectRequestStudent.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: { [Op.lte]: State.getMaxStateAcceptRequest() } } }] })
       .then(project => {
         return project != null
       })
   }
 
   static async acceptTutorRequest (requestId) {
+    console.log(requestId)
+    console.log(State.getMaxStateAcceptRequest())
     let request = await RequestRepository.getRequestTutorById(requestId, [{ model: Project, where: { state_id: 1 } }])
     if (request == null) return Promise.reject(getBadRequest())
     let projectTypeState = await ProjectTypeTransaction.findOne({

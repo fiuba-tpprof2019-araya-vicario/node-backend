@@ -24,7 +24,6 @@ class RequirementRepository {
   }
 
   static edit (creatorId, requirementId, name, description) {
-    console.log('NUEVO ', name, description)
     return Requirement.update(
       { name, description },
       { where: { id: requirementId },

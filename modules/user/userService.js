@@ -1,6 +1,7 @@
 import { createToken } from '../auth/authService'
 import { getServiceError, getUsuarioNoExistente } from '../util/error'
 import UserRepository from './userRepository'
+import { STATUS_REQUEST } from '../request/requestUtils'
 
 const STATE_ID_LAST = 7
 const STUDENT_PROFILE_ID = 2
@@ -31,17 +32,20 @@ const isStudent = (user) => {
 const getActiveProject = (creations, participations) => {
   let activeProject = creations.find(creation => { return creation.dataValues.state_id !== STATE_ID_LAST })
   if (activeProject != null) return activeProject
-  return participations.find(participation => { return participation.dataValues.state_id !== STATE_ID_LAST })
+  return participations.find(participation => { return participation.dataValues.state_id !== STATE_ID_LAST && participation.StudentRequests.length > 0 && participation.StudentRequests[0].dataValues.status === STATUS_REQUEST.ACCEPTED })
 }
 
 const processUserResponse = (user, resolve) => {
   user = user.dataValues
+  console.log(user)
   let authToken = createToken(user.id, user.email, getCredentials(user))
   let response = getResponseUser(user, authToken)
   if (isStudent(user)) {
     let activeProject = getActiveProject(user.Creations, user.Participations)
+    console.log(activeProject)
     if (activeProject != null) response.projectId = activeProject.dataValues.id
   }
+  console.log(response)
   return resolve(response)
 }
 
@@ -54,7 +58,7 @@ const validateUser = async (token, email) => {
         if (user == null) return resolve(user)
         return processUserResponse(user, resolve)
       })
-      .catch(() => { return reject(getServiceError()) })
+      .catch((e) => { console.log(e); return reject(getServiceError()) })
   })
 }
 

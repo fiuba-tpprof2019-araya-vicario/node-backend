@@ -8,6 +8,7 @@ const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
 const State = require('../../db/models').State
 const Department = require('../../db/models').Department
+const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 
 class UserRepository {
   static get (id, transaction) {
@@ -91,20 +92,12 @@ class UserRepository {
       {
         model: Project,
         as: 'Participations',
-        through: { attributes: [] }
+        through: { attributes: [] },
+        include: [{ model: ProjectRequestStudent, as: 'StudentRequests', include: [{ model: User, where: { email } }] }]
       },
       {
         model: Project,
         as: 'Creations'
-      },
-      {
-        model: Project,
-        as: 'Cotutorials',
-        through: { attributes: [] }
-      },
-      {
-        model: Project,
-        as: 'Tutorials'
       }]
     })
   }
