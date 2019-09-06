@@ -124,9 +124,25 @@ const removeCreatorProject = async (projectId, userId) => {
 
 const removeTutorProject = async (projectId, userId) => {
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+  if (await ProjectRepository.isProjectTutor(projectId, userId)) return _removeTutorProject(projectId, userId)
+  return removeCotutorProject(projectId, userId)
+}
 
+const _removeTutorProject = async (projectId, userId) => {
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.deleteParticipantProject(projectId, userId)
+    return ProjectRepository.deleteTutorProject(projectId, userId)
+      .then(projectId => {
+        return resolve(projectId)
+      })
+      .catch(() => {
+        return reject(getServiceError())
+      })
+  })
+}
+
+const removeCotutorProject = async (projectId, userId) => {
+  return new Promise(async (resolve, reject) => {
+    return ProjectRepository.deleteCotutorProject(projectId, userId)
       .then(projectId => {
         return resolve(projectId)
       })

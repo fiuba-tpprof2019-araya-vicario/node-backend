@@ -306,6 +306,38 @@ class ProjectRepository {
       })
   }
 
+  static deleteCotutorProject (projectId, userId) {
+    return sequelize.transaction(transaction => {
+      return Project.findByPk(projectId, { transaction })
+        .then(project => {
+          let p1 = project.removeCotutor(userId, { transaction })
+          let p2 = ProjectRequestTutor.destroy({ where: { project_id: projectId, user_id: userId } })
+          return Promise.all([p1, p2])
+        })
+    })
+      .then(() => {
+        return projectId
+      })
+  }
+
+  static deleteTutorProject (projectId, userId) {
+    return sequelize.transaction(transaction => {
+      return Project.findByPk(projectId, { transaction })
+        .then(project => {
+          let p1 = project.removeTutor(userId, { transaction })
+          let p2 = Project.update(
+            { state_id: 1 },
+            { where: { id: projectId }, transaction }
+          )
+          let p3 = ProjectRequestTutor.destroy({ where: { project_id: projectId, user_id: userId } })
+          return Promise.all([p1, p2, p3])
+        })
+    })
+      .then(() => {
+        return projectId
+      })
+  }
+
   static creatorHasProject (creatorId) {
     return Project.findOne({ where: { creator_id: creatorId } })
       .then(project => {
@@ -315,6 +347,13 @@ class ProjectRepository {
 
   static isProjectCreator (projectId, creatorId) {
     return Project.findOne({ where: { id: projectId }, include: [{ model: User, as: 'Creator', where: { id: creatorId } }] })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static isProjectTutor (projectId, tutorId) {
+    return Project.findOne({ where: { id: projectId }, include: [{ model: User, as: 'Tutor', where: { id: tutorId } }] })
       .then(project => {
         return project != null
       })
