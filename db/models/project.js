@@ -1,4 +1,4 @@
-import { STRING, INTEGER, TEXT } from 'sequelize'
+import { STRING, TEXT } from 'sequelize'
 
 module.exports = (sequelize) => {
   const Project = sequelize.define('Project', {
@@ -40,7 +40,7 @@ module.exports = (sequelize) => {
       as: 'Tutor',
       foreignKey: {
         name: 'tutor_id',
-        allowNull: false,
+        allowNull: true,
         unique: true
       }
     })

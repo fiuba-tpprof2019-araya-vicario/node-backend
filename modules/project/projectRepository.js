@@ -324,7 +324,8 @@ class ProjectRepository {
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
-          let p1 = project.removeTutor(userId, { transaction })
+          console.log(project)
+          let p1 = project.setTutor(null, { transaction })
           let p2 = Project.update(
             { state_id: 1 },
             { where: { id: projectId }, transaction }

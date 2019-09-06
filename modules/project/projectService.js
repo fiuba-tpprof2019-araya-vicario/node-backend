@@ -134,7 +134,8 @@ const _removeTutorProject = async (projectId, userId) => {
       .then(projectId => {
         return resolve(projectId)
       })
-      .catch(() => {
+      .catch((e) => {
+        console.error(e)
         return reject(getServiceError())
       })
   })
