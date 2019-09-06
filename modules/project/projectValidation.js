@@ -8,46 +8,50 @@ const MISS_TUTOR = 'Falta el tutor'
 const MISS_COTUTORS = 'Faltan los cotutores'
 const MISS_PROJECT_ID = 'Falta el id del proyecto'
 const MISS_REQUIREMENT_ID = 'Falta el id del requerimiento'
+const MISS_DEPARTMENTS = 'Faltan los departamentos'
+const MISS_USER_ID = 'Falta el id del usuario'
+
+const baseCreateValidations = [
+  check('type')
+    .exists()
+    .not().isEmpty()
+    .withMessage(MISS_TYPE),
+  check('students')
+    .exists()
+    .not().isEmpty()
+    .withMessage(MISS_STUDENTS),
+  check('cotutors')
+    .exists()
+    .withMessage(MISS_COTUTORS),
+  check('departments')
+    .exists()
+    .not().isEmpty()
+    .withMessage(MISS_DEPARTMENTS)
+]
 
 const createValidations = [
   // WITHOUT REQUIREMENT
   oneOf([[check('name')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_NAME),
   check('description')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_DESCRIPTION),
-  check('type')
-    .exists()
-    .withMessage(MISS_TYPE),
-  check('students')
-    .exists()
-    .withMessage(MISS_STUDENTS),
   check('tutor_id')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_TUTOR),
-  check('cotutors')
-    .exists()
-    .withMessage(MISS_COTUTORS)],
+  ...baseCreateValidations],
   // WITH REQUIREMENT
   [check('requirementId')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_REQUIREMENT_ID),
-  check('type')
-    .exists()
-    .withMessage(MISS_TYPE),
-  check('students')
-    .exists()
-    .withMessage(MISS_STUDENTS),
-  check('cotutors')
-    .exists()
-    .withMessage(MISS_COTUTORS)]
+  ...baseCreateValidations]
   ])
 ]
 
 const getValidations = [
   param('id')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_PROJECT_ID)
 ]
 
@@ -56,4 +60,11 @@ const modifyValidations = [
   ...getValidations
 ]
 
-export { createValidations, getValidations, modifyValidations }
+const deleteUserProjectValidations = [
+  ...getValidations,
+  param('user_id')
+    .exists().not().isEmpty()
+    .withMessage(MISS_USER_ID)
+]
+
+export { createValidations, getValidations, modifyValidations, deleteUserProjectValidations }

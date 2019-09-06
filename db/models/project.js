@@ -1,7 +1,7 @@
 import { STRING, TEXT } from 'sequelize'
 
 module.exports = (sequelize) => {
-  var Project = sequelize.define('Project', {
+  const Project = sequelize.define('Project', {
     name: {
       type: STRING,
       isUnique: true,
@@ -40,7 +40,7 @@ module.exports = (sequelize) => {
       as: 'Tutor',
       foreignKey: {
         name: 'tutor_id',
-        allowNull: false,
+        allowNull: true,
         unique: true
       }
     })
@@ -92,12 +92,19 @@ module.exports = (sequelize) => {
 
     Project.hasMany(models.ProjectRequestTutor, {
       as: 'TutorRequests',
-      foreignKey: 'project_id'
+      foreignKey: { name: 'project_id' }
     })
 
     Project.hasMany(models.ProjectRequestStudent, {
       as: 'StudentRequests',
-      foreignKey: 'project_id'
+      foreignKey: { name: 'project_id' }
+    })
+
+    Project.belongsToMany(models.Department, {
+      as: 'Departments',
+      through: {
+        model: models.ProjectDepartment
+      }
     })
   }
 

@@ -7,7 +7,7 @@ const Credential = require('../../db/models').Credential
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
 const State = require('../../db/models').State
-const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
+const Department = require('../../db/models').Department
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 
 class UserRepository {
@@ -92,20 +92,12 @@ class UserRepository {
       {
         model: Project,
         as: 'Participations',
-        through: { attributes: [] }
+        through: { attributes: [] },
+        include: [{ model: ProjectRequestStudent, as: 'StudentRequests', include: [{ model: User, where: { email } }] }]
       },
       {
         model: Project,
         as: 'Creations'
-      },
-      {
-        model: Project,
-        as: 'Cotutorials',
-        through: { attributes: [] }
-      },
-      {
-        model: Project,
-        as: 'Tutorials'
       }]
     })
   }
@@ -223,6 +215,11 @@ class UserRepository {
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
           through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
+          through: { attributes: [] }
         }]
       },
       {
@@ -257,6 +254,11 @@ class UserRepository {
           model: User,
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
+          through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
           through: { attributes: [] }
         }]
       }]
@@ -299,6 +301,11 @@ class UserRepository {
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
           through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
+          through: { attributes: [] }
         }]
       },
       {
@@ -334,10 +341,26 @@ class UserRepository {
           as: 'Cotutors',
           attributes: { exclude: ['google_id'] },
           through: { attributes: [] }
+        },
+        {
+          model: Department,
+          as: 'Departments',
+          through: { attributes: [] }
         }]
       }]
     })
       .then(user => { return { 'Tutorials': user.Tutorials, 'Cotutorials': user.Cotutorials } })
+      .catch(() => { return getServiceError() })
+  }
+
+  static getDepartments (id) {
+    return User.findByPk(id, {
+      include: [{
+        model: Department,
+        as: 'Departments'
+      }]
+    })
+      .then(user => { return { 'Departments': user.Departments } })
       .catch(() => { return getServiceError() })
   }
 }

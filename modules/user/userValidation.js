@@ -4,7 +4,7 @@ const MISS_ID_USER = 'Falta el id de usuario'
 
 const getUserValidations = [
   check('id')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_ID_USER)
 ]
 

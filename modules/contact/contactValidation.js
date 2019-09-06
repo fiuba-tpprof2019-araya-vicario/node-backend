@@ -6,13 +6,13 @@ const MISS_DESCRIPTION = 'Falta el mensaje'
 
 export const contactValidations = [
   check('name')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_NAME),
   check('email')
-    .exists()
+    .exists().not().isEmpty()
     .isEmail()
     .withMessage(MISS_EMAIL),
   check('description')
-    .exists()
+    .exists().not().isEmpty()
     .withMessage(MISS_DESCRIPTION)
 ]

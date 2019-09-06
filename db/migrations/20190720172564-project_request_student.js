@@ -9,11 +9,27 @@ export async function up (queryInterface, Sequelize) {
       type: Sequelize.ENUM,
       values: ['pending', 'accepted', 'rejected']
     },
+    project_id: {
+      type: Sequelize.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Projects',
+        key: 'id'
+      }
+    },
+    user_id: {
+      type: Sequelize.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
     // Timestamps
     created_at: Sequelize.DATE,
-    updated_at: Sequelize.DATE,
-    project_id: Sequelize.INTEGER,
-    user_id: Sequelize.INTEGER
+    updated_at: Sequelize.DATE
   })
 }
 export function down (queryInterface) {

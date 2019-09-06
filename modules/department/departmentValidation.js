@@ -2,7 +2,7 @@ import { check, param } from 'express-validator'
 
 const MISS_NAME = 'Falta el nombre'
 const MISS_DESCRIPTION = 'Falta la descripción'
-const MISS_REQUIREMENT_ID = 'Falta el id del requerimiento'
+const MISS_DEPARTMENT_ID = 'Falta el id del departamento'
 
 const createValidations = [
   check('name')
@@ -16,12 +16,12 @@ const createValidations = [
 const getValidations = [
   param('id')
     .exists().not().isEmpty()
-    .withMessage(MISS_REQUIREMENT_ID)
+    .withMessage(MISS_DEPARTMENT_ID)
 ]
 
 const modifyValidations = [
-  getValidations,
-  createValidations
+  ...createValidations,
+  ...getValidations
 ]
 
-export { createValidations, modifyValidations, getValidations }
+export { createValidations, getValidations, modifyValidations }

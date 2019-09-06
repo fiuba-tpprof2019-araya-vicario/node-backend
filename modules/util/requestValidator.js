@@ -8,6 +8,7 @@ const validate = function (handler) {
     try {
       await handler(req, res)
     } catch (e) {
+      console.log('Error ', e)
       if (e.status === undefined) {
         e.status = 500
         e.message = 'Server Internal Error'
@@ -24,6 +25,7 @@ const validate = function (handler) {
 const validateWithExpress = function (req, res, next) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
+    console.log('Error in validateWithExpress validator: ', errors.mapped())
     return res
       .status(codes.UNPROCESSABLE_ENTITY)
       .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, errors.mapped(), null))

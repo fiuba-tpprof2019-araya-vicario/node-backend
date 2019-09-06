@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node ./bin/www",
     "start-dock": "npm install&&nodemon --exec babel-node ./bin/www",
+    "start-heroku": "npm install&&babel-node ./bin/www",
     "test": "test"
   },
   "repository": {

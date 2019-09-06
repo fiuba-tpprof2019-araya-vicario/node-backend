@@ -19,3 +19,20 @@
 3- Luego correr el comando de seeds:
 
 ```sequelize db:seed:all```
+
+## Environment
+
+Crear el archivo .env en la carpeta root del proyecto con los siguientes campos:
+
+```USERNAME_DB=<Usuario de la base>
+PASSWORD_DB=<Usuario de la base>
+HOST_DB=<Usuario de la base>
+NAME_DB=<Usuario de la base>
+DIALECT_DB=<Usuario de la base> Ej: postgres
+TOKEN_SECRET_JWT=<Token secreto para JWT> Ej: "mi_secreto"
+AUDIENCE=<Client id del json del OAuth Client del proyecto de google console>
+CLIENT_GOOGLE_SECRET=<Client secret del json del OAuth Client del proyecto de google console>
+EMAIL_SERVICE=<Servicio de envio de mails> Ej: gmail
+EMAIL_DEST=<Email de destino>
+EMAIL_USR=<Usuario de email> Ej: example@gmail.com
+EMAIL_PWD=<Password de usuario de email>
