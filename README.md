@@ -24,7 +24,8 @@
 
 Crear el archivo .env en la carpeta root del proyecto con los siguientes campos:
 
-```USERNAME_DB=<Usuario de la base>
+```
+USERNAME_DB=<Usuario de la base>
 PASSWORD_DB=<Usuario de la base>
 HOST_DB=<Usuario de la base>
 NAME_DB=<Usuario de la base>
