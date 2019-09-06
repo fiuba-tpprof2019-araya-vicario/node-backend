@@ -14,6 +14,13 @@ module.exports = (sequelize) => {
       validate: {
         notEmpty: true
       }
+    },
+    propositionUrl: {
+      type: STRING,
+      validate: {
+        isUrl: true,
+        is: /^https:\/\/docs.google.com\/*/i
+      }
     }
   }, {
     timestamps: true,
