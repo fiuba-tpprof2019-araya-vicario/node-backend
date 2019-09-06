@@ -1,60 +1,77 @@
 
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Credentials', [{
-    name: 'CREATE_PROJECT',
+    id: 1,
+    name: 'CREATE_PROJECTS',
     description: 'Posibilidad de crear proyectos',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    name: 'EDIT_PROJECT',
-    description: 'Posibilidad de editar sus proyectos',
+    id: 2,
+    name: 'EDIT_PROJECTS',
+    description: 'Posibilidad de administrar sus proyectos',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
+    id: 3,
     name: 'GET_PROJECTS',
     description: 'Posibilidad de obtener sus proyectos',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    name: 'CREATE_USER',
-    description: 'Posibilidad de crear usuarios',
+    id: 4,
+    name: 'EDIT_USERS',
+    description: 'Posibilidad de administrar usuarios',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
+    id: 5,
     name: 'GET_USERS',
     description: 'Posibilidad de obtener información de los usuarios',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    name: 'EDIT_USERS',
-    description: 'Posibilidad de editar los datos de usuarios',
+    id: 6,
+    name: 'EDIT_PROFILES',
+    description: 'Posibilidad de administrar perfiles',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    name: 'CREATE_PROFILE',
-    description: 'Posibilidad de crear perfiles',
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
+    id: 7,
     name: 'GET_PROFILES',
     description: 'Posibilidad de obtener información de los perfiles',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    name: 'EDIT_PROFILES',
-    description: 'Posibilidad de editar los datos de un perfil',
+    id: 8,
+    name: 'EDIT_TUTOR_REQUESTS',
+    description: 'Posibilidad de administrar tutorías',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
+    id: 9,
+    name: 'APPROVE_PROJECTS',
+    description: 'Posibilidad de administrar aprobaciones de proyectos',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: 10,
+    name: 'EDIT_REQUIREMENTS',
+    description: 'Posibilidad de administrar los requerimientos',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: 11,
     name: 'GET_REQUIREMENTS',
     description: 'Posibilidad de obtener los requerimientos',
     created_at: new Date(),
