@@ -13,18 +13,15 @@ const MISS_USER_ID = 'Falta el id del usuario'
 
 const baseCreateValidations = [
   check('type')
-    .exists()
     .not().isEmpty()
     .withMessage(MISS_TYPE),
   check('students')
-    .exists()
     .not().isEmpty()
     .withMessage(MISS_STUDENTS),
   check('cotutors')
     .exists()
     .withMessage(MISS_COTUTORS),
   check('departments')
-    .exists()
     .not().isEmpty()
     .withMessage(MISS_DEPARTMENTS)
 ]
@@ -32,18 +29,18 @@ const baseCreateValidations = [
 const createValidations = [
   // WITHOUT REQUIREMENT
   oneOf([[check('name')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_NAME),
   check('description')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_DESCRIPTION),
   check('tutor_id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_TUTOR),
   ...baseCreateValidations],
   // WITH REQUIREMENT
   [check('requirementId')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_REQUIREMENT_ID),
   ...baseCreateValidations]
   ])
@@ -51,7 +48,7 @@ const createValidations = [
 
 const getValidations = [
   param('id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_PROJECT_ID)
 ]
 
@@ -63,7 +60,7 @@ const modifyValidations = [
 const deleteUserProjectValidations = [
   ...getValidations,
   param('user_id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_USER_ID)
 ]
 

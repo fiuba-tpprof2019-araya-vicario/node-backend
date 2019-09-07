@@ -1,104 +1,48 @@
-const getAuthorizationFail = () => {
+export const getAuthorizationFail = () => {
   return {
     msg: 'Usuario no autorizado',
     status: 401
   }
 }
 
-const getUsuarioNoExistente = () => {
+export const getUsuarioNoExistente = () => {
   return {
     msg: 'Usuario no existente',
     status: 400
   }
 }
 
-const getBadRequest = (msg) => {
+export const getBadRequest = (msg) => {
   return {
     msg: msg !== undefined ? msg : 'Alguno de los campos no es correcto',
     status: 400
   }
 }
 
-const getNotFound = () => {
+export const getNotFound = () => {
   return {
     msg: 'Recurso solicitado inexistente',
     status: 404
   }
 }
 
-const getTokenExpired = () => {
-  var err = new Error('El token expiro')
-  err.status = 404
-  return err
+export const getTokenExpired = () => {
+  return {
+    msg: 'El token expiro',
+    status: 404
+  }
 }
 
-const getServiceError = (msg) => {
-  var err = {}
-  err.msg = msg
-  err.status = 500
-  return err
+export const getServiceError = (msg) => {
+  return {
+    msg,
+    status: 404
+  }
 }
 
-const getServiceErrorNotFound = (msg) => {
-  var err = {}
-  err.msg = msg
-  err.status = 404
-  return err
+export const getExpressError = (errorExpressObject) => {
+  return {
+    msg: errorExpressObject.msg,
+    status: 404
+  }
 }
-
-const getServiceErrorAlreadyExists = (msg) => {
-  var err = {}
-  err.msg = msg
-  err.status = 409
-  return err
-}
-
-const getServiceErrorAlreadyModified = () => {
-  var err = {}
-  err.msg = 'Conflicto en el update'
-  err.status = 409
-  return err
-}
-
-const getServiceErrorNotMatch = (msg, value1, value2) => {
-  var err = {}
-  err.msg = msg + ': ' + value1 + ' <> ' + value2
-  err.status = 409
-  return err
-}
-
-const getServiceErrorBadRequest = (msg) => {
-  var err = {}
-  err.msg = msg
-  err.status = 400
-  return err
-}
-
-const getServiceErrorLostParams = (params) => {
-  var err = {}
-  let lostParms = ''
-  params.forEach(element => {
-    if (lostParms === '') {
-      lostParms += element
-    } else {
-      lostParms += ', ' + element
-    }
-  })
-  let msg = 'Incumplimiento de precondiciones ' + lostParms
-  err.msg = msg
-  err.status = 400
-  return err
-}
-
-exports.getAuthorizationFail = getAuthorizationFail
-exports.getTokenExpired = getTokenExpired
-exports.getServiceError = getServiceError
-exports.getServiceErrorNotFound = getServiceErrorNotFound
-exports.getServiceErrorAlreadyExists = getServiceErrorAlreadyExists
-exports.getServiceErrorNotMatch = getServiceErrorNotMatch
-exports.getServiceErrorBadRequest = getServiceErrorBadRequest
-exports.getServiceErrorLostParams = getServiceErrorLostParams
-exports.getServiceErrorAlreadyModified = getServiceErrorAlreadyModified
-exports.getUsuarioNoExistente = getUsuarioNoExistente
-exports.getBadRequest = getBadRequest
-exports.getNotFound = getNotFound
