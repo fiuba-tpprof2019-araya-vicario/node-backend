@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
         notEmpty: true
       }
     },
-    proposalUrl: {
+    proposal_url: {
       type: STRING,
       validate: {
         isUrl: true,

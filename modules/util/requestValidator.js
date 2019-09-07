@@ -1,6 +1,5 @@
 import { validationResult } from 'express-validator'
 import { createErrorResponse, codes } from './responser'
-import { getExpressError } from './error'
 
 // Usada como wrapper para el manejo de errores basicos de un request
 // asyncronico
@@ -30,7 +29,7 @@ const validateWithExpress = function (req, res, next) {
     console.log(errors.mapped()._error.nestedErrors[0])
     return res
       .status(codes.UNPROCESSABLE_ENTITY)
-      .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, getExpressError(errors.mapped()._error.nestedErrors[0]), null))
+      .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, errors.mapped()._error.nestedErrors[0].msg, null))
   }
   next()
 }

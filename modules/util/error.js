@@ -39,10 +39,3 @@ export const getServiceError = (msg) => {
     status: 404
   }
 }
-
-export const getExpressError = (errorExpressObject) => {
-  return {
-    msg: errorExpressObject.msg,
-    status: 404
-  }
-}

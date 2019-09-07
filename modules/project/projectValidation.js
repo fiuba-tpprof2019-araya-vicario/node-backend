@@ -16,13 +16,13 @@ const baseCreateValidations = [
     .not().isEmpty()
     .withMessage(MISS_TYPE),
   check('students')
-    .not().isEmpty()
+    .exists()
     .withMessage(MISS_STUDENTS),
   check('cotutors')
     .exists()
     .withMessage(MISS_COTUTORS),
   check('departments')
-    .not().isEmpty()
+    .exists()
     .withMessage(MISS_DEPARTMENTS)
 ]
 
