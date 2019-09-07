@@ -1,3 +1,14 @@
+// 'CREATE_PROJECTS' 1
+// 'EDIT_PROJECTS' 2
+// 'GET_PROJECTS' 3
+// 'EDIT_USERS' 4
+// 'GET_USERS' 5
+// 'EDIT_PROFILES' 6
+// 'GET_PROFILES' 7
+// 'EDIT_TUTOR_REQUESTS 8
+// 'APPROVE_PROJECTS 9
+// 'EDIT_REQUIREMENTS 10
+// 'GET_REQUIREMENTS 11
 
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Credentials', [{

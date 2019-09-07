@@ -27,13 +27,6 @@ export function up (queryInterface) {
     description: 'Comision Curricular FIUBA',
     created_at: new Date(),
     updated_at: new Date()
-  },
-  {
-    id: 5,
-    name: 'Interesado',
-    description: 'Intermediario perfil externo',
-    created_at: new Date(),
-    updated_at: new Date()
   }], {})
 }
 export function down () {

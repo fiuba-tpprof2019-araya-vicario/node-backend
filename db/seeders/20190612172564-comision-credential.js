@@ -1,23 +1,10 @@
 // COMISION 4
 
-// 'CREATE_PROJECT' 1
-// 'EDIT_PROJECT' 2
 // 'GET_PROJECTS' 3
-// 'CREATE_USER' 4
-// 'GET_USERS' 5
-// 'EDIT_USERS' 6
-// 'CREATE_PROFILE' 7
-// 'GET_PROFILES' 8
-// 'EDIT_PROFILES 9
+// 'APPROVE_PROJECTS 9
 
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Profile_credentials', [{
-    profile_id: 4,
-    credential_id: 2,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
     profile_id: 4,
     credential_id: 3,
     created_at: new Date(),
@@ -25,13 +12,7 @@ export function up (queryInterface) {
   },
   {
     profile_id: 4,
-    credential_id: 5,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
-    profile_id: 4,
-    credential_id: 6,
+    credential_id: 9,
     created_at: new Date(),
     updated_at: new Date()
   }], {})
