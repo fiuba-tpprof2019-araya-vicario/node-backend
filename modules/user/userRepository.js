@@ -7,8 +7,9 @@ const Credential = require('../../db/models').Credential
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
 const State = require('../../db/models').State
-const Department = require('../../db/models').Department
+const Career = require('../../db/models').Career
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
+const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 
 class UserRepository {
   static get (id, transaction) {
@@ -217,8 +218,8 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Department,
-          as: 'Departments',
+          model: Career,
+          as: 'Careers',
           through: { attributes: [] }
         }]
       },
@@ -257,8 +258,8 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Department,
-          as: 'Departments',
+          model: Career,
+          as: 'Careers',
           through: { attributes: [] }
         }]
       }]
@@ -303,9 +304,14 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Department,
-          as: 'Departments',
+          model: Career,
+          as: 'Careers',
           through: { attributes: [] }
+        },
+        {
+          model: ProjectRequestTutor,
+          as: 'TutorRequests',
+          where: { user_id: id }
         }]
       },
       {
@@ -343,9 +349,14 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Department,
-          as: 'Departments',
+          model: Career,
+          as: 'Careers',
           through: { attributes: [] }
+        },
+        {
+          model: ProjectRequestTutor,
+          as: 'TutorRequests',
+          where: { user_id: id }
         }]
       }]
     })
@@ -353,14 +364,14 @@ class UserRepository {
       .catch(() => { return getServiceError() })
   }
 
-  static getDepartments (id) {
+  static getCareers (id) {
     return User.findByPk(id, {
       include: [{
-        model: Department,
-        as: 'Departments'
+        model: Career,
+        as: 'Careers'
       }]
     })
-      .then(user => { return { 'Departments': user.Departments } })
+      .then(user => { return { 'Careers': user.Careers } })
       .catch(() => { return getServiceError() })
   }
 }

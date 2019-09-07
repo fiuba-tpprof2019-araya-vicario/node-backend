@@ -1,5 +1,5 @@
 export function up (queryInterface, Sequelize) {
-  return queryInterface.createTable('Departments', {
+  return queryInterface.createTable('Careers', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -13,5 +13,5 @@ export function up (queryInterface, Sequelize) {
   })
 }
 export function down (queryInterface) {
-  return queryInterface.dropTable('Departments')
+  return queryInterface.dropTable('Careers')
 }

@@ -6,490 +6,612 @@
 	},
 	"item": [
 		{
-			"name": "GetProjectById",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/projects/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"projects",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateProject",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+			"name": "Projects",
+			"item": [
+				{
+					"name": "GetProjectById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/projects/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1"
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type\": 1,\n\t\"students\": [2],\n\t\"tutor_id\": 3,\n\t\"cotutors\": [4,7],\n\t\"departments\": [2,3]\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/projects",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"projects"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateProjectWithRequirement",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "GetTutorProjects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/projects/tutors/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"tutors",
+								""
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"requirementId\": 1,\n\t\"type\": 1,\n\t\"students\": [2],\n\t\"cotutors\": [4,5],\n\t\"departments\": [2,3]\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/projects",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"projects"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "EditProject",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "GetStudentProjects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/projects/students/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"students",
+								""
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type\": 1,\n\t\"students\": [2],\n\t\"tutor_id\": 3,\n\t\"cotutors\": [4, 5],\n\t\"departments\": [4]\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/projects/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"projects",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DeleteProjectById",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/projects/5",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"projects",
-						"5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetMyStudentRequests",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/requests/students",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requests",
-						"students"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "EditStudentRequest",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "CreateProject",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type\": 1,\n\t\"students\": [8],\n\t\"tutor_id\": 9,\n\t\"cotutors\": [4,7],\n\t\"careers\": [2,3]\n}"
+						},
+						"url": {
+							"raw": "{{url}}/projects",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"status\": \"accepted\"\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/requests/students/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requests",
-						"students",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetMyTutorRequests",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/requests/tutors/",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requests",
-						"tutors",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "EditTutorRequest",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "CreateProjectWithRequirement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"requirementId\": 1,\n\t\"type\": 1,\n\t\"students\": [8],\n\t\"cotutors\": [4,5],\n\t\"careers\": [2,3]\n}"
+						},
+						"url": {
+							"raw": "{{url}}/projects",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"status\": \"rejected\",\n\t\"type\": \"tutor\"\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/requests/tutors/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requests",
-						"tutors",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetRequirements",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/requirements",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requirements"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateRequirement",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "EditProject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type\": 1,\n\t\"students\": [2],\n\t\"tutor_id\": 3,\n\t\"cotutors\": [4, 5],\n\t\"careers\": [4]\n}"
+						},
+						"url": {
+							"raw": "{{url}}/projects/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1"
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/requirements",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requirements"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "EditRequirement",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "DeleteProjectById",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/projects/5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"5"
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"tp\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/requirements/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requirements",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DeleteRequirementById",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/requirements/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"requirements",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetDepartments",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/departments",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"departments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateDepartment",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "DeleteProjectStudent",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/projects/1/students/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1",
+								"students",
+								"1"
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Departamento Auxiliar\",\n\t\"description\": \"auxiliar\"\n}"
+					"response": []
 				},
-				"url": {
-					"raw": "{{url}}/departments",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"departments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "EditDepartment",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
+				{
+					"name": "DeleteProjectTutor",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/projects/1/tutors/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1",
+								"tutors",
+								"1"
+							]
+						}
 					},
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"tp\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
-				},
-				"url": {
-					"raw": "{{url}}/departments/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"departments",
-						"1"
-					]
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "DeleteDepartmentById",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "{{token}}"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/departments/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"departments",
-						"1"
-					]
+			"name": "Requests",
+			"item": [
+				{
+					"name": "GetMyStudentRequests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/requests/students",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requests",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditStudentRequest",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": \"accepted\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/requests/students/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requests",
+								"students",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMyTutorRequests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/requests/tutors/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requests",
+								"tutors",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditTutorRequest",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": \"rejected\",\n\t\"type\": \"tutor\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/requests/tutors/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requests",
+								"tutors",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Requirements",
+			"item": [
+				{
+					"name": "GetRequirements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/requirements",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requirements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateRequirement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/requirements",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requirements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditRequirement",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tp\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/requirements/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requirements",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteRequirementById",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/requirements/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"requirements",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Careers",
+			"item": [
+				{
+					"name": "GetCareers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/careers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"careers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateCareer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Departamento Auxiliar\",\n\t\"description\": \"auxiliar\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/careers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"careers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditCareer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tp\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/careers/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"careers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCareerById",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/careers/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"careers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

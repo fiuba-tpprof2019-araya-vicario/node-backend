@@ -1,78 +1,74 @@
+
 export function up (queryInterface) {
-  return queryInterface.bulkInsert('Project_type_transactions', [{
-    project_type: 1,
-    primary_state: 1,
-    secondary_state: 2,
+  return queryInterface.bulkInsert('Careers', [{
+    name: 'Ingeniería en Informática',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 1,
-    primary_state: 2,
-    secondary_state: 3,
+    name: 'Ingeniería Civil',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 1,
-    primary_state: 3,
-    secondary_state: 4,
+    name: 'Ingeniería Electrónica',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 1,
-    primary_state: 4,
-    secondary_state: 5,
+    name: 'Ingeniería Química',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 1,
-    primary_state: 5,
-    secondary_state: 6,
+    name: 'Ingeniería de Alimentos',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 1,
-    primary_state: 6,
-    secondary_state: 7,
+    name: 'Ingeniería Electricista',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 2,
-    primary_state: 1,
-    secondary_state: 2,
+    name: 'Ingeniería en Agrimensura',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 2,
-    primary_state: 2,
-    secondary_state: 3,
+    name: 'Ingeniería en Petróleo',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 2,
-    primary_state: 3,
-    secondary_state: 4,
+    name: 'Ingeniería Industrial',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 2,
-    primary_state: 4,
-    secondary_state: 5,
+    name: 'Ingeniería Mecánica',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   },
   {
-    project_type: 2,
-    primary_state: 5,
-    secondary_state: 6,
+    name: 'Ingeniería Naval y Mecánica',
+    description: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Lic. en Análisis de Sistemas',
+    description: '',
     created_at: new Date(),
     updated_at: new Date()
   }], {})

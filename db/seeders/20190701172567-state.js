@@ -1,11 +1,5 @@
 export function up (queryInterface) {
   return queryInterface.bulkInsert('States', [{
-    name: 'Crear idea',
-    description: '',
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
     name: 'Idea en revisión',
     description: '',
     created_at: new Date(),

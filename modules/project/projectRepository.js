@@ -9,7 +9,7 @@ const State = require('../../db/models').State
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const Requirement = require('../../db/models').Requirement
-const Department = require('../../db/models').Department
+const Career = require('../../db/models').Career
 
 const STATE_ID_START = 1
 
@@ -73,8 +73,8 @@ class ProjectRepository {
         as: 'State'
       },
       {
-        model: Department,
-        as: 'Departments',
+        model: Career,
+        as: 'Careers',
         through: { attributes: [] }
       }]
     })
@@ -97,7 +97,7 @@ class ProjectRepository {
     })
   }
 
-  static async createWithRequirement (creatorId, requirementId, type, students, cotutors, departments) {
+  static async createWithRequirement (creatorId, requirementId, type, students, cotutors, careers) {
     let requirement = await Requirement.findOne(
       {
         where: {
@@ -126,7 +126,7 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(students, { transaction })
           let p2 = project.setCotutors(cotutors, { transaction })
-          let p3 = project.setDepartments(departments, { transaction })
+          let p3 = project.setCareers(careers, { transaction })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -161,7 +161,7 @@ class ProjectRepository {
       })
   }
 
-  static create (creatorId, name, type, description, students, tutorId, cotutors, departments) {
+  static create (creatorId, name, type, description, students, tutorId, cotutors, careers) {
     let projectId
     return sequelize.transaction(transaction => {
       return Project.create({
@@ -176,7 +176,7 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(students, { transaction })
           let p2 = project.setCotutors(cotutors, { transaction })
-          let p3 = project.setDepartments(departments, { transaction })
+          let p3 = project.setCareers(careers, { transaction })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -235,7 +235,7 @@ class ProjectRepository {
       })
   }
 
-  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors, departments) {
+  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors, careers) {
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
@@ -248,7 +248,7 @@ class ProjectRepository {
           return Promise.all([p1, p2]).then(() => {
             let p1 = project.setStudents(students, { transaction })
             let p2 = project.setCotutors(cotutors, { transaction })
-            let p3 = project.setDepartments(departments, { transaction })
+            let p3 = project.setCareers(careers, { transaction })
             let p4 = Project.update(
               { name, description, creator_id: creatorId, tutor_id: tutorId, type_id: type },
               { where: { id: projectId }, transaction }
@@ -327,7 +327,7 @@ class ProjectRepository {
           console.log(project)
           let p1 = project.setTutor(null, { transaction })
           let p2 = Project.update(
-            { state_id: 1 },
+            { state_id: STATE_ID_START },
             { where: { id: projectId }, transaction }
           )
           let p3 = ProjectRequestTutor.destroy({ where: { project_id: projectId, user_id: userId } })

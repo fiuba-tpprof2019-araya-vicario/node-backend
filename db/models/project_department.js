@@ -1,9 +1,9 @@
 export default (sequelize) => {
-  const ProjectDepartment = sequelize.define('ProjectDepartment', {
+  const ProjectCareer = sequelize.define('ProjectCareer', {
   }, {
     underscored: true,
-    tableName: 'Project_departments'
+    tableName: 'Project_careers'
   })
 
-  return ProjectDepartment
+  return ProjectCareer
 }

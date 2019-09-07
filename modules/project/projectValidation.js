@@ -21,7 +21,7 @@ const baseCreateValidations = [
   check('cotutors')
     .exists()
     .withMessage(MISS_COTUTORS),
-  check('departments')
+  check('careers')
     .not().isEmpty()
     .withMessage(MISS_DEPARTMENTS)
 ]
