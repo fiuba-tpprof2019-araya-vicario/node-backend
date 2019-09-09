@@ -39,11 +39,11 @@ const getAllTutorProjects = async (userId) => {
   })
 }
 
-const addProject = async (creatorId, name, type, description, students, tutorId, cotutors, careers) => {
+const addProject = async (creatorId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.create(creatorId, name, type, description, students, tutorId, cotutors, careers)
+    return ProjectRepository.create(creatorId, name, type, description, students, tutorId, cotutors, careers, proposalUrl)
       .then(projectId => {
         return resolve(projectId)
       })
@@ -53,11 +53,11 @@ const addProject = async (creatorId, name, type, description, students, tutorId,
   })
 }
 
-const addProjectWithRequirement = async (creatorId, requirementId, type, students, cotutors, careers) => {
+const addProjectWithRequirement = async (creatorId, requirementId, type, students, cotutors, careers, proposalUrl) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.createWithRequirement(creatorId, requirementId, type, students, cotutors, careers)
+    return ProjectRepository.createWithRequirement(creatorId, requirementId, type, students, cotutors, careers, proposalUrl)
       .then(projectId => {
         return resolve(projectId)
       })
@@ -67,10 +67,9 @@ const addProjectWithRequirement = async (creatorId, requirementId, type, student
   })
 }
 
-const editProject = async (creatorId, projectId, name, type, description, students, tutorId, cotutors, careers) => {
-  console.log(creatorId, projectId, name, type, description, students, tutorId, cotutors)
+const editProject = async (creatorId, projectId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) => {
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.edit(creatorId, projectId, name, type, description, students, tutorId, cotutors, careers)
+    return ProjectRepository.edit(creatorId, projectId, name, type, description, students, tutorId, cotutors, careers, proposalUrl)
       .then(projectId => {
         return resolve(projectId)
       })

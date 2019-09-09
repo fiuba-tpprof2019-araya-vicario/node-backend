@@ -97,7 +97,7 @@ class ProjectRepository {
     })
   }
 
-  static async createWithRequirement (creatorId, requirementId, type, students, cotutors, careers) {
+  static async createWithRequirement (creatorId, requirementId, type, students, cotutors, careers, proposalUrl) {
     let requirement = await Requirement.findOne(
       {
         where: {
@@ -120,7 +120,8 @@ class ProjectRepository {
         tutor_id: requirement.Creator.dataValues.id,
         type_id: type,
         state_id: STATE_ID_START,
-        requirement_id: requirementId
+        requirement_id: requirementId,
+        proposal_url: proposalUrl
       }, { transaction })
         .then(project => {
           projectId = project.dataValues.id
@@ -161,7 +162,7 @@ class ProjectRepository {
       })
   }
 
-  static create (creatorId, name, type, description, students, tutorId, cotutors, careers) {
+  static create (creatorId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) {
     let projectId
     return sequelize.transaction(transaction => {
       return Project.create({
@@ -170,7 +171,8 @@ class ProjectRepository {
         creator_id: creatorId,
         tutor_id: tutorId,
         type_id: type,
-        state_id: STATE_ID_START
+        state_id: STATE_ID_START,
+        proposal_url: proposalUrl
       }, { transaction })
         .then(project => {
           projectId = project.dataValues.id
@@ -235,7 +237,7 @@ class ProjectRepository {
       })
   }
 
-  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors, careers) {
+  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) {
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
@@ -250,7 +252,7 @@ class ProjectRepository {
             let p2 = project.setCotutors(cotutors, { transaction })
             let p3 = project.setCareers(careers, { transaction })
             let p4 = Project.update(
-              { name, description, creator_id: creatorId, tutor_id: tutorId, type_id: type },
+              { name, description, creator_id: creatorId, tutor_id: tutorId, type_id: type, proposal_url: proposalUrl },
               { where: { id: projectId }, transaction }
             )
             let p5 = ProjectRequestTutor.create({
@@ -324,7 +326,6 @@ class ProjectRepository {
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
-          console.log(project)
           let p1 = project.setTutor(null, { transaction })
           let p2 = Project.update(
             { state_id: STATE_ID_START },

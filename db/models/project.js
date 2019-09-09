@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
       type: STRING,
       validate: {
         isUrl: true,
-        is: /^https:\/\/docs.google.com\/*/i
+        is: /^https:\/\/drive.google.com\/*/i
       }
     }
   }, {
