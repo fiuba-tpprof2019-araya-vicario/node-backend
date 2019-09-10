@@ -4,8 +4,9 @@ import { codes, createSuccessResponse } from '../util/responser'
 const createProject = async function (req, res) {
   let body = req.body
   let response
-  if (body.requirementId != null) response = await projectService.addProjectWithRequirement(req.id, body.requirementId, body.type, body.students, body.cotutors, body.careers, body.proposalUrl)
-  else response = await projectService.addProject(req.id, body.name, body.type, body.description, body.students, body.tutor_id, body.cotutors, body.careers, body.proposalUrl)
+  console.log(body)
+  if (body.requirementId != null) response = await projectService.addProjectWithRequirement(req.id, body)
+  else response = await projectService.addProject(req.id, body)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
@@ -31,7 +32,7 @@ const getTutorProjects = async function (req, res) {
 
 const putProject = async function (req, res) {
   let body = req.body
-  let response = await projectService.editProject(req.id, req.params.id, body.name, body.type, body.description, body.students, body.tutor_id, body.cotutors, body.careers, body.proposalUrl)
+  let response = await projectService.editProject(req.id, req.params.id, body)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }

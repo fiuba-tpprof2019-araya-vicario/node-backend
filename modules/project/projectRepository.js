@@ -1,5 +1,6 @@
 import { sequelize } from '../../db/connectorDB'
 import { getBadRequest } from '../util/error'
+import { Op } from 'sequelize'
 
 const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
@@ -97,11 +98,11 @@ class ProjectRepository {
     })
   }
 
-  static async createWithRequirement (creatorId, requirementId, type, students, cotutors, careers, proposalUrl) {
+  static async createWithRequirement (creatorId, data) {
     let requirement = await Requirement.findOne(
       {
         where: {
-          id: requirementId,
+          id: data.requirement_id,
           status: 'active'
         },
         include: [{
@@ -118,16 +119,15 @@ class ProjectRepository {
         description: requirement.dataValues.description,
         creator_id: creatorId,
         tutor_id: requirement.Creator.dataValues.id,
-        type_id: type,
+        type_id: data.type_id,
         state_id: STATE_ID_START,
-        requirement_id: requirementId,
-        proposal_url: proposalUrl
+        requirement_id: data.requirement_id
       }, { transaction })
         .then(project => {
           projectId = project.dataValues.id
-          let p1 = project.setStudents(students, { transaction })
-          let p2 = project.setCotutors(cotutors, { transaction })
-          let p3 = project.setCareers(careers, { transaction })
+          let p1 = project.setStudents(data.students, { transaction })
+          let p2 = project.setCotutors(data.cotutors, { transaction })
+          let p3 = project.setCareers(data.careers, { transaction })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -139,14 +139,14 @@ class ProjectRepository {
             status: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
-          let p6 = students.map(student => {
+          let p6 = data.students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
               status: STATUS_REQUEST.PENDING
             }, { transaction })
           })
-          let p7 = cotutors.map(cotutor => {
+          let p7 = data.cotutors.map(cotutor => {
             return ProjectRequestTutor.create({
               project_id: project.dataValues.id,
               user_id: cotutor,
@@ -162,23 +162,22 @@ class ProjectRepository {
       })
   }
 
-  static create (creatorId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) {
+  static create (creatorId, data) {
     let projectId
     return sequelize.transaction(transaction => {
       return Project.create({
-        name,
-        description,
+        name: data.name,
+        description: data.description,
         creator_id: creatorId,
-        tutor_id: tutorId,
-        type_id: type,
-        state_id: STATE_ID_START,
-        proposal_url: proposalUrl
+        tutor_id: data.tutorId,
+        type_id: data.type_id,
+        state_id: STATE_ID_START
       }, { transaction })
         .then(project => {
           projectId = project.dataValues.id
-          let p1 = project.setStudents(students, { transaction })
-          let p2 = project.setCotutors(cotutors, { transaction })
-          let p3 = project.setCareers(careers, { transaction })
+          let p1 = project.setStudents(data.students, { transaction })
+          let p2 = project.setCotutors(data.cotutors, { transaction })
+          let p3 = project.setCareers(data.careers, { transaction })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -186,18 +185,18 @@ class ProjectRepository {
           }, { transaction })
           let p5 = ProjectRequestTutor.create({
             project_id: project.dataValues.id,
-            user_id: tutorId,
+            user_id: data.tutorId,
             status: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
-          let p6 = students.map(student => {
+          let p6 = data.students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
               status: STATUS_REQUEST.PENDING
             }, { transaction })
           })
-          let p7 = cotutors.map(cotutor => {
+          let p7 = data.cotutors.map(cotutor => {
             return ProjectRequestTutor.create({
               project_id: project.dataValues.id,
               user_id: cotutor,
@@ -237,46 +236,93 @@ class ProjectRepository {
       })
   }
 
-  static edit (creatorId, projectId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) {
+  static edit (creatorId, projectId, data) {
+    console.log(data)
+    console.log(data.students !== undefined)
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
-          let p1 = ProjectRequestStudent.destroy({
-            where: { project_id: project.dataValues.id }, transaction
-          })
-          let p2 = ProjectRequestTutor.destroy({
-            where: { project_id: project.dataValues.id }, transaction
-          })
-          return Promise.all([p1, p2]).then(() => {
-            let p1 = project.setStudents(students, { transaction })
-            let p2 = project.setCotutors(cotutors, { transaction })
-            let p3 = project.setCareers(careers, { transaction })
-            let p4 = Project.update(
-              { name, description, creator_id: creatorId, tutor_id: tutorId, type_id: type, proposal_url: proposalUrl },
-              { where: { id: projectId }, transaction }
-            )
-            let p5 = ProjectRequestTutor.create({
-              project_id: project.dataValues.id,
-              user_id: tutorId,
-              status: STATUS_REQUEST.PENDING,
-              type: TYPE_TUTOR_REQUEST.TUTOR
-            }, { transaction })
-            let p6 = students.map(student => {
-              return ProjectRequestStudent.create({
-                project_id: project.dataValues.id,
-                user_id: student,
-                status: STATUS_REQUEST.PENDING
-              }, { transaction })
+          let requestDeletePromise = []
+          if (data.students !== undefined) {
+            let p1 = ProjectRequestStudent.destroy({
+              where: { project_id: project.dataValues.id }, transaction
             })
-            let p7 = cotutors.map(cotutor => {
-              return ProjectRequestTutor.create({
+            requestDeletePromise.push(p1)
+          }
+
+          if (data.cotutors !== undefined) {
+            let p1 = ProjectRequestTutor.destroy({
+              where: { [Op.and]: { project_id: project.dataValues.id, user_id: { [Op.ne]: project.dataValues.tutor_id } } }, transaction
+            })
+            requestDeletePromise.push(p1)
+          }
+
+          if (data.tutor_id !== undefined) {
+            let p1 = ProjectRequestTutor.destroy({
+              where: { [Op.and]: { project_id: project.dataValues.id, user_id: project.dataValues.tutor_id } }, transaction
+            })
+            requestDeletePromise.push(p1)
+          }
+
+          return Promise.all(requestDeletePromise).then(() => {
+            let updatePromises = []
+
+            let updateObject = {}
+            if (data.name !== undefined) updateObject.name = data.name
+            if (data.description !== undefined) updateObject.description = data.description
+            if (data.tutor_id !== undefined) updateObject.tutor_id = data.tutor_id
+            if (data.type_id !== undefined) updateObject.type_id = data.type_id
+            if (data.proposal_url !== undefined) updateObject.proposal_url = data.proposal_url
+
+            if (Object.keys(updateObject).length > 0) {
+              let p1 = Project.update(
+                updateObject,
+                { where: { id: projectId }, transaction }
+              )
+              updatePromises.push(p1)
+            }
+
+            if (data.students !== undefined) {
+              let p1 = project.setStudents(data.students, { transaction })
+              let p2 = data.students.map(student => {
+                return ProjectRequestStudent.create({
+                  project_id: project.dataValues.id,
+                  user_id: student,
+                  status: STATUS_REQUEST.PENDING
+                }, { transaction })
+              })
+              updatePromises = [...updatePromises, p1, ...p2]
+            }
+
+            if (data.cotutors !== undefined) {
+              let p1 = project.setCotutors(data.cotutors, { transaction })
+              let p2 = data.cotutors.map(cotutor => {
+                return ProjectRequestTutor.create({
+                  project_id: project.dataValues.id,
+                  user_id: cotutor,
+                  status: STATUS_REQUEST.PENDING,
+                  type: TYPE_TUTOR_REQUEST.COTUTOR
+                }, { transaction })
+              })
+              updatePromises = [...updatePromises, p1, ...p2]
+            }
+
+            if (data.tutor_id !== undefined) {
+              let p1 = ProjectRequestTutor.create({
                 project_id: project.dataValues.id,
-                user_id: cotutor,
+                user_id: data.tutorId,
                 status: STATUS_REQUEST.PENDING,
-                type: TYPE_TUTOR_REQUEST.COTUTOR
+                type: TYPE_TUTOR_REQUEST.TUTOR
               }, { transaction })
-            })
-            return Promise.all([p1, p2, p3, p4, p5, p6, p7])
+              updatePromises.push(p1)
+            }
+
+            if (data.careers !== undefined) {
+              let p1 = project.setCareers(data.careers, { transaction })
+              updatePromises.push(p1)
+            }
+
+            return Promise.all(updatePromises)
           })
         })
     })

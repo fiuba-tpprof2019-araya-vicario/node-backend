@@ -11,13 +11,6 @@ const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 const ProjectHistory = require('../../db/models').ProjectHistory
 const State = require('../../db/models').State
 
-const STATE_ID_START = 1
-
-const TYPE_TUTOR_REQUEST = {
-  TUTOR: 'tutor',
-  COTUTOR: 'cotutor'
-}
-
 class RequestRepository {
   static modifyStatusRequestStudent (id, status) {
     return ProjectRequestStudent.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING } })

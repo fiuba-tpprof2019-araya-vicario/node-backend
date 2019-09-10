@@ -39,11 +39,11 @@ const getAllTutorProjects = async (userId) => {
   })
 }
 
-const addProject = async (creatorId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) => {
+const addProject = async (creatorId, data) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.create(creatorId, name, type, description, students, tutorId, cotutors, careers, proposalUrl)
+    return ProjectRepository.create(creatorId, data)
       .then(projectId => {
         return resolve(projectId)
       })
@@ -53,11 +53,11 @@ const addProject = async (creatorId, name, type, description, students, tutorId,
   })
 }
 
-const addProjectWithRequirement = async (creatorId, requirementId, type, students, cotutors, careers, proposalUrl) => {
+const addProjectWithRequirement = async (creatorId, data) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.createWithRequirement(creatorId, requirementId, type, students, cotutors, careers, proposalUrl)
+    return ProjectRepository.createWithRequirement(creatorId, data)
       .then(projectId => {
         return resolve(projectId)
       })
@@ -67,9 +67,9 @@ const addProjectWithRequirement = async (creatorId, requirementId, type, student
   })
 }
 
-const editProject = async (creatorId, projectId, name, type, description, students, tutorId, cotutors, careers, proposalUrl) => {
+const editProject = async (creatorId, projectId, data) => {
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.edit(creatorId, projectId, name, type, description, students, tutorId, cotutors, careers, proposalUrl)
+    return ProjectRepository.edit(creatorId, projectId, data)
       .then(projectId => {
         return resolve(projectId)
       })
