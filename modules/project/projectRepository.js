@@ -169,7 +169,7 @@ class ProjectRepository {
         name: data.name,
         description: data.description,
         creator_id: creatorId,
-        tutor_id: data.tutorId,
+        tutor_id: data.tutor_id,
         type_id: data.type_id,
         state_id: STATE_ID_START
       }, { transaction })
@@ -185,7 +185,7 @@ class ProjectRepository {
           }, { transaction })
           let p5 = ProjectRequestTutor.create({
             project_id: project.dataValues.id,
-            user_id: data.tutorId,
+            user_id: data.tutor_id,
             status: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
@@ -310,7 +310,7 @@ class ProjectRepository {
             if (data.tutor_id !== undefined) {
               let p1 = ProjectRequestTutor.create({
                 project_id: project.dataValues.id,
-                user_id: data.tutorId,
+                user_id: data.tutor_id,
                 status: STATUS_REQUEST.PENDING,
                 type: TYPE_TUTOR_REQUEST.TUTOR
               }, { transaction })
