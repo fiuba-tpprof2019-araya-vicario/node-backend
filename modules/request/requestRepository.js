@@ -7,6 +7,7 @@ const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const Project = require('../../db/models').Project
 const User = require('../../db/models').User
+const ProjectType = require('../../db/models').ProjectType
 const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 const ProjectHistory = require('../../db/models').ProjectHistory
 const State = require('../../db/models').State
@@ -41,7 +42,12 @@ class RequestRepository {
       where: {
         user_id: userId
       },
-      include: [ { model: Project }, { model: User } ]
+      include: [ 
+        { model: Project, include: [ 
+          { model: User, as: 'Creator' },
+          { model: ProjectType, as: 'Type' } 
+        ]},
+      ]
     })
   }
 
