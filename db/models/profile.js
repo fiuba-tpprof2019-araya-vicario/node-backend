@@ -49,11 +49,6 @@ module.exports = (sequelize) => {
       as: 'Users',
       through: {
         model: models.UserProfile
-      },
-      foreignKey: {
-        name: 'profile_id',
-        allowNull: true,
-        unique: true
       }
     })
 
@@ -61,11 +56,6 @@ module.exports = (sequelize) => {
       as: 'Credentials',
       through: {
         model: models.ProfileCredential
-      },
-      foreignKey: {
-        name: 'profile_id',
-        allowNull: true,
-        unique: true
       }
     })
   }

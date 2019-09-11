@@ -1,4 +1,4 @@
-import { STRING } from 'sequelize'
+import { STRING, TEXT } from 'sequelize'
 
 module.exports = (sequelize) => {
   const Project = sequelize.define('Project', {
@@ -6,31 +6,20 @@ module.exports = (sequelize) => {
       type: STRING,
       isUnique: true,
       validate: {
-        notEmpty: true,
-        isUnique: function (value, next) {
-          var self = this
-          Project
-            .findOne({
-              where: {
-                name: value
-              }
-            })
-            .then(function (project) {
-              if (project && self.id !== project.id) {
-                return next('Nombre ya en uso por otro proyecto')
-              }
-              return next()
-            })
-            .catch(function (err) {
-              return next(err)
-            })
-        }
+        notEmpty: true
       }
     },
     description: {
-      type: STRING,
+      type: TEXT,
       validate: {
         notEmpty: true
+      }
+    },
+    proposal_url: {
+      type: STRING,
+      validate: {
+        isUrl: true,
+        is: /^https:\/\/drive.google.com\/*/i
       }
     }
   }, {
@@ -39,11 +28,52 @@ module.exports = (sequelize) => {
     tableName: 'Projects'
   })
 
+  Project.prototype.inRevision = function () {
+    return this.state_id === 2
+  }
+
   // Adding a class level method
   Project.associate = function (models) {
+    Project.belongsTo(models.User, {
+      as: 'Creator',
+      foreignKey: {
+        name: 'creator_id',
+        allowNull: false,
+        unique: true
+      }
+    })
+
+    Project.belongsTo(models.User, {
+      as: 'Tutor',
+      foreignKey: {
+        name: 'tutor_id',
+        allowNull: true,
+        unique: true
+      }
+    })
+
     Project.belongsTo(models.ProjectType, {
+      as: 'Type',
       foreignKey: {
         name: 'type_id',
+        allowNull: false,
+        unique: true
+      }
+    })
+
+    Project.belongsTo(models.Requirement, {
+      as: 'Requirement',
+      foreignKey: {
+        name: 'requirement_id',
+        allowNull: true,
+        unique: true
+      }
+    })
+
+    Project.belongsTo(models.State, {
+      as: 'State',
+      foreignKey: {
+        name: 'state_id',
         allowNull: false,
         unique: true
       }
@@ -53,28 +83,35 @@ module.exports = (sequelize) => {
       as: 'Students',
       through: {
         model: models.ProjectStudent
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
       }
     })
 
     Project.belongsToMany(models.User, {
-      as: 'Tutors',
+      as: 'Cotutors',
       through: {
-        model: models.ProjectTutor
-      },
-      foreignKey: {
-        name: 'user_id',
-        allowNull: true,
-        unique: true
+        model: models.ProjectCotutor
       }
     })
 
     Project.hasMany(models.ProjectHistory, {
       as: 'ProjectHistory'
+    })
+
+    Project.hasMany(models.ProjectRequestTutor, {
+      as: 'TutorRequests',
+      foreignKey: { name: 'project_id' }
+    })
+
+    Project.hasMany(models.ProjectRequestStudent, {
+      as: 'StudentRequests',
+      foreignKey: { name: 'project_id' }
+    })
+
+    Project.belongsToMany(models.Career, {
+      as: 'Careers',
+      through: {
+        model: models.ProjectCareer
+      }
     })
   }
 

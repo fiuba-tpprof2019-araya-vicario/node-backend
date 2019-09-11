@@ -19,9 +19,66 @@ export function up (queryInterface) {
     padron: 93203
   },
   {
+    name: 'Marcelo',
+    surname: 'Cavazzoli',
+    email: 'mcavazzoli@fi.uba.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date(),
+    padron: 93203
+  },
+  {
     name: 'Pablo',
     surname: 'Cosso',
     email: 'pcosso@fi.uba.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Ricardo',
+    surname: 'Veiga',
+    email: 'rveiga@fi.uba.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Alejandro',
+    surname: 'Molinari',
+    email: 'amolinari@fi.uba.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Arrow',
+    surname: 'GameMaster',
+    email: 'arrowgamemaster@gmail.com',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Sebastian',
+    surname: 'Cys',
+    email: 'svicario@cys.com.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Sebastian',
+    surname: 'Main',
+    email: 'vicario.sebastian@gmail.com',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    name: 'Nicolas',
+    surname: 'Main',
+    email: 'nwaraya@gmail.com',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()

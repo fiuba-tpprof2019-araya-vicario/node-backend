@@ -1,10 +1,11 @@
-import { check } from 'express-validator/check'
+import { check } from 'express-validator'
 
 const MISS_ID_TOKEN = 'Falta el token'
 
-export const messageFaltaNombre = MISS_ID_TOKEN
-export const authValidations = [
+const authValidations = [
   check('id_token')
-    .exists()
+    .not().isEmpty()
     .withMessage(MISS_ID_TOKEN)
 ]
+
+export { authValidations }

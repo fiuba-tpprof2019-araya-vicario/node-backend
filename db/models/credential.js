@@ -22,8 +22,7 @@ module.exports = (sequelize) => {
       as: 'Profiles',
       through: {
         model: models.ProfileCredential
-      },
-      foreignKey: 'credential_id'
+      }
     })
   }
   return Credential

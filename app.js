@@ -1,12 +1,18 @@
 import express from 'express'
 import logger from 'morgan'
 import { json, urlencoded } from 'body-parser'
-import ConnectorDB from './db/connectorDB'
+import { connect } from './db/connectorDB'
 import authRoute from './modules/auth/authRoute'
+import userRoute from './modules/user/userRoute'
+import contactRoute from './modules/contact/contactRoute'
+import projectRoute from './modules/project/projectRoute'
+import requestRoute from './modules/request/requestRoute'
+import requirementRoute from './modules/requirement/requirementRoute'
+import careerRoute from './modules/career/careerRoute'
 
 const app = express()
 
-ConnectorDB.connect()
+connect()
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -34,6 +40,12 @@ app.get('/', function (req, res, next) {
   res.status(200).send('Hello World')
 })
 app.use('/v0/api/auth', authRoute)
+app.use('/v0/api/users', userRoute)
+app.use('/v0/api/projects', projectRoute)
+app.use('/v0/api/requests', requestRoute)
+app.use('/v0/api/requirements', requirementRoute)
+app.use('/v0/api/careers', careerRoute)
+app.use('/v0/api/contacts', contactRoute)
 
 // error handler
 app.use(function (err, req, res, next) {

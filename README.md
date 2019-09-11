@@ -37,3 +37,5 @@ EMAIL_SERVICE=<Servicio de envio de mails> Ej: gmail
 EMAIL_DEST=<Email de destino>
 EMAIL_USR=<Usuario de email> Ej: example@gmail.com
 EMAIL_PWD=<Password de usuario de email>
+URL_REQUEST_STUDENT=<Url de solicitudes de estudinate> Ej: "https://brain-search/my_projects"
+ACTIVE_MAILS=<Opcion para habilitar envio de mails> Ej: true

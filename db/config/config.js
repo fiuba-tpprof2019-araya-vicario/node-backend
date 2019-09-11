@@ -1,12 +1,12 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv-flow'
 
 dotenv.config()
 
 module.exports = {
-  USERNAME: process.env.USERNAME,
-  PASSWORD: process.env.PASSWORD,
-  HOST: process.env.HOST,
+  USERNAME_DB: process.env.USERNAME_DB,
+  PASSWORD_DB: process.env.PASSWORD_DB,
+  HOST_DB: process.env.HOST_DB,
   DATABASE: process.env.DATABASE,
-  DB_CONNECTION: `postgres://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.HOST}:5432/${process.env.DATABASE}`,
-  DIALECT: process.env.DIALECT
+  DIALECT_DB: process.env.DIALECT_DB,
+  DB_CONNECTION: `${process.env.DIALECT_DB}://${process.env.USERNAME_DB}:${process.env.PASSWORD_DB}@${process.env.HOST_DB}:5432/${process.env.DATABASE}`
 }
