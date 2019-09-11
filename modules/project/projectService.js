@@ -1,6 +1,8 @@
 import { getServiceError, getNotFound, getBadRequest } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
+import { sendMail } from '../util/mailService'
+import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
 
 const getSpecificProject = async (projectId) => {
   return new Promise(async (resolve, reject) => {
@@ -39,44 +41,72 @@ const getAllTutorProjects = async (userId) => {
   })
 }
 
+const sendRequestMails = (data) => {
+  console.log('Active mails: ', process.env.ACTIVE_MAILS)
+  if (process.env.ACTIVE_MAILS !== 'true') return
+  console.log('Entro proceso de envio de mails de solicitudes...')
+  if (data.students !== undefined && data.students.length > 0) {
+    UserRepository.getUsers(data.students)
+      .then(students => {
+        let to = ''
+        students.forEach(student => {
+          to += student.email + ', '
+        })
+        sendMail(getRequestStudentMailOption({ name: data.name, to }))
+      })
+  }
+
+  if (data.cotutors !== undefined && data.cotutors.length > 0) {
+    UserRepository.getUsers(data.cotutors)
+      .then(cotutors => {
+        let to = ''
+        cotutors.forEach(student => {
+          to += student.email + ', '
+        })
+        sendMail(getRequestCotutorMailOption({ name: data.name, to }))
+      })
+  }
+
+  if (data.tutor_id !== undefined) {
+    UserRepository.getUser(data.tutor_id)
+      .then(tutor => {
+        sendMail(getRequestTutorMailOption({ name: data.name, to: tutor.email }))
+      })
+  }
+}
+
 const addProject = async (creatorId, data) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.create(creatorId, data)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch(() => {
-        return reject(getBadRequest())
-      })
-  })
+  let response = await ProjectRepository.create(creatorId, data)
+  if (response === undefined) return Promise.reject(getBadRequest())
+
+  sendRequestMails(data)
+
+  return Promise.resolve(response)
 }
 
 const addProjectWithRequirement = async (creatorId, data) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.createWithRequirement(creatorId, data)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch(() => {
-        return reject(getBadRequest())
-      })
-  })
+  let response = await ProjectRepository.createWithRequirement(creatorId, data)
+  if (response === undefined) return Promise.reject(getBadRequest())
+
+  sendRequestMails(data)
+
+  return Promise.resolve(response)
 }
 
 const editProject = async (creatorId, projectId, data) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.edit(creatorId, projectId, data)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch(() => {
-        return reject(getBadRequest())
-      })
-  })
+  if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+  if (!(await ProjectRepository.isProjectCreator(projectId, creatorId))) return Promise.reject(getBadRequest('Solo el creador del proyecto puede editarlo'))
+
+  let response = await ProjectRepository.edit(projectId, data)
+  if (response === undefined) return Promise.reject(getBadRequest())
+
+  sendRequestMails(data)
+
+  return Promise.resolve(response)
 }
 
 const removeProject = async (projectId) => {

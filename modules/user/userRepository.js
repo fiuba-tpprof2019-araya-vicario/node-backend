@@ -1,5 +1,6 @@
 import { sequelize } from '../../db/connectorDB'
 import { getServiceError } from '../util/error'
+import { Op } from 'sequelize'
 
 const User = require('../../db/models').User
 const Profile = require('../../db/models').Profile
@@ -54,6 +55,14 @@ class UserRepository {
     }
 
     return User.findByPk(id, options)
+  }
+
+  static getUsers (usersId) {
+    return User.findAll({ where: { id: { [Op.in]: usersId } } })
+  }
+
+  static getUser (id) {
+    return User.findByPk(id)
   }
 
   static getByProfile (profileId) {

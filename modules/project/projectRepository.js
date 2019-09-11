@@ -236,9 +236,7 @@ class ProjectRepository {
       })
   }
 
-  static edit (creatorId, projectId, data) {
-    console.log(data)
-    console.log(data.students !== undefined)
+  static edit (projectId, data) {
     return sequelize.transaction(transaction => {
       return Project.findByPk(projectId, { transaction })
         .then(project => {
