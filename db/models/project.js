@@ -14,6 +14,13 @@ module.exports = (sequelize) => {
       validate: {
         notEmpty: true
       }
+    },
+    proposal_url: {
+      type: STRING,
+      validate: {
+        isUrl: true,
+        is: /^https:\/\/drive.google.com\/*/i
+      }
     }
   }, {
     timestamps: true,
@@ -100,10 +107,10 @@ module.exports = (sequelize) => {
       foreignKey: { name: 'project_id' }
     })
 
-    Project.belongsToMany(models.Department, {
-      as: 'Departments',
+    Project.belongsToMany(models.Career, {
+      as: 'Careers',
       through: {
-        model: models.ProjectDepartment
+        model: models.ProjectCareer
       }
     })
   }

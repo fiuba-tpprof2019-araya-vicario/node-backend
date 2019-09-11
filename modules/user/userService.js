@@ -39,6 +39,7 @@ const processUserResponse = (user, resolve) => {
   user = user.dataValues
   console.log(user)
   let authToken = createToken(user.id, user.email, getCredentials(user))
+  console.log('authToken: ', authToken)
   let response = getResponseUser(user, authToken)
   if (isStudent(user)) {
     let activeProject = getActiveProject(user.Creations, user.Participations)

@@ -10,6 +10,7 @@ const createErrorResponse = (code, message, data) => {
     : status.ERROR
   return { code, statusAux, message, data }
 }
+
 const createSuccessResponse = (code, data) => {
   return { code, status: status.SUCCESS, message: '', data }
 }

@@ -10,21 +10,19 @@ const MISS_PROJECT_ID = 'Falta el id del proyecto'
 const MISS_REQUIREMENT_ID = 'Falta el id del requerimiento'
 const MISS_DEPARTMENTS = 'Faltan los departamentos'
 const MISS_USER_ID = 'Falta el id del usuario'
+// const MISS_PROPOSAL_URL = 'Falta el link de la propuesta'
 
 const baseCreateValidations = [
-  check('type')
-    .exists()
+  check('type_id')
     .not().isEmpty()
     .withMessage(MISS_TYPE),
   check('students')
     .exists()
-    .not().isEmpty()
     .withMessage(MISS_STUDENTS),
   check('cotutors')
     .exists()
     .withMessage(MISS_COTUTORS),
-  check('departments')
-    .exists()
+  check('careers')
     .not().isEmpty()
     .withMessage(MISS_DEPARTMENTS)
 ]
@@ -32,18 +30,18 @@ const baseCreateValidations = [
 const createValidations = [
   // WITHOUT REQUIREMENT
   oneOf([[check('name')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_NAME),
   check('description')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_DESCRIPTION),
   check('tutor_id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_TUTOR),
   ...baseCreateValidations],
   // WITH REQUIREMENT
   [check('requirementId')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_REQUIREMENT_ID),
   ...baseCreateValidations]
   ])
@@ -51,19 +49,18 @@ const createValidations = [
 
 const getValidations = [
   param('id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_PROJECT_ID)
 ]
 
 const modifyValidations = [
-  ...createValidations,
   ...getValidations
 ]
 
 const deleteUserProjectValidations = [
   ...getValidations,
   param('user_id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_USER_ID)
 ]
 

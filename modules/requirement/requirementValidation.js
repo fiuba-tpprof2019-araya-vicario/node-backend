@@ -6,16 +6,16 @@ const MISS_REQUIREMENT_ID = 'Falta el id del requerimiento'
 
 const createValidations = [
   check('name')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_NAME),
   check('description')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_DESCRIPTION)
 ]
 
 const getValidations = [
   param('id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_REQUIREMENT_ID)
 ]
 

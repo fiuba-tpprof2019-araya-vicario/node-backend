@@ -8,10 +8,10 @@ const WRONG_TYPE_VALUE = 'Tipo invalido'
 
 const putValidations = [
   param('id')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_REQUEST_ID),
   check('status')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_STATUS)
     .isIn(['accepted', 'rejected'])
     .withMessage(WRONG_STATUS_VALUE)
@@ -20,7 +20,7 @@ const putValidations = [
 const putTutorValidations = [
   ...putValidations,
   check('type')
-    .exists().not().isEmpty()
+    .not().isEmpty()
     .withMessage(MISS_TYPE)
     .isIn(['tutor', 'cotutor'])
     .withMessage(WRONG_TYPE_VALUE)

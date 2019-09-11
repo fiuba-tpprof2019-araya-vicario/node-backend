@@ -103,10 +103,10 @@ module.exports = (sequelize) => {
       foreignKey: 'user_id'
     })
 
-    User.belongsToMany(models.Department, {
-      as: 'Departments',
+    User.belongsToMany(models.Career, {
+      as: 'Careers',
       through: {
-        model: models.UserDepartment
+        model: models.UserCareer
       }
     })
   }

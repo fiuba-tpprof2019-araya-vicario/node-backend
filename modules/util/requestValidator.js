@@ -11,11 +11,11 @@ const validate = function (handler) {
       console.log('Error ', e)
       if (e.status === undefined) {
         e.status = 500
-        e.message = 'Server Internal Error'
+        e.msg = 'Server Internal Error'
       }
       console.log('Error in request validator: ', e)
       res.statusCode = e.status
-      res.json(createErrorResponse(e.status, e, null))
+      res.json(createErrorResponse(e.status, e.msg, null))
     }
   }
 }
@@ -26,9 +26,10 @@ const validateWithExpress = function (req, res, next) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     console.log('Error in validateWithExpress validator: ', errors.mapped())
+    console.log(errors.mapped()._error.nestedErrors[0])
     return res
       .status(codes.UNPROCESSABLE_ENTITY)
-      .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, errors.mapped(), null))
+      .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, errors.mapped()._error.nestedErrors[0].msg, null))
   }
   next()
 }

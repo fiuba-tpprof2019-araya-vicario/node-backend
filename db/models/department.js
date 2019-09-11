@@ -1,7 +1,7 @@
 import { STRING, TEXT } from 'sequelize'
 
 module.exports = (sequelize) => {
-  const Department = sequelize.define('Department', {
+  const Career = sequelize.define('Career', {
     name: {
       type: STRING,
       isUnique: true,
@@ -18,24 +18,24 @@ module.exports = (sequelize) => {
   }, {
     timestamps: true,
     underscored: true,
-    tableName: 'Departments'
+    tableName: 'Careers'
   })
 
   // Adding a class level method
-  Department.associate = function (models) {
-    Department.belongsToMany(models.User, {
+  Career.associate = function (models) {
+    Career.belongsToMany(models.User, {
       as: 'Users',
       through: {
-        model: models.UserDepartment
+        model: models.UserCareer
       }
     })
 
-    Department.belongsToMany(models.Credential, {
+    Career.belongsToMany(models.Credential, {
       as: 'Projects',
       through: {
-        model: models.ProjectDepartment
+        model: models.ProjectCareer
       }
     })
   }
-  return Department
+  return Career
 }
