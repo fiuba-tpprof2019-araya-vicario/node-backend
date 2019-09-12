@@ -42,11 +42,12 @@ class RequestRepository {
       where: {
         user_id: userId
       },
-      include: [ 
-        { model: Project, include: [ 
-          { model: User, as: 'Creator' },
-          { model: ProjectType, as: 'Type' } 
-        ]},
+      include: [
+        { model: Project,
+          include: [
+            { model: User, as: 'Creator' },
+            { model: ProjectType, as: 'Type' }
+          ] }
       ]
     })
   }
