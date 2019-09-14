@@ -65,15 +65,42 @@ class UserRepository {
     return User.findByPk(id)
   }
 
-  static getByProfile (profileId) {
-    let whereCondition = {}
-    if (profileId != null) whereCondition['id'] = profileId
-    return User.findAll({
+  static getById (id) {
+    return User.findByPk(id, {
+      attributes: { exclude: ['google_id'] },
       include: [{
         model: Profile,
         as: 'Profiles',
-        attributes: { exclude: ['google_id'] },
-        where: whereCondition
+        through: { attributes: [] }
+      }]
+    })
+  }
+
+  static getAll (params) {
+    let whereCondition = {}
+    if (params.name != null) {
+      let names = params.name.split(' ')
+      whereCondition.name = { [Op.iLike]: `%${names[0]}%` }
+      if (names.length > 1) whereCondition.surname = { [Op.iLike]: `%${names[1]}%` }
+    }
+    if (params.email != null) whereCondition.email = { [Op.iLike]: `%${params.email}%` }
+    return User.findAll({
+      attributes: { exclude: ['google_id'] },
+      include: [{
+        model: Profile,
+        as: 'Profiles',
+        through: { attributes: [] }
+      }],
+      where: whereCondition
+    })
+  }
+
+  static getProfiles () {
+    return Profile.findAll({
+      include: [{
+        model: Credential,
+        as: 'Credentials',
+        through: { attributes: [] }
       }]
     })
   }
@@ -119,14 +146,6 @@ class UserRepository {
       google_id: token,
       surname: surname,
       padron: padron
-    })
-  }
-
-  static getProfiles (profiles) {
-    return Profile.findAll({
-      where: {
-        id: profiles
-      }
     })
   }
 

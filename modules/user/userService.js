@@ -63,9 +63,9 @@ const validateUser = async (token, email) => {
   })
 }
 
-const getUserById = async (userId) => {
+const getUser = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.get(userId)
+    return UserRepository.getById(userId)
       .then(user => {
         if (user == null) return reject(getUsuarioNoExistente())
         return resolve(user)
@@ -74,16 +74,23 @@ const getUserById = async (userId) => {
   })
 }
 
-const getUsersByProfileResponse = (users) => {
-  return users.map(user => { return { id: user.dataValues.id, name: `${user.dataValues.name} ${user.dataValues.surname}` } })
-}
-
-const getUsersByProfile = async (profileId) => {
+const getUsers = async (params) => {
   return new Promise(async (resolve, reject) => {
-    return UserRepository.getByProfile(profileId)
+    return UserRepository.getAll(params)
       .then(users => {
         if (users == null) return reject(getUsuarioNoExistente())
-        return resolve(getUsersByProfileResponse(users))
+        return resolve(users)
+      })
+      .catch(() => { return reject(getServiceError()) })
+  })
+}
+
+const getProfiles = async () => {
+  return new Promise(async (resolve, reject) => {
+    return UserRepository.getProfiles()
+      .then(users => {
+        if (users == null) return reject(getUsuarioNoExistente())
+        return resolve(users)
       })
       .catch(() => { return reject(getServiceError()) })
   })
@@ -102,4 +109,4 @@ const createUser = async (email, name, surname, token, padron, type) => {
   })
 }
 
-module.exports = { getUserById, getUsersByProfile, createUser, validateUser }
+module.exports = { getUser, getUsers, createUser, validateUser, getProfiles }
