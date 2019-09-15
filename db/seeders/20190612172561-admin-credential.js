@@ -62,6 +62,12 @@ export function up (queryInterface) {
   },
   {
     profile_id: 1,
+    credential_id: 9,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    profile_id: 1,
     credential_id: 10,
     created_at: new Date(),
     updated_at: new Date()
