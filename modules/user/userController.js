@@ -31,4 +31,13 @@ const getProfiles = async function (req, res) {
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
-module.exports = { getUser, getUsers, createAux, getProfiles }
+const editUser = async function (req, res) {
+  console.log('userController::editUser')
+  let userId = req.params.id
+  let profiles = req.body.profiles
+  let response = await userService.editUser(userId, profiles)
+  res.statusCode = codes.OK
+  res.json(createSuccessResponse(res.statusCode, response))
+}
+
+module.exports = { getUser, getUsers, createAux, getProfiles, editUser }

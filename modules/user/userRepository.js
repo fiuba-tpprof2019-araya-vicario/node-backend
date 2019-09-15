@@ -1,5 +1,5 @@
 import { sequelize } from '../../db/connectorDB'
-import { getServiceError } from '../util/error'
+import { getServiceError, getBadRequest } from '../util/error'
 import { Op } from 'sequelize'
 
 const User = require('../../db/models').User
@@ -400,6 +400,17 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Careers': user.Careers } })
+      .catch(() => { return getServiceError() })
+  }
+
+  static edit (id, profiles) {
+    return User.findByPk(id)
+      .then(user => {
+        if (user === null) return null
+        else {
+          return user.setProfiles(profiles).then(() => { return id })
+        }
+      })
       .catch(() => { return getServiceError() })
   }
 }

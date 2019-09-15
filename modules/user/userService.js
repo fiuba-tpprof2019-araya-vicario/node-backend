@@ -109,4 +109,15 @@ const createUser = async (email, name, surname, token, padron, type) => {
   })
 }
 
-module.exports = { getUser, getUsers, createUser, validateUser, getProfiles }
+const editUser = async (userId, profiles) => {
+  return new Promise(async (resolve, reject) => {
+    return UserRepository.edit(userId, profiles)
+      .then(userId => {
+        if (userId == null) return reject(getServiceError())
+        return resolve(userId)
+      })
+      .catch((e) => { return reject(getServiceError()) })
+  })
+}
+
+module.exports = { getUser, getUsers, createUser, validateUser, getProfiles, editUser }

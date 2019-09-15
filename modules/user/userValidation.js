@@ -1,6 +1,7 @@
 import { check } from 'express-validator'
 
 const MISS_ID_USER = 'Falta el id de usuario'
+const MISS_PROFILES = 'Faltan los perfiles'
 
 const getUserValidations = [
   check('id')
@@ -8,4 +9,11 @@ const getUserValidations = [
     .withMessage(MISS_ID_USER)
 ]
 
-export { getUserValidations }
+const editUserValidations = [
+  ...getUserValidations,
+  check('profiles')
+    .exists()
+    .withMessage(MISS_PROFILES)
+]
+
+export { getUserValidations, editUserValidations }
