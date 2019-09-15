@@ -95,16 +95,6 @@ class UserRepository {
     })
   }
 
-  static getProfiles () {
-    return Profile.findAll({
-      include: [{
-        model: Credential,
-        as: 'Credentials',
-        through: { attributes: [] }
-      }]
-    })
-  }
-
   static getByEmailAndToken (email, token) {
     return User.findOne({
       where: {

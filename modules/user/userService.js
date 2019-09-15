@@ -85,17 +85,6 @@ const getUsers = async (params) => {
   })
 }
 
-const getProfiles = async () => {
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.getProfiles()
-      .then(users => {
-        if (users == null) return reject(getUsuarioNoExistente())
-        return resolve(users)
-      })
-      .catch(() => { return reject(getServiceError()) })
-  })
-}
-
 const createUser = async (email, name, surname, token, padron, type) => {
   return new Promise(async (resolve, reject) => {
     // TODO: CAMBIAR ESTE HARDCODEO
@@ -120,4 +109,4 @@ const editUser = async (userId, profiles) => {
   })
 }
 
-module.exports = { getUser, getUsers, createUser, validateUser, getProfiles, editUser }
+module.exports = { getUser, getUsers, createUser, validateUser, editUser }
