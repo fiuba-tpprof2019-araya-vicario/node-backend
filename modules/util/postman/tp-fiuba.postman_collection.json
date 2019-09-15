@@ -614,6 +614,58 @@
 			]
 		},
 		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "GetProfiles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/profiles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profiles",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c7eca67e-3414-464f-8f73-4ee972822da5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f2f6852-f81b-496d-a64a-81fdf0db1488",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Users",
 			"item": [
 				{
@@ -674,24 +726,39 @@
 					"response": []
 				},
 				{
-					"name": "GetProfiles",
+					"name": "EditUser",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
 								"type": "text",
 								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"profiles\": [2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/users/profiles",
+							"raw": "{{url}}/users/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"users",
-								"profiles"
+								"1"
 							]
 						}
 					},
