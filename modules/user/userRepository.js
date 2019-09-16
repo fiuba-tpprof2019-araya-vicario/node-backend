@@ -29,11 +29,11 @@ const getWhereForTypeOfUsers = (params) => {
     let credential_id;
     if (params.type === 'student') {
       credential_id = 1;
-    } else if (params.type === 'student') {
+    } else if (params.type === 'tutor') {
       credential_id = 8;
     }
 
-    whereCondition.push({
+    credential_id && whereCondition.push({
       model: Profile,
       as: 'Profiles',
       required: true,
