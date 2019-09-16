@@ -12,6 +12,48 @@ const Career = require('../../db/models').Career
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 
+const getWhereForAllUsers = (params) => {
+  let whereCondition = {}
+  if (params.name != null) {
+    let names = params.name.split(' ')
+    whereCondition.name = { [Op.iLike]: `%${names[0]}%` }
+    if (names.length > 1) whereCondition.surname = { [Op.iLike]: `%${names[1]}%` }
+  }
+  if (params.email != null) whereCondition.email = { [Op.iLike]: `%${params.email}%` }
+  return whereCondition;
+}
+
+const getWhereForTypeOfUsers = (params) => {
+  let whereCondition = []
+  if (params.type != null) {
+    let credential_id;
+    if (params.type === 'student') {
+      credential_id = 1;
+    } else if (params.type === 'student') {
+      credential_id = 8;
+    }
+
+    whereCondition.push({
+      model: Profile,
+      as: 'Profiles',
+      required: true,
+      attributes: [],
+      through: { attributes: [] },
+      include: {
+        model: Credential,
+        as: 'Credentials',
+        required: true,
+        attributes: [],
+        through: { attributes: [] },
+        where: {
+          id: credential_id
+        }
+      }
+    })
+  }
+  return whereCondition;
+}
+
 class UserRepository {
   static get (id, transaction) {
     let options = {
@@ -77,20 +119,17 @@ class UserRepository {
   }
 
   static getAll (params) {
-    let whereCondition = {}
-    if (params.name != null) {
-      let names = params.name.split(' ')
-      whereCondition.name = { [Op.iLike]: `%${names[0]}%` }
-      if (names.length > 1) whereCondition.surname = { [Op.iLike]: `%${names[1]}%` }
-    }
-    if (params.email != null) whereCondition.email = { [Op.iLike]: `%${params.email}%` }
+    const whereCondition = getWhereForAllUsers(params)
+    const whereForType = getWhereForTypeOfUsers(params)
     return User.findAll({
       attributes: { exclude: ['google_id'] },
       include: [{
         model: Profile,
         as: 'Profiles',
         through: { attributes: [] }
-      }],
+      },
+      ...whereForType
+      ],
       where: whereCondition
     })
   }
