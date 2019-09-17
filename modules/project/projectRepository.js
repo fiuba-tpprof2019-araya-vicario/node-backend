@@ -124,7 +124,7 @@ const getFullIncludeProjectData = (id) => {
 
 class ProjectRepository {
   static getProjectById (id) {
-    return Project.findByPk(id, { inclide: getFullIncludeProjectData(id) })
+    return Project.findByPk(id, { include: getFullIncludeProjectData(id) })
   }
 
   static getProjects (filter) {
