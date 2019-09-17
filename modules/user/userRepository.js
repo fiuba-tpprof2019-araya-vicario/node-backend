@@ -123,13 +123,7 @@ class UserRepository {
     const whereForType = getWhereForTypeOfUsers(params)
     return User.findAll({
       attributes: { exclude: ['google_id'] },
-      include: [{
-        model: Profile,
-        as: 'Profiles',
-        through: { attributes: [] }
-      },
-      ...whereForType
-      ],
+      include: whereForType,
       where: whereCondition
     })
   }

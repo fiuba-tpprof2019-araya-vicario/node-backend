@@ -25,60 +25,110 @@ const TYPE_TUTOR_REQUEST = {
   COTUTOR: 'cotutor'
 }
 
+const getWhereForProjects = (filter) => {
+  let whereCondition = {}
+  if (filter.state != null) whereCondition.state_id = filter.state
+  return whereCondition;
+}
+
+const getFullIncludeProjectsData = () => {
+  return [{
+    model: User,
+    as: 'Creator',
+    attributes: { exclude: ['google_id'] }
+  },
+  {
+    model: User,
+    as: 'Tutor',
+    attributes: { exclude: ['google_id'] }
+  },
+  {
+    model: User,
+    as: 'Students',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] }
+  },
+  {
+    model: User,
+    as: 'Cotutors',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] }
+  },
+  {
+    model: ProjectType,
+    as: 'Type'
+  },
+  {
+    model: State,
+    as: 'State'
+  },
+  {
+    model: Career,
+    as: 'Careers',
+    through: { attributes: [] }
+  }]
+}
+
+const getFullIncludeProjectData = (id) => {
+  return [{
+      model: User,
+      as: 'Creator',
+      attributes: { exclude: ['google_id'] }
+    },
+    {
+      model: User,
+      as: 'Tutor',
+      attributes: { exclude: ['google_id'] },
+      include: [{
+        model: ProjectRequestTutor,
+        as: 'TutorRequests',
+        where: { project_id: id }
+      }]
+    },
+    {
+      model: User,
+      as: 'Students',
+      attributes: { exclude: ['google_id'] },
+      through: { attributes: [] },
+      include: [{
+        model: ProjectRequestStudent,
+        as: 'StudentRequests',
+        where: { project_id: id }
+      }]
+    },
+    {
+      model: User,
+      as: 'Cotutors',
+      attributes: { exclude: ['google_id'] },
+      through: { attributes: [] },
+      include: [{
+        model: ProjectRequestTutor,
+        as: 'TutorRequests',
+        where: { project_id: id }
+      }]
+    },
+    {
+      model: ProjectType,
+      as: 'Type'
+    },
+    {
+      model: State,
+      as: 'State'
+    },
+    {
+      model: Career,
+      as: 'Careers',
+      through: { attributes: [] }
+    }]
+}
+
 class ProjectRepository {
   static getProjectById (id) {
-    return Project.findByPk(id, {
-      include: [{
-        model: User,
-        as: 'Creator',
-        attributes: { exclude: ['google_id'] }
-      },
-      {
-        model: User,
-        as: 'Tutor',
-        attributes: { exclude: ['google_id'] },
-        include: [{
-          model: ProjectRequestTutor,
-          as: 'TutorRequests',
-          where: { project_id: id }
-        }]
-      },
-      {
-        model: User,
-        as: 'Students',
-        attributes: { exclude: ['google_id'] },
-        through: { attributes: [] },
-        include: [{
-          model: ProjectRequestStudent,
-          as: 'StudentRequests',
-          where: { project_id: id }
-        }]
-      },
-      {
-        model: User,
-        as: 'Cotutors',
-        attributes: { exclude: ['google_id'] },
-        through: { attributes: [] },
-        include: [{
-          model: ProjectRequestTutor,
-          as: 'TutorRequests',
-          where: { project_id: id }
-        }]
-      },
-      {
-        model: ProjectType,
-        as: 'Type'
-      },
-      {
-        model: State,
-        as: 'State'
-      },
-      {
-        model: Career,
-        as: 'Careers',
-        through: { attributes: [] }
-      }]
-    })
+    return Project.findByPk(id, { inclide: getFullIncludeProjectData(id) })
+  }
+
+  static getProjects (filter) {
+    return Project.findAll({ include: getFullIncludeProjectsData(), where: getWhereForProjects(filter) })
   }
 
   static createProject (name, type, description) {

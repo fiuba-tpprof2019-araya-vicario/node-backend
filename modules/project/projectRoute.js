@@ -7,6 +7,7 @@ const multer = require('multer')
 const upload = multer({ dest: './uploads/' })
 
 const router = Router()
+router.get('/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(projectController.getProjects))
 router.get('/students/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(projectController.getStudentProjects))
 router.get('/tutors/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(projectController.getTutorProjects))
 router.post('/', createValidations, validateWithExpress, checkIsLoggedWithCredentials('CREATE_PROJECTS'), validate(projectController.createProject))
