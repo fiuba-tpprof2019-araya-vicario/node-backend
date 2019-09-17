@@ -3,12 +3,14 @@ import logger from 'morgan'
 import { json, urlencoded } from 'body-parser'
 import { connect } from './db/connectorDB'
 import authRoute from './modules/auth/authRoute'
+
 import userRoute from './modules/user/userRoute'
 import contactRoute from './modules/contact/contactRoute'
 import projectRoute from './modules/project/projectRoute'
 import requestRoute from './modules/request/requestRoute'
 import requirementRoute from './modules/requirement/requirementRoute'
 import careerRoute from './modules/career/careerRoute'
+import profileRoute from './modules/profile/profileRoute'
 
 const app = express()
 
@@ -33,8 +35,8 @@ if (process.env.PRODUCTION_LOG) {
   app.use(logger('dev'))
 }
 
-app.use(json())
-app.use(urlencoded({ extended: false }))
+app.use(json({ limit: '50mb' }))
+app.use(urlencoded({ limit: '50mb', extended: true }))
 
 app.get('/', function (req, res, next) {
   res.status(200).send('Hello World')
@@ -45,6 +47,7 @@ app.use('/v0/api/projects', projectRoute)
 app.use('/v0/api/requests', requestRoute)
 app.use('/v0/api/requirements', requirementRoute)
 app.use('/v0/api/careers', careerRoute)
+app.use('/v0/api/profiles', profileRoute)
 app.use('/v0/api/contacts', contactRoute)
 
 // error handler

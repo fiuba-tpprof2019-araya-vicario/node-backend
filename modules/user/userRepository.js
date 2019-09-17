@@ -1,5 +1,5 @@
 import { sequelize } from '../../db/connectorDB'
-import { getServiceError } from '../util/error'
+import { getServiceError, getBadRequest } from '../util/error'
 import { Op } from 'sequelize'
 
 const User = require('../../db/models').User
@@ -11,6 +11,48 @@ const State = require('../../db/models').State
 const Career = require('../../db/models').Career
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
+
+const getWhereForAllUsers = (params) => {
+  let whereCondition = {}
+  if (params.name != null) {
+    let names = params.name.split(' ')
+    whereCondition.name = { [Op.iLike]: `%${names[0]}%` }
+    if (names.length > 1) whereCondition.surname = { [Op.iLike]: `%${names[1]}%` }
+  }
+  if (params.email != null) whereCondition.email = { [Op.iLike]: `%${params.email}%` }
+  return whereCondition;
+}
+
+const getWhereForTypeOfUsers = (params) => {
+  let whereCondition = []
+  if (params.type != null) {
+    let credential_id;
+    if (params.type === 'student') {
+      credential_id = 1;
+    } else if (params.type === 'tutor') {
+      credential_id = 8;
+    }
+
+    credential_id && whereCondition.push({
+      model: Profile,
+      as: 'Profiles',
+      required: true,
+      attributes: [],
+      through: { attributes: [] },
+      include: {
+        model: Credential,
+        as: 'Credentials',
+        required: true,
+        attributes: [],
+        through: { attributes: [] },
+        where: {
+          id: credential_id
+        }
+      }
+    })
+  }
+  return whereCondition;
+}
 
 class UserRepository {
   static get (id, transaction) {
@@ -65,16 +107,24 @@ class UserRepository {
     return User.findByPk(id)
   }
 
-  static getByProfile (profileId) {
-    let whereCondition = {}
-    if (profileId != null) whereCondition['id'] = profileId
-    return User.findAll({
+  static getById (id) {
+    return User.findByPk(id, {
+      attributes: { exclude: ['google_id'] },
       include: [{
         model: Profile,
         as: 'Profiles',
-        attributes: { exclude: ['google_id'] },
-        where: whereCondition
+        through: { attributes: [] }
       }]
+    })
+  }
+
+  static getAll (params) {
+    const whereCondition = getWhereForAllUsers(params)
+    const whereForType = getWhereForTypeOfUsers(params)
+    return User.findAll({
+      attributes: { exclude: ['google_id'] },
+      include: whereForType,
+      where: whereCondition
     })
   }
 
@@ -119,14 +169,6 @@ class UserRepository {
       google_id: token,
       surname: surname,
       padron: padron
-    })
-  }
-
-  static getProfiles (profiles) {
-    return Profile.findAll({
-      where: {
-        id: profiles
-      }
     })
   }
 
@@ -381,6 +423,17 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Careers': user.Careers } })
+      .catch(() => { return getServiceError() })
+  }
+
+  static edit (id, profiles) {
+    return User.findByPk(id)
+      .then(user => {
+        if (user === null) return null
+        else {
+          return user.setProfiles(profiles).then(() => { return id })
+        }
+      })
       .catch(() => { return getServiceError() })
   }
 }

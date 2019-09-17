@@ -1,61 +1,61 @@
 export function up (queryInterface) {
-  return queryInterface.bulkInsert('User_profiles', [{
+  return queryInterface.bulkInsert('User_careers', [{
     user_id: 1,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 2,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 3,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 4,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 5,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 6,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 7,
-    profile_id: 4,
+    career_id: 4,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 8,
-    profile_id: 3,
+    career_id: 3,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 9,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 10,
-    profile_id: 2,
+    career_id: 2,
     created_at: new Date(),
     updated_at: new Date()
   }], {})

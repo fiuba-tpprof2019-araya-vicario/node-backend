@@ -9,6 +9,42 @@
 			"name": "Projects",
 			"item": [
 				{
+					"name": "GetProjects",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/projects?state=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GetProjectById",
 					"request": {
 						"method": "GET",
@@ -250,6 +286,47 @@
 								"1",
 								"tutors",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadProjectProposal",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/projects/1/proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1",
+								"proposal"
 							]
 						}
 					},
@@ -605,6 +682,157 @@
 							],
 							"path": [
 								"careers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "GetProfiles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/profiles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profiles",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c7eca67e-3414-464f-8f73-4ee972822da5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f2f6852-f81b-496d-a64a-81fdf0db1488",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetUserById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/users/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUsers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/users?name=Sebasti vic&email=svicario@fi.uba.ar&type=student",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Sebasti vic"
+								},
+								{
+									"key": "email",
+									"value": "svicario@fi.uba.ar"
+								},
+								{
+									"key": "type",
+									"value": "student"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditUser",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"profiles\": [2]\n}"
+						},
+						"url": {
+							"raw": "{{url}}/users/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
 								"1"
 							]
 						}

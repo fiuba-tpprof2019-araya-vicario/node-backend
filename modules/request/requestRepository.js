@@ -12,6 +12,8 @@ const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 const ProjectHistory = require('../../db/models').ProjectHistory
 const State = require('../../db/models').State
 
+const STATE_ID_START = 1
+
 class RequestRepository {
   static modifyStatusRequestStudent (id, status) {
     return ProjectRequestStudent.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING } })
@@ -79,12 +81,12 @@ class RequestRepository {
   static async acceptTutorRequest (requestId) {
     console.log(requestId)
     console.log(State.getMaxStateAcceptRequest())
-    let request = await RequestRepository.getRequestTutorById(requestId, [{ model: Project, where: { state_id: 1 } }])
+    let request = await RequestRepository.getRequestTutorById(requestId, [{ model: Project, where: { state_id: STATE_ID_START } }])
     if (request == null) return Promise.reject(getBadRequest())
     let projectTypeState = await ProjectTypeTransaction.findOne({
       where: {
         project_type: request.dataValues.Project.dataValues.type_id,
-        primary_state: request.dataValues.Project.dataValues.type_id
+        primary_state: request.dataValues.Project.dataValues.state_id
       }
     })
     if (projectTypeState == null) return Promise.reject(getBadRequest())

@@ -3,8 +3,9 @@ import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
 import { sendMail } from '../util/mailService'
 import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
+import { uploadFile } from '../util/googleDriveService'
 
-const getSpecificProject = async (projectId) => {
+export const getSpecificProject = async (projectId) => {
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.getProjectById(projectId)
       .then(project => {
@@ -17,7 +18,20 @@ const getSpecificProject = async (projectId) => {
   })
 }
 
-const getAllStudentProjects = async (userId) => {
+export const getProjects = async (filter) => {
+  return new Promise(async (resolve, reject) => {
+    return ProjectRepository.getProjects(filter)
+      .then(project => {
+        if (project == null) return reject(getNotFound())
+        else return resolve(project)
+      })
+      .catch(() => {
+        return reject(getServiceError())
+      })
+  })
+}
+
+export const getAllStudentProjects = async (userId) => {
   return new Promise(async (resolve, reject) => {
     return UserRepository.getStudentProjects(userId)
       .then(projects => {
@@ -29,7 +43,7 @@ const getAllStudentProjects = async (userId) => {
   })
 }
 
-const getAllTutorProjects = async (userId) => {
+export const getAllTutorProjects = async (userId) => {
   return new Promise(async (resolve, reject) => {
     return UserRepository.getTutorProjects(userId)
       .then(projects => {
@@ -75,7 +89,7 @@ const sendRequestMails = (data) => {
   }
 }
 
-const addProject = async (creatorId, data) => {
+export const addProject = async (creatorId, data) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
   let response = await ProjectRepository.create(creatorId, data)
@@ -86,7 +100,7 @@ const addProject = async (creatorId, data) => {
   return Promise.resolve(response)
 }
 
-const addProjectWithRequirement = async (creatorId, data) => {
+export const addProjectWithRequirement = async (creatorId, data) => {
   if (await ProjectRepository.creatorHasProject(creatorId)) return Promise.reject(getBadRequest())
 
   let response = await ProjectRepository.createWithRequirement(creatorId, data)
@@ -97,7 +111,7 @@ const addProjectWithRequirement = async (creatorId, data) => {
   return Promise.resolve(response)
 }
 
-const editProject = async (creatorId, projectId, data) => {
+export const editProject = async (creatorId, projectId, data) => {
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
   if (!(await ProjectRepository.isProjectCreator(projectId, creatorId))) return Promise.reject(getBadRequest('Solo el creador del proyecto puede editarlo'))
 
@@ -109,7 +123,7 @@ const editProject = async (creatorId, projectId, data) => {
   return Promise.resolve(response)
 }
 
-const removeProject = async (projectId) => {
+export const removeProject = async (projectId) => {
   return new Promise(async (resolve, reject) => {
     return ProjectRepository.deleteProjectById(projectId)
       .then(projectId => {
@@ -121,7 +135,7 @@ const removeProject = async (projectId) => {
   })
 }
 
-const removeStudentProject = async (projectId, userId) => {
+export const removeStudentProject = async (projectId, userId) => {
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
   if (await ProjectRepository.isProjectCreator(projectId, userId)) return removeCreatorProject(projectId, userId)
   return removeParticipantProject(projectId, userId)
@@ -151,7 +165,7 @@ const removeCreatorProject = async (projectId, userId) => {
   })
 }
 
-const removeTutorProject = async (projectId, userId) => {
+export const removeTutorProject = async (projectId, userId) => {
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
   if (await ProjectRepository.isProjectTutor(projectId, userId)) return _removeTutorProject(projectId, userId)
   return removeCotutorProject(projectId, userId)
@@ -182,4 +196,9 @@ const removeCotutorProject = async (projectId, userId) => {
   })
 }
 
-module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject, addProjectWithRequirement, removeStudentProject, removeTutorProject }
+export const uploadProposal = async (projectId, file) => {
+  let fileResponse = await uploadFile(file.originalname, file.path)
+  let response = await ProjectRepository.updateProposal(projectId, fileResponse.link, fileResponse.name)
+  if (response !== null) return Promise.resolve(response)
+  else return Promise.reject(getBadRequest())
+}
