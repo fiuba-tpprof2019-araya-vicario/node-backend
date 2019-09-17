@@ -9,6 +9,42 @@
 			"name": "Projects",
 			"item": [
 				{
+					"name": "GetProjects",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/projects?state=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GetProjectById",
 					"request": {
 						"method": "GET",
@@ -280,12 +316,7 @@
 									"type": "file",
 									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/proposal",
@@ -708,8 +739,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Users",
@@ -750,7 +780,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/users?name=Sebasti vic&email=svicario@fi.uba.ar&profiles[0]=1&profiles[1]=2",
+							"raw": "{{url}}/users?name=Sebasti vic&email=svicario@fi.uba.ar&type=student",
 							"host": [
 								"{{url}}"
 							],
@@ -767,12 +797,8 @@
 									"value": "svicario@fi.uba.ar"
 								},
 								{
-									"key": "profiles[0]",
-									"value": "1"
-								},
-								{
-									"key": "profiles[1]",
-									"value": "2"
+									"key": "type",
+									"value": "student"
 								}
 							]
 						}
@@ -798,12 +824,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"profiles\": [2]\n}"
 						},
 						"url": {
 							"raw": "{{url}}/users/1",
