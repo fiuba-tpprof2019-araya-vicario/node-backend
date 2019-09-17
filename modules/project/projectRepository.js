@@ -187,13 +187,15 @@ class ProjectRepository {
             project_id: project.dataValues.id,
             user_id: requirement.Creator.dataValues.id,
             status: STATUS_REQUEST.PENDING,
+            accepted_proposal: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
           let p6 = data.students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
-              status: STATUS_REQUEST.PENDING
+              status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING
             }, { transaction })
           })
           let p7 = data.cotutors.map(cotutor => {
@@ -201,6 +203,7 @@ class ProjectRepository {
               project_id: project.dataValues.id,
               user_id: cotutor,
               status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING,
               type: TYPE_TUTOR_REQUEST.COTUTOR
             }, { transaction })
           })
@@ -237,13 +240,15 @@ class ProjectRepository {
             project_id: project.dataValues.id,
             user_id: data.tutor_id,
             status: STATUS_REQUEST.PENDING,
+            accepted_proposal: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
           let p6 = data.students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
-              status: STATUS_REQUEST.PENDING
+              status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING
             }, { transaction })
           })
           let p7 = data.cotutors.map(cotutor => {
@@ -251,6 +256,7 @@ class ProjectRepository {
               project_id: project.dataValues.id,
               user_id: cotutor,
               status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING,
               type: TYPE_TUTOR_REQUEST.COTUTOR
             }, { transaction })
           })
@@ -336,7 +342,8 @@ class ProjectRepository {
                 return ProjectRequestStudent.create({
                   project_id: project.dataValues.id,
                   user_id: student,
-                  status: STATUS_REQUEST.PENDING
+                  status: STATUS_REQUEST.PENDING,
+                  accepted_proposal: STATUS_REQUEST.PENDING
                 }, { transaction })
               })
               updatePromises = [...updatePromises, p1, ...p2]
@@ -349,6 +356,7 @@ class ProjectRepository {
                   project_id: project.dataValues.id,
                   user_id: cotutor,
                   status: STATUS_REQUEST.PENDING,
+                  accepted_proposal: STATUS_REQUEST.PENDING,
                   type: TYPE_TUTOR_REQUEST.COTUTOR
                 }, { transaction })
               })
@@ -360,6 +368,7 @@ class ProjectRepository {
                 project_id: project.dataValues.id,
                 user_id: data.tutor_id,
                 status: STATUS_REQUEST.PENDING,
+                accepted_proposal: STATUS_REQUEST.PENDING,
                 type: TYPE_TUTOR_REQUEST.TUTOR
               }, { transaction })
               updatePromises.push(p1)

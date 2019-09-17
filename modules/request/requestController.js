@@ -15,7 +15,7 @@ const getTutorRequests = async function (req, res) {
 
 const putStudentRequest = async function (req, res) {
   let body = req.body
-  let response = await modifyStudentRequest(req.params.id, body.status)
+  let response = await modifyStudentRequest(req.params.id, body.status, body.proposal_state)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }

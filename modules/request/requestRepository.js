@@ -31,6 +31,22 @@ class RequestRepository {
       })
   }
 
+  static modifyProposalStatusRequestStudent (id, accepted_proposal) {
+    return ProjectRequestStudent.update({ accepted_proposal }, { where: { id, status: STATUS_REQUEST.ACCEPTED } })
+      .then((result) => {
+        if (result[0] > 0) return id
+        else return null
+      })
+  }
+
+  static modifyProposalStatusRequestTutor (id, accepted_proposal, transaction) {
+    return ProjectRequestTutor.update({ accepted_proposal }, { where: { id, status: STATUS_REQUEST.ACCEPTED }, transaction })
+      .then((result) => {
+        if (result[0] > 0) return id
+        else return null
+      })
+  }
+
   static getRequestStudentById (id, include) {
     return ProjectRequestStudent.findByPk(id, { include })
   }
@@ -73,6 +89,21 @@ class RequestRepository {
 
   static hasRequestStudentPending (requestId) {
     return ProjectRequestStudent.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: { [Op.lte]: State.getMaxStateAcceptRequest() } } }] })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static hasRequestTutorAccepted (requestId) {
+    console.log(State.getMaxStateAcceptRequest())
+    return ProjectRequestTutor.findOne({ where: { id: requestId, status: STATUS_REQUEST.ACCEPTED } })
+      .then(request => {
+        return request != null
+      })
+  }
+
+  static hasRequestStudentAccepted (requestId) {
+    return ProjectRequestStudent.findOne({ where: { id: requestId, status: STATUS_REQUEST.ACCEPTED } })
       .then(project => {
         return project != null
       })
