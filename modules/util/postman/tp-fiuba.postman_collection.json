@@ -254,6 +254,52 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "UploadProjectProposal",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/projects/1/proposal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1",
+								"proposal"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -704,7 +750,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/users?name=Sebasti vic&email=svicario@fi.uba.ar",
+							"raw": "{{url}}/users?name=Sebasti vic&email=svicario@fi.uba.ar&profiles[0]=1&profiles[1]=2",
 							"host": [
 								"{{url}}"
 							],
@@ -719,6 +765,14 @@
 								{
 									"key": "email",
 									"value": "svicario@fi.uba.ar"
+								},
+								{
+									"key": "profiles[0]",
+									"value": "1"
+								},
+								{
+									"key": "profiles[1]",
+									"value": "2"
 								}
 							]
 						}
