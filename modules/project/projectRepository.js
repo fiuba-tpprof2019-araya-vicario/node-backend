@@ -404,6 +404,13 @@ class ProjectRepository {
         return project != null
       })
   }
+
+  static updateProposal (projectId, link, name) {
+    return Project.update(
+      { proposal_url: link, proposal_name: name },
+      { where: { id: projectId } }
+    )
+  }
 }
 
 export default ProjectRepository

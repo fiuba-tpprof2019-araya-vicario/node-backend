@@ -1,9 +1,9 @@
-import { OAuth2Client } from 'google-auth-library'
+import { google } from 'googleapis'
 import jwt from 'jsonwebtoken'
 import { getServiceError } from '../util/error'
 import moment from 'moment'
 
-const client = new OAuth2Client(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
+const client = new google.auth.OAuth2(process.env.AUDIENCE, process.env.CLIENT_GOOGLE_SECRET, '')
 
 const createToken = (id, email, credentials) => {
   let payload = {

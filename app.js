@@ -3,7 +3,6 @@ import logger from 'morgan'
 import { json, urlencoded } from 'body-parser'
 import { connect } from './db/connectorDB'
 import authRoute from './modules/auth/authRoute'
-import googleDriveService from './modules/auth/googleDriveService'
 
 import userRoute from './modules/user/userRoute'
 import contactRoute from './modules/contact/contactRoute'
@@ -36,8 +35,8 @@ if (process.env.PRODUCTION_LOG) {
   app.use(logger('dev'))
 }
 
-app.use(json())
-app.use(urlencoded({ extended: false }))
+app.use(json({ limit: '50mb' }))
+app.use(urlencoded({ limit: '50mb', extended: true }))
 
 app.get('/', function (req, res, next) {
   res.status(200).send('Hello World')

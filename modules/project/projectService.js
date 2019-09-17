@@ -3,6 +3,7 @@ import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
 import { sendMail } from '../util/mailService'
 import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
+import { uploadFile } from '../util/googleDriveService'
 
 const getSpecificProject = async (projectId) => {
   return new Promise(async (resolve, reject) => {
@@ -182,4 +183,11 @@ const removeCotutorProject = async (projectId, userId) => {
   })
 }
 
-module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject, addProjectWithRequirement, removeStudentProject, removeTutorProject }
+const uploadProposal = async (projectId, file) => {
+  let fileResponse = await uploadFile(file.originalname, file.path)
+  let response = await ProjectRepository.updateProposal(projectId, fileResponse.link, fileResponse.name)
+  if (response !== null) return Promise.resolve(response)
+  else return Promise.reject(getBadRequest())
+}
+
+module.exports = { addProject, getSpecificProject, getAllStudentProjects, getAllTutorProjects, editProject, removeProject, addProjectWithRequirement, removeStudentProject, removeTutorProject, uploadProposal }

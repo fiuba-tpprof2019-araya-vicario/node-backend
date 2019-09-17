@@ -10,6 +10,7 @@ export function up (queryInterface, Sequelize) {
     updated_at: Sequelize.DATE,
     name: Sequelize.STRING,
     proposal_url: Sequelize.STRING,
+    proposal_name: Sequelize.STRING,
     description: Sequelize.TEXT,
     type_id: {
       type: Sequelize.INTEGER,

@@ -60,4 +60,11 @@ const deleteTutorProject = async function (req, res) {
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
-module.exports = { createProject, getProject, getStudentProjects, getTutorProjects, putProject, deleteProject, deleteStudentProject, deleteTutorProject }
+const uploadProposal = async function (req, res) {
+  console.log(req.file)
+  let response = await projectService.uploadProposal(req.params.id, req.file)
+  res.statusCode = codes.CREATED
+  res.json(createSuccessResponse(res.statusCode, response))
+}
+
+module.exports = { createProject, getProject, getStudentProjects, getTutorProjects, putProject, deleteProject, deleteStudentProject, deleteTutorProject, uploadProposal }

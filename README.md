@@ -39,3 +39,4 @@ EMAIL_USR=<Usuario de email> Ej: example@gmail.com
 EMAIL_PWD=<Password de usuario de email>
 URL_REQUEST_STUDENT=<Url de solicitudes de estudinate> Ej: "https://brain-search/my_projects"
 ACTIVE_MAILS=<Opcion para habilitar envio de mails> Ej: true
+FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Propuestas>
