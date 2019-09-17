@@ -63,5 +63,5 @@ typings/
 # .DS_Store
 .DS_Store
 
-# # Uploads files
-# /uploads/*
+# Uploads files
+/uploads/*
