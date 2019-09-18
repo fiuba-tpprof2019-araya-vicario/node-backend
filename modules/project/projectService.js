@@ -1,13 +1,14 @@
 import { getServiceError, getNotFound, getBadRequest } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
+import RequestRepository from '../request/requestRepository'
 import { sendMail } from '../util/mailService'
 import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
-import { uploadFile } from '../util/googleDriveService'
+import { uploadFile, removeFile } from '../util/googleDriveService'
 
 export const getSpecificProject = async (projectId) => {
   return new Promise(async (resolve, reject) => {
-    return ProjectRepository.getProjectById(projectId)
+    return ProjectRepository.getProjectFullById(projectId)
       .then(project => {
         if (project == null) return reject(getNotFound())
         else return resolve(project)
@@ -142,15 +143,9 @@ export const removeStudentProject = async (projectId, userId) => {
 }
 
 const removeParticipantProject = async (projectId, userId) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.deleteParticipantProject(projectId, userId)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  await ProjectRepository.deleteParticipantProject(projectId, userId)
+  await RequestRepository.resetAcceptProposal(projectId)
+  return Promise.resolve(projectId)
 }
 
 const removeCreatorProject = async (projectId, userId) => {
@@ -172,33 +167,24 @@ export const removeTutorProject = async (projectId, userId) => {
 }
 
 const _removeTutorProject = async (projectId, userId) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.deleteTutorProject(projectId, userId)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch((e) => {
-        console.error(e)
-        return reject(getServiceError())
-      })
-  })
+  await ProjectRepository.deleteTutorProject(projectId, userId)
+  await RequestRepository.resetAcceptProposal(projectId)
+  return Promise.resolve(projectId)
 }
 
 const removeCotutorProject = async (projectId, userId) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.deleteCotutorProject(projectId, userId)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  await ProjectRepository.deleteCotutorProject(projectId, userId)
+  await RequestRepository.resetAcceptProposal(projectId)
+  return Promise.resolve(projectId)
 }
 
 export const uploadProposal = async (projectId, file) => {
+  console.log('projectService::uploadProposal')
+  let project = await ProjectRepository.getProjectById(projectId)
+  if (project != null && project.proposal_drive_id != null) removeFile(project.proposal_drive_id)
   let fileResponse = await uploadFile(file.originalname, file.path)
-  let response = await ProjectRepository.updateProposal(projectId, fileResponse.link, fileResponse.name)
+  console.log('fileResponse: ', fileResponse)
+  let response = await ProjectRepository.updateProposal(projectId, fileResponse.id, fileResponse.link, fileResponse.name)
   if (response !== null) return Promise.resolve(response)
   else return Promise.reject(getBadRequest())
 }

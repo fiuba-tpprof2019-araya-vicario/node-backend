@@ -26,6 +26,11 @@ export const getAllTutorRequests = async (userId) => {
   })
 }
 
+const checkSendProjectRevision = async (project) => {
+  if (!(await ProjectRepository.hasAllRequestAcceptedProposal(project.id))) return
+  await ProjectRepository.updateNextState(project)
+}
+
 const modifyProposalStatusRequestStudent = async (requestId, proposalStatus) => {
   console.log('requestService::modifyProposalStatusRequestStudent')
   if (!(await RequestRepository.hasRequestStudentAccepted(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado aceptada'))
@@ -33,6 +38,9 @@ const modifyProposalStatusRequestStudent = async (requestId, proposalStatus) => 
 
   let response = await RequestRepository.updateRequestStudent(requestId, { accepted_proposal: proposalStatus })
   if (response == null) return Promise.reject(getBadRequest())
+
+  let project = await ProjectRepository.getProjectByRequestStudentId(requestId)
+  checkSendProjectRevision(project)
 
   // TODO: AGREGAR ENVIO DE MAIL
 
@@ -61,6 +69,9 @@ const modifyProposalStatusRequestTutor = async (requestId, proposalStatus) => {
 
   let response = await RequestRepository.updateRequestTutor(requestId, { accepted_proposal: proposalStatus })
   if (response == null) return Promise.reject(getBadRequest())
+
+  let project = await ProjectRepository.getProjectByRequestTutorId(requestId)
+  checkSendProjectRevision(project)
 
   // TODO: AGREGAR ENVIO DE MAIL
 

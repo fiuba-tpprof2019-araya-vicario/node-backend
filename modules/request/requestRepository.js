@@ -129,6 +129,12 @@ class RequestRepository {
         return requestId
       })
   }
+
+  static resetAcceptProposal (projectId) {
+    let p1 = ProjectRequestStudent.update({ accepted_proposal: 'pending' }, { where: { project_id: projectId } })
+    let p2 = ProjectRequestTutor.update({ accepted_proposal: 'pending' }, { where: { project_id: projectId } })
+    return Promise.all([p1, p2])
+  }
 }
 
 export default RequestRepository

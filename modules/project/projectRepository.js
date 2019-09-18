@@ -11,6 +11,7 @@ const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const Requirement = require('../../db/models').Requirement
 const Career = require('../../db/models').Career
+const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 
 const STATE_ID_START = 1
 
@@ -123,8 +124,20 @@ const getFullIncludeProjectData = (id) => {
 }
 
 class ProjectRepository {
-  static getProjectById (id) {
+  static getProjectFullById (id) {
     return Project.findByPk(id, { include: getFullIncludeProjectData(id) })
+  }
+
+  static getProjectById (id) {
+    return Project.findByPk(id)
+  }
+
+  static getProjectByRequestStudentId (requestId) {
+    return Project.findOne({ include: [{ model: ProjectRequestStudent, as: 'StudentRequests', required: true, where: { id: requestId } }] })
+  }
+
+  static getProjectByRequestTutorId (requestId) {
+    return Project.findOne({ include: [{ model: ProjectRequestTutor, as: 'TutorRequests', required: true, where: { id: requestId } }] })
   }
 
   static getProjects (filter) {
@@ -484,10 +497,53 @@ class ProjectRepository {
       })
   }
 
-  static updateProposal (projectId, link, name) {
+  static updateProposal (projectId, driveId, link, name) {
     return Project.update(
-      { proposal_url: link, proposal_name: name },
+      { proposal_drive_id: driveId, proposal_url: link, proposal_name: name },
       { where: { id: projectId } }
+    )
+  }
+
+  static async hasAllRequestAcceptedProposal (projectId) {
+    console.log('ProjectRepository::hasAllRequestAcceptedProposal')
+    let project = await Project.findOne({
+      where: { id: projectId },
+      include: [{
+        model: ProjectRequestStudent,
+        as: 'StudentRequests',
+        required: true,
+        where: { accepted_proposal: { [Op.ne]: 'accepted' } }
+      }]
+    })
+    console.log('Project: ', project)
+
+    if (project != null) return false
+
+    project = await Project.findOne({
+      where: { id: projectId },
+      include: [{
+        model: ProjectRequestTutor,
+        as: 'TutorRequests',
+        required: true,
+        where: { accepted_proposal: { [Op.ne]: 'accepted' } }
+      }]
+    })
+    console.log('Project: ', project)
+
+    return project == null
+  }
+
+  static async updateNextState (project) {
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        primary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.secondary_state },
+      { where: { id: project.dataValues.id } }
     )
   }
 }
