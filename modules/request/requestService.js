@@ -1,5 +1,6 @@
 import { getServiceError, getBadRequest } from '../util/error'
 import RequestRepository from './requestRepository'
+import ProjectRepository from '../project/projectRepository'
 
 export const getAllStudentRequests = async (userId) => {
   return new Promise(async (resolve, reject) => {
@@ -25,22 +26,26 @@ export const getAllTutorRequests = async (userId) => {
   })
 }
 
-const modifyProposalStatusRequestStudent = (requestId, proposalStatus) => {
+const modifyProposalStatusRequestStudent = async (requestId, proposalStatus) => {
+  console.log('requestService::modifyProposalStatusRequestStudent')
   if (!(await RequestRepository.hasRequestStudentAccepted(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado aceptada'))
-  let response = await RequestRepository.modifyProposalStatusRequestStudent(requestId, proposalStatus)
+  if (!(await ProjectRepository.canAcceptProposalRequestStudent(requestId))) return Promise.reject(getBadRequest('El proyecto no acepta propuesta'))
+
+  let response = await RequestRepository.updateRequestStudent(requestId, { accepted_proposal: proposalStatus })
   if (response == null) return Promise.reject(getBadRequest())
 
-  //TODO: AGREGAR ENVIO DE MAIL
+  // TODO: AGREGAR ENVIO DE MAIL
 
   return Promise.resolve(response)
 }
 
 const modifyStatusRequestStudent = async (requestId, status) => {
   if (!(await RequestRepository.hasRequestStudentPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
-  let response = await RequestRepository.modifyStatusRequestStudent(requestId, status)
+
+  let response = await RequestRepository.updateRequestStudent(requestId, { status })
   if (response == null) return Promise.reject(getBadRequest())
 
-  //TODO: AGREGAR ENVIO DE MAIL
+  // TODO: AGREGAR ENVIO DE MAIL
 
   return Promise.resolve(response)
 }
@@ -50,22 +55,25 @@ export const modifyStudentRequest = async (requestId, status, proposalStatus) =>
   else return modifyStatusRequestStudent(requestId, status)
 }
 
-const modifyProposalStatusRequestTutor = (requestId, proposalStatus) => {
+const modifyProposalStatusRequestTutor = async (requestId, proposalStatus) => {
   if (!(await RequestRepository.hasRequestTutorAccepted(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado aceptada'))
-  let response = await RequestRepository.modifyProposalStatusRequestTutor(requestId, proposalStatus)
+  if (!(await ProjectRepository.canAcceptProposalRequestTutor(requestId))) return Promise.reject(getBadRequest('El proyecto no acepta propuesta'))
+
+  let response = await RequestRepository.updateRequestTutor(requestId, { accepted_proposal: proposalStatus })
   if (response == null) return Promise.reject(getBadRequest())
 
-  //TODO: AGREGAR ENVIO DE MAIL
+  // TODO: AGREGAR ENVIO DE MAIL
 
   return Promise.resolve(response)
 }
 
-const modifyStatusRequestTutor = (requestId, status) => {
+const modifyStatusRequestTutor = async (requestId, status) => {
   if (!(await RequestRepository.hasRequestTutorPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
-  let response = await RequestRepository.modifyStatusRequestTutor(requestId, status)
+
+  let response = await RequestRepository.updateRequestTutor(requestId, { status })
   if (response == null) return Promise.reject(getBadRequest())
 
-  //TODO: AGREGAR ENVIO DE MAIL
+  // TODO: AGREGAR ENVIO DE MAIL
 
   return Promise.resolve(response)
 }
@@ -89,4 +97,3 @@ export const acceptTutorRequest = async (requestId) => {
       })
   })
 }
-

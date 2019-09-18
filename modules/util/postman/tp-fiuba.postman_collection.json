@@ -316,7 +316,12 @@
 									"type": "file",
 									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
 								}
-							]
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/proposal",
@@ -373,13 +378,19 @@
 							},
 							{
 								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"status\": \"accepted\"\n}"
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/requests/students/1",
@@ -391,7 +402,8 @@
 								"students",
 								"1"
 							]
-						}
+						},
+						"description": "Para aprobar/rechazar la solicitud de estudiante:\n{\n\t\"status\": \"accepted\" or \"rejected\"\n}\n\nPara aprobar/rechazar la propuesta subida del proyecto:\n{\n\t\"accepted_proposal\": \"accepted\" or \"rejected\"\n}"
 					},
 					"response": []
 				},
@@ -432,13 +444,19 @@
 							},
 							{
 								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"status\": \"rejected\",\n\t\"type\": \"tutor\"\n}"
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/requests/tutors/1",
@@ -450,7 +468,8 @@
 								"tutors",
 								"1"
 							]
-						}
+						},
+						"description": "Para aprobar/rechazar la solicitud de tutor:\n{\n\t\"status\": \"accepted\" or \"rejected\"\n\t\"type\": \"tutor\" or \"cotutor\"\n}\n\nPara aprobar/rechazar la propuesta subida del proyecto:\n{\n\t\"accepted_proposal\": \"accepted\" or \"rejected\"\n}"
 					},
 					"response": []
 				}
@@ -739,7 +758,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Users",
@@ -824,7 +844,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2]\n}"
+							"raw": "{\n\t\"profiles\": [2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/users/1",

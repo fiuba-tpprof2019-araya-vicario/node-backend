@@ -28,7 +28,7 @@ const TYPE_TUTOR_REQUEST = {
 const getWhereForProjects = (filter) => {
   let whereCondition = {}
   if (filter.state != null) whereCondition.state_id = filter.state
-  return whereCondition;
+  return whereCondition
 }
 
 const getFullIncludeProjectsData = () => {
@@ -71,55 +71,55 @@ const getFullIncludeProjectsData = () => {
 
 const getFullIncludeProjectData = (id) => {
   return [{
-      model: User,
-      as: 'Creator',
-      attributes: { exclude: ['google_id'] }
-    },
-    {
-      model: User,
-      as: 'Tutor',
-      attributes: { exclude: ['google_id'] },
-      include: [{
-        model: ProjectRequestTutor,
-        as: 'TutorRequests',
-        where: { project_id: id }
-      }]
-    },
-    {
-      model: User,
-      as: 'Students',
-      attributes: { exclude: ['google_id'] },
-      through: { attributes: [] },
-      include: [{
-        model: ProjectRequestStudent,
-        as: 'StudentRequests',
-        where: { project_id: id }
-      }]
-    },
-    {
-      model: User,
-      as: 'Cotutors',
-      attributes: { exclude: ['google_id'] },
-      through: { attributes: [] },
-      include: [{
-        model: ProjectRequestTutor,
-        as: 'TutorRequests',
-        where: { project_id: id }
-      }]
-    },
-    {
-      model: ProjectType,
-      as: 'Type'
-    },
-    {
-      model: State,
-      as: 'State'
-    },
-    {
-      model: Career,
-      as: 'Careers',
-      through: { attributes: [] }
+    model: User,
+    as: 'Creator',
+    attributes: { exclude: ['google_id'] }
+  },
+  {
+    model: User,
+    as: 'Tutor',
+    attributes: { exclude: ['google_id'] },
+    include: [{
+      model: ProjectRequestTutor,
+      as: 'TutorRequests',
+      where: { project_id: id }
     }]
+  },
+  {
+    model: User,
+    as: 'Students',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] },
+    include: [{
+      model: ProjectRequestStudent,
+      as: 'StudentRequests',
+      where: { project_id: id }
+    }]
+  },
+  {
+    model: User,
+    as: 'Cotutors',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] },
+    include: [{
+      model: ProjectRequestTutor,
+      as: 'TutorRequests',
+      where: { project_id: id }
+    }]
+  },
+  {
+    model: ProjectType,
+    as: 'Type'
+  },
+  {
+    model: State,
+    as: 'State'
+  },
+  {
+    model: Career,
+    as: 'Careers',
+    through: { attributes: [] }
+  }]
 }
 
 class ProjectRepository {
@@ -459,6 +459,26 @@ class ProjectRepository {
 
   static isProjectTutor (projectId, tutorId) {
     return Project.findOne({ where: { id: projectId }, include: [{ model: User, as: 'Tutor', where: { id: tutorId } }] })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static canAcceptProposalRequestTutor (requestId) {
+    return Project.findOne({
+      where: { proposal_url: { [Op.ne]: null } },
+      include: [{ model: ProjectRequestTutor, as: 'TutorRequests', required: true, where: { id: requestId } }]
+    })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static canAcceptProposalRequestStudent (requestId) {
+    return Project.findOne({
+      where: { proposal_url: { [Op.ne]: null } },
+      include: [{ model: ProjectRequestStudent, as: 'StudentRequests', required: true, where: { id: requestId } }]
+    })
       .then(project => {
         return project != null
       })

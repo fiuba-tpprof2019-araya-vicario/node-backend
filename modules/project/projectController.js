@@ -75,4 +75,3 @@ export const uploadProposal = async function (req, res) {
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
-

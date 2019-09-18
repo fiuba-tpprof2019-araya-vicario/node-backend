@@ -15,34 +15,20 @@ const State = require('../../db/models').State
 const STATE_ID_START = 1
 
 class RequestRepository {
-  static modifyStatusRequestStudent (id, status) {
-    return ProjectRequestStudent.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING } })
+  static updateRequestStudent (id, updateObject) {
+    return ProjectRequestStudent.update(updateObject, { where: { id } })
       .then((result) => {
         if (result[0] > 0) return ProjectRequestStudent.findByPk(id, { include: [ { model: Project }, { model: User } ] })
         else return null
       })
   }
 
-  static modifyStatusRequestTutor (id, status, transaction) {
-    return ProjectRequestTutor.update({ status }, { where: { id, status: STATUS_REQUEST.PENDING }, transaction })
+  static updateRequestTutor (id, updateObject, transaction) {
+    console.log('RequestRepository::updateRequestTutor')
+    console.log('updateObject: ', updateObject)
+    return ProjectRequestTutor.update(updateObject, { where: { id }, transaction })
       .then((result) => {
         if (result[0] > 0) return ProjectRequestTutor.findByPk(id, { include: [ { model: Project }, { model: User } ] })
-        else return null
-      })
-  }
-
-  static modifyProposalStatusRequestStudent (id, accepted_proposal) {
-    return ProjectRequestStudent.update({ accepted_proposal }, { where: { id, status: STATUS_REQUEST.ACCEPTED } })
-      .then((result) => {
-        if (result[0] > 0) return id
-        else return null
-      })
-  }
-
-  static modifyProposalStatusRequestTutor (id, accepted_proposal, transaction) {
-    return ProjectRequestTutor.update({ accepted_proposal }, { where: { id, status: STATUS_REQUEST.ACCEPTED }, transaction })
-      .then((result) => {
-        if (result[0] > 0) return id
         else return null
       })
   }
@@ -81,21 +67,26 @@ class RequestRepository {
 
   static hasRequestTutorPending (requestId) {
     console.log(State.getMaxStateAcceptRequest())
-    return ProjectRequestTutor.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: { [Op.lte]: State.getMaxStateAcceptRequest() } } }] })
+    return ProjectRequestTutor.findOne({
+      where: { id: requestId, status: STATUS_REQUEST.PENDING },
+      include: [{ model: Project, required: true, where: { state_id: { [Op.lte]: State.getMaxStateAcceptRequest() } } }]
+    })
       .then(request => {
         return request != null
       })
   }
 
   static hasRequestStudentPending (requestId) {
-    return ProjectRequestStudent.findOne({ where: { id: requestId, status: STATUS_REQUEST.PENDING }, include: [{ model: Project, where: { state_id: { [Op.lte]: State.getMaxStateAcceptRequest() } } }] })
+    return ProjectRequestStudent.findOne({
+      where: { id: requestId, status: STATUS_REQUEST.PENDING },
+      include: [{ model: Project, required: true, where: { state_id: { [Op.lte]: State.getMaxStateAcceptRequest() } } }]
+    })
       .then(project => {
         return project != null
       })
   }
 
   static hasRequestTutorAccepted (requestId) {
-    console.log(State.getMaxStateAcceptRequest())
     return ProjectRequestTutor.findOne({ where: { id: requestId, status: STATUS_REQUEST.ACCEPTED } })
       .then(request => {
         return request != null
@@ -122,7 +113,7 @@ class RequestRepository {
     })
     if (projectTypeState == null) return Promise.reject(getBadRequest())
     return sequelize.transaction(transaction => {
-      let p1 = RequestRepository.modifyStatusRequestTutor(requestId, STATUS_REQUEST.ACCEPTED, transaction)
+      let p1 = RequestRepository.updateRequestTutor(requestId, { status: STATUS_REQUEST.ACCEPTED }, transaction)
       let p2 = Project.update(
         { state_id: projectTypeState.dataValues.secondary_state },
         { where: { id: request.dataValues.project_id }, transaction }
