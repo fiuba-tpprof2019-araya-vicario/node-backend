@@ -35,7 +35,7 @@ const getActiveProject = (creations, participations) => {
   return participations.find(participation => { return participation.dataValues.state_id !== STATE_ID_LAST && participation.StudentRequests.length > 0 && participation.StudentRequests[0].dataValues.status === STATUS_REQUEST.ACCEPTED })
 }
 
-const processUserResponse = (user, resolve) => {
+const processUserResponse = (user) => {
   user = user.dataValues
   console.log(user)
   let authToken = createToken(user.id, user.email, getCredentials(user))
@@ -47,66 +47,51 @@ const processUserResponse = (user, resolve) => {
     if (activeProject != null) response.projectId = activeProject.dataValues.id
   }
   console.log(response)
-  return resolve(response)
+  return Promise.resolve(response)
 }
 
 const validateUser = async (token, email) => {
-  return new Promise(async (resolve, reject) => {
     // TODO: CAMBIAR ESTE HARDCODEO
     // return UserRepository.getByEmailAndToken(email, token)
     return UserRepository.getByEmailAndToken(email, null)
       .then(user => {
-        if (user == null) return resolve(user)
-        return processUserResponse(user, resolve)
+        if (user == null) return Promise.resolve(user)
+        return processUserResponse(user)
       })
-      .catch((e) => { console.log(e); return reject(getServiceError()) })
-  })
 }
 
 const getUser = async (userId) => {
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.getById(userId)
-      .then(user => {
-        if (user == null) return reject(getUsuarioNoExistente())
-        return resolve(user)
-      })
-      .catch(() => { return reject(getServiceError()) })
-  })
+  return UserRepository.getById(userId)
+    .then(user => {
+      if (user == null) return reject(getUsuarioNoExistente())
+      return Promise.resolve(user)
+    })
 }
 
 const getUsers = async (params) => {
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.getAll(params)
-      .then(users => {
-        if (users == null) return reject(getUsuarioNoExistente())
-        return resolve(users)
-      })
-      .catch(() => { return reject(getServiceError()) })
-  })
+  return UserRepository.getAll(params)
+    .then(users => {
+      if (users == null) return reject(getUsuarioNoExistente())
+      return Promise.resolve(users)
+    })
 }
 
 const createUser = async (email, name, surname, token, padron, type) => {
-  return new Promise(async (resolve, reject) => {
-    // TODO: CAMBIAR ESTE HARDCODEO
-    // return UserRepository.create(email, name, surname, token, padron, type)
-    return UserRepository.create(email, name, surname, null, padron, type)
-      .then(user => {
-        if (user == null) return reject(getServiceError())
-        return processUserResponse(user, resolve)
-      })
-      .catch((e) => { return reject(getServiceError()) })
-  })
+  // TODO: CAMBIAR ESTE HARDCODEO
+  // return UserRepository.create(email, name, surname, token, padron, type)
+  return UserRepository.create(email, name, surname, null, padron, type)
+    .then(user => {
+      if (user == null) return reject(getServiceError())
+      return processUserResponse(user)
+    })
 }
 
 const editUser = async (userId, profiles) => {
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.edit(userId, profiles)
-      .then(userId => {
-        if (userId == null) return reject(getServiceError())
-        return resolve(userId)
-      })
-      .catch((e) => { return reject(getServiceError()) })
-  })
+  return UserRepository.edit(userId, profiles)
+    .then(userId => {
+      if (userId == null) return reject(getServiceError())
+      return Promise.resolve(userId)
+    })
 }
 
 module.exports = { getUser, getUsers, createUser, validateUser, editUser }

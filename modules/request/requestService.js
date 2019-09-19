@@ -3,27 +3,17 @@ import RequestRepository from './requestRepository'
 import ProjectRepository from '../project/projectRepository'
 
 export const getAllStudentRequests = async (userId) => {
-  return new Promise(async (resolve, reject) => {
-    return RequestRepository.getStudentRequests(userId)
-      .then(requests => {
-        return resolve(requests)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return RequestRepository.getStudentRequests(userId)
+    .then(requests => {
+      return Promise.resolve(requests)
+    })
 }
 
 export const getAllTutorRequests = async (userId) => {
-  return new Promise(async (resolve, reject) => {
-    return RequestRepository.getTutorRequests(userId)
-      .then(requests => {
-        return resolve(requests)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return RequestRepository.getTutorRequests(userId)
+    .then(requests => {
+      return Promise.resolve(requests)
+    })
 }
 
 const checkSendProjectRevision = async (project) => {
@@ -97,14 +87,8 @@ export const modifyTutorRequest = async (requestId, status, proposalStatus) => {
 export const acceptTutorRequest = async (requestId) => {
   if (!(await RequestRepository.hasRequestTutorPending(requestId))) return Promise.reject(getBadRequest('La solicitud no se encuentra en estado pendiente'))
 
-  return new Promise(async (resolve, reject) => {
-    return RequestRepository.acceptTutorRequest(requestId)
-      .then(() => {
-        return resolve(requestId)
-      })
-      .catch((e) => {
-        console.error(e)
-        return reject(getServiceError())
-      })
-  })
+  return RequestRepository.acceptTutorRequest(requestId)
+    .then(() => {
+      return Promise.resolve(requestId)
+    })
 }

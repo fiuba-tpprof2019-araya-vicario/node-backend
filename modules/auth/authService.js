@@ -17,24 +17,22 @@ const createToken = (id, email, credentials) => {
 }
 
 const validateGoogleToken = async (idToken) => {
-  return new Promise(async (resolve, reject) => {
-    let audience = process.env.AUDIENCE
-    return client.verifyIdToken({
-      idToken: idToken,
-      audience: audience
-    })
-      .then(ticket => {
-        let payload = ticket.getPayload()
-        let email = payload.email
-        let tokenUser = payload.sub
-        let name = payload.given_name
-        let surname = payload.family_name
-        console.log('payload google ', payload)
-        console.log('token user google ', tokenUser)
-        console.log('email google ', email)
-        return resolve({ tokenUser, email, name, surname })
-      }).catch(err => { return reject(getServiceError(err.message)) })
+  let audience = process.env.AUDIENCE
+  return client.verifyIdToken({
+    idToken: idToken,
+    audience: audience
   })
+    .then(ticket => {
+      let payload = ticket.getPayload()
+      let email = payload.email
+      let tokenUser = payload.sub
+      let name = payload.given_name
+      let surname = payload.family_name
+      console.log('payload google ', payload)
+      console.log('token user google ', tokenUser)
+      console.log('email google ', email)
+      return Promise.resolve({ tokenUser, email, name, surname })
+    })
 }
 
 module.exports = { validateGoogleToken, createToken }

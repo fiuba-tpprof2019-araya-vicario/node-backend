@@ -7,53 +7,33 @@ import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotut
 import { uploadFile, removeFile } from '../util/googleDriveService'
 
 export const getSpecificProject = async (projectId) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.getProjectFullById(projectId)
-      .then(project => {
-        if (project == null) return reject(getNotFound())
-        else return resolve(project)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return ProjectRepository.getProjectFullById(projectId)
+    .then(project => {
+      if (project == null) return reject(getNotFound())
+      else return Promise.resolve(project)
+    })
 }
 
 export const getProjects = async (filter) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.getProjects(filter)
-      .then(project => {
-        if (project == null) return reject(getNotFound())
-        else return resolve(project)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return ProjectRepository.getProjects(filter)
+    .then(project => {
+      if (project == null) return reject(getNotFound())
+      else return Promise.resolve(project)
+    })
 }
 
 export const getAllStudentProjects = async (userId) => {
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.getStudentProjects(userId)
-      .then(projects => {
-        return resolve(projects)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return UserRepository.getStudentProjects(userId)
+    .then(projects => {
+      return Promise.resolve(projects)
+    })
 }
 
 export const getAllTutorProjects = async (userId) => {
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.getTutorProjects(userId)
-      .then(projects => {
-        return resolve(projects)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return UserRepository.getTutorProjects(userId)
+    .then(projects => {
+      return Promise.resolve(projects)
+    })
 }
 
 const sendRequestMails = (data) => {
@@ -125,15 +105,10 @@ export const editProject = async (creatorId, projectId, data) => {
 }
 
 export const removeProject = async (projectId) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.deleteProjectById(projectId)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return ProjectRepository.deleteProjectById(projectId)
+    .then(projectId => {
+      return Promise.resolve(projectId)
+    })
 }
 
 export const removeStudentProject = async (projectId, userId) => {
@@ -149,15 +124,10 @@ const removeParticipantProject = async (projectId, userId) => {
 }
 
 const removeCreatorProject = async (projectId, userId) => {
-  return new Promise(async (resolve, reject) => {
-    return ProjectRepository.deleteProjectById(projectId)
-      .then(projectId => {
-        return resolve(projectId)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return ProjectRepository.deleteProjectById(projectId)
+    .then(projectId => {
+      return Promise.resolve(projectId)
+    })
 }
 
 export const removeTutorProject = async (projectId, userId) => {

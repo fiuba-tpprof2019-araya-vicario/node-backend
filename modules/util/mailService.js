@@ -20,15 +20,13 @@ const getTransporter = () => {
 
 const sendMail = async (mailOptions) => {
   console.log(mailOptions)
-  return new Promise(async (resolve, reject) => {
-    let transporter = nodemailer.createTransport(getTransporter())
-    return transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return reject(getServiceError(error))
-      } else {
-        return resolve(info)
-      }
-    })
+  let transporter = nodemailer.createTransport(getTransporter())
+  return transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return reject(getServiceError(error))
+    } else {
+      return Promise.resolve(info)
+    }
   })
 }
 

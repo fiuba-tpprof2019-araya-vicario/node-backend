@@ -8,12 +8,13 @@ const validate = function (handler) {
     try {
       await handler(req, res)
     } catch (e) {
-      console.log('Error ', e)
       if (e.status === undefined) {
+        console.error('Internal error: ', e)
         e.status = 500
-        e.msg = 'Server Internal Error'
+        e.msg = 'Hubo un error en el servidor. Intente más tarde nuevamente.'
+      }else{
+        console.error('Bussiness error: ', e)
       }
-      console.log('Error in request validator: ', e)
       res.statusCode = e.status
       res.json(createErrorResponse(e.status, e.msg, null))
     }
