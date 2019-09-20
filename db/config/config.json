@@ -10,7 +10,7 @@
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "postgres",
+    "database": "test",
     "host": "database",
     "dialect": "postgres",
     "operatorsAliases": false
