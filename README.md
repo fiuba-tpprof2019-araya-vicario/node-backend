@@ -28,7 +28,7 @@ Crear el archivo .env en la carpeta root del proyecto con los siguientes campos:
 USERNAME_DB=<Usuario de la base>
 PASSWORD_DB=<Usuario de la base>
 HOST_DB=<Usuario de la base>
-NAME_DB=<Usuario de la base>
+DATABASE=<Usuario de la base>
 DIALECT_DB=<Usuario de la base> Ej: postgres
 TOKEN_SECRET_JWT=<Token secreto para JWT> Ej: "mi_secreto"
 AUDIENCE=<Client id del json del OAuth Client del proyecto de google console>
