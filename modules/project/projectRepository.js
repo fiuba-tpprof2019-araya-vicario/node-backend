@@ -11,6 +11,7 @@ const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const Requirement = require('../../db/models').Requirement
 const Career = require('../../db/models').Career
+const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 
 const STATE_ID_START = 1
 
@@ -28,7 +29,7 @@ const TYPE_TUTOR_REQUEST = {
 const getWhereForProjects = (filter) => {
   let whereCondition = {}
   if (filter.state != null) whereCondition.state_id = filter.state
-  return whereCondition;
+  return whereCondition
 }
 
 const getFullIncludeProjectsData = () => {
@@ -71,60 +72,72 @@ const getFullIncludeProjectsData = () => {
 
 const getFullIncludeProjectData = (id) => {
   return [{
-      model: User,
-      as: 'Creator',
-      attributes: { exclude: ['google_id'] }
-    },
-    {
-      model: User,
-      as: 'Tutor',
-      attributes: { exclude: ['google_id'] },
-      include: [{
-        model: ProjectRequestTutor,
-        as: 'TutorRequests',
-        where: { project_id: id }
-      }]
-    },
-    {
-      model: User,
-      as: 'Students',
-      attributes: { exclude: ['google_id'] },
-      through: { attributes: [] },
-      include: [{
-        model: ProjectRequestStudent,
-        as: 'StudentRequests',
-        where: { project_id: id }
-      }]
-    },
-    {
-      model: User,
-      as: 'Cotutors',
-      attributes: { exclude: ['google_id'] },
-      through: { attributes: [] },
-      include: [{
-        model: ProjectRequestTutor,
-        as: 'TutorRequests',
-        where: { project_id: id }
-      }]
-    },
-    {
-      model: ProjectType,
-      as: 'Type'
-    },
-    {
-      model: State,
-      as: 'State'
-    },
-    {
-      model: Career,
-      as: 'Careers',
-      through: { attributes: [] }
+    model: User,
+    as: 'Creator',
+    attributes: { exclude: ['google_id'] }
+  },
+  {
+    model: User,
+    as: 'Tutor',
+    attributes: { exclude: ['google_id'] },
+    include: [{
+      model: ProjectRequestTutor,
+      as: 'TutorRequests',
+      where: { project_id: id }
     }]
+  },
+  {
+    model: User,
+    as: 'Students',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] },
+    include: [{
+      model: ProjectRequestStudent,
+      as: 'StudentRequests',
+      where: { project_id: id }
+    }]
+  },
+  {
+    model: User,
+    as: 'Cotutors',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] },
+    include: [{
+      model: ProjectRequestTutor,
+      as: 'TutorRequests',
+      where: { project_id: id }
+    }]
+  },
+  {
+    model: ProjectType,
+    as: 'Type'
+  },
+  {
+    model: State,
+    as: 'State'
+  },
+  {
+    model: Career,
+    as: 'Careers',
+    through: { attributes: [] }
+  }]
 }
 
 class ProjectRepository {
+  static getProjectFullById (id) {
+    return Project.findByPk(id, { include: getFullIncludeProjectData(id) })
+  }
+
   static getProjectById (id) {
-    return Project.findByPk(id, { inclide: getFullIncludeProjectData(id) })
+    return Project.findByPk(id)
+  }
+
+  static getProjectByRequestStudentId (requestId) {
+    return Project.findOne({ include: [{ model: ProjectRequestStudent, as: 'StudentRequests', required: true, where: { id: requestId } }] })
+  }
+
+  static getProjectByRequestTutorId (requestId) {
+    return Project.findOne({ include: [{ model: ProjectRequestTutor, as: 'TutorRequests', required: true, where: { id: requestId } }] })
   }
 
   static getProjects (filter) {
@@ -187,13 +200,15 @@ class ProjectRepository {
             project_id: project.dataValues.id,
             user_id: requirement.Creator.dataValues.id,
             status: STATUS_REQUEST.PENDING,
+            accepted_proposal: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
           let p6 = data.students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
-              status: STATUS_REQUEST.PENDING
+              status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING
             }, { transaction })
           })
           let p7 = data.cotutors.map(cotutor => {
@@ -201,6 +216,7 @@ class ProjectRepository {
               project_id: project.dataValues.id,
               user_id: cotutor,
               status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING,
               type: TYPE_TUTOR_REQUEST.COTUTOR
             }, { transaction })
           })
@@ -237,13 +253,15 @@ class ProjectRepository {
             project_id: project.dataValues.id,
             user_id: data.tutor_id,
             status: STATUS_REQUEST.PENDING,
+            accepted_proposal: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
           }, { transaction })
           let p6 = data.students.map(student => {
             return ProjectRequestStudent.create({
               project_id: project.dataValues.id,
               user_id: student,
-              status: STATUS_REQUEST.PENDING
+              status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING
             }, { transaction })
           })
           let p7 = data.cotutors.map(cotutor => {
@@ -251,6 +269,7 @@ class ProjectRepository {
               project_id: project.dataValues.id,
               user_id: cotutor,
               status: STATUS_REQUEST.PENDING,
+              accepted_proposal: STATUS_REQUEST.PENDING,
               type: TYPE_TUTOR_REQUEST.COTUTOR
             }, { transaction })
           })
@@ -336,7 +355,8 @@ class ProjectRepository {
                 return ProjectRequestStudent.create({
                   project_id: project.dataValues.id,
                   user_id: student,
-                  status: STATUS_REQUEST.PENDING
+                  status: STATUS_REQUEST.PENDING,
+                  accepted_proposal: STATUS_REQUEST.PENDING
                 }, { transaction })
               })
               updatePromises = [...updatePromises, p1, ...p2]
@@ -349,6 +369,7 @@ class ProjectRepository {
                   project_id: project.dataValues.id,
                   user_id: cotutor,
                   status: STATUS_REQUEST.PENDING,
+                  accepted_proposal: STATUS_REQUEST.PENDING,
                   type: TYPE_TUTOR_REQUEST.COTUTOR
                 }, { transaction })
               })
@@ -360,6 +381,7 @@ class ProjectRepository {
                 project_id: project.dataValues.id,
                 user_id: data.tutor_id,
                 status: STATUS_REQUEST.PENDING,
+                accepted_proposal: STATUS_REQUEST.PENDING,
                 type: TYPE_TUTOR_REQUEST.TUTOR
               }, { transaction })
               updatePromises.push(p1)
@@ -455,10 +477,73 @@ class ProjectRepository {
       })
   }
 
-  static updateProposal (projectId, link, name) {
+  static canAcceptProposalRequestTutor (requestId) {
+    return Project.findOne({
+      where: { proposal_url: { [Op.ne]: null } },
+      include: [{ model: ProjectRequestTutor, as: 'TutorRequests', required: true, where: { id: requestId } }]
+    })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static canAcceptProposalRequestStudent (requestId) {
+    return Project.findOne({
+      where: { proposal_url: { [Op.ne]: null } },
+      include: [{ model: ProjectRequestStudent, as: 'StudentRequests', required: true, where: { id: requestId } }]
+    })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static updateProposal (projectId, driveId, link, name) {
     return Project.update(
-      { proposal_url: link, proposal_name: name },
+      { proposal_drive_id: driveId, proposal_url: link, proposal_name: name },
       { where: { id: projectId } }
+    )
+  }
+
+  static async hasAllRequestAcceptedProposal (projectId) {
+    console.log('ProjectRepository::hasAllRequestAcceptedProposal')
+    let project = await Project.findOne({
+      where: { id: projectId },
+      include: [{
+        model: ProjectRequestStudent,
+        as: 'StudentRequests',
+        required: true,
+        where: { accepted_proposal: { [Op.ne]: 'accepted' } }
+      }]
+    })
+    console.log('Project: ', project)
+
+    if (project != null) return false
+
+    project = await Project.findOne({
+      where: { id: projectId },
+      include: [{
+        model: ProjectRequestTutor,
+        as: 'TutorRequests',
+        required: true,
+        where: { accepted_proposal: { [Op.ne]: 'accepted' } }
+      }]
+    })
+    console.log('Project: ', project)
+
+    return project == null
+  }
+
+  static async updateNextState (project) {
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        primary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.secondary_state },
+      { where: { id: project.dataValues.id } }
     )
   }
 }

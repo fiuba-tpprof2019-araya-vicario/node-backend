@@ -67,15 +67,9 @@ export const uploadFile = async (fileName, content) => {
   let getLinkResponse = await getSharedLink(createResponse.data.id)
   if (getLinkResponse === null) return Promise.reject(getBadRequest('No se pudo obtener el link a compartir'))
 
-  return Promise.resolve({ link: getLinkResponse.data.webViewLink, name: fileName })
+  return Promise.resolve({ id: createResponse.data.id, link: getLinkResponse.data.webViewLink, name: fileName })
 }
 
-// const fileMetadata = {
-//   name: 'neo.txt',
-//   parents: ['1rHeQwJgr91vVMoCUWVSxNvTc_CUmpdo_']
-// }
-
-// const media = {
-//   mimeType: 'text/plain',
-//   body: fs.createReadStream('./neo.txt')
-// }
+export const removeFile = (fileId) => {
+  return drive.files.delete({ auth: jwtClient, fileId: fileId })
+}

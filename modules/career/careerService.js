@@ -3,78 +3,48 @@ import CareerRepository from './careerRepository'
 import UserRepository from '../user/userRepository'
 
 const getSpecificCareer = async (careerId) => {
-  return new Promise(async (resolve, reject) => {
-    return CareerRepository.getCareerById(careerId)
-      .then(career => {
-        if (career == null) return reject(getNotFound())
-        else return resolve(career)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return CareerRepository.getCareerById(careerId)
+    .then(career => {
+      if (career == null) return reject(getNotFound())
+      else return Promise.resolve(career)
+    })
 }
 
 const getCareers = async () => {
-  return new Promise(async (resolve, reject) => {
-    return CareerRepository.getCareers()
-      .then(careers => {
-        return resolve(careers)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return CareerRepository.getCareers()
+    .then(careers => {
+      return Promise.resolve(careers)
+    })
 }
 
 const getCareersByUser = async (userId) => {
-  return new Promise(async (resolve, reject) => {
-    return UserRepository.getCareers(userId)
-      .then(careers => {
-        return resolve(careers)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return UserRepository.getCareers(userId)
+    .then(careers => {
+      return Promise.resolve(careers)
+    })
 }
 
 const addCareer = async (creatorId, name, description) => {
-  return new Promise(async (resolve, reject) => {
-    return CareerRepository.create(name, description)
-      .then(careerId => {
-        return resolve(careerId)
-      })
-      .catch(() => {
-        return reject(getBadRequest())
-      })
-  })
+  return CareerRepository.create(name, description)
+    .then(careerId => {
+      return Promise.resolve(careerId)
+    })
 }
 
 const editCareer = async (creatorId, careerId, name, description) => {
   if (!(await CareerRepository.existCareer(careerId))) return Promise.reject(getBadRequest('El departamento que quieres editar no existe'))
 
-  return new Promise(async (resolve, reject) => {
-    return CareerRepository.edit(careerId, name, description)
-      .then(careerId => {
-        return resolve(careerId)
-      })
-      .catch(() => {
-        return reject(getBadRequest())
-      })
-  })
+  return CareerRepository.edit(careerId, name, description)
+    .then(careerId => {
+      return Promise.resolve(careerId)
+    })
 }
 
 const removeCareer = async (careerId) => {
-  return new Promise(async (resolve, reject) => {
-    return CareerRepository.deleteById(careerId)
-      .then(careerId => {
-        return resolve(careerId)
-      })
-      .catch(() => {
-        return reject(getServiceError())
-      })
-  })
+  return CareerRepository.deleteById(careerId)
+    .then(careerId => {
+      return Promise.resolve(careerId)
+    })
 }
 
 module.exports = { addCareer, getSpecificCareer, getCareers, editCareer, removeCareer }

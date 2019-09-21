@@ -14,8 +14,10 @@ const getTutorRequests = async function (req, res) {
 }
 
 const putStudentRequest = async function (req, res) {
+  console.log('requestController::putStudentRequest')
+  console.log('body: ', req.body)
   let body = req.body
-  let response = await modifyStudentRequest(req.params.id, body.status)
+  let response = await modifyStudentRequest(req.params.id, body.status, body.accepted_proposal)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
@@ -24,7 +26,7 @@ const putTutorRequest = async function (req, res) {
   let body = req.body
   let response
   if (body.status === 'accepted' && body.type === 'tutor') response = await acceptTutorRequest(req.params.id)
-  else response = await modifyTutorRequest(req.params.id, body.status)
+  else response = await modifyTutorRequest(req.params.id, body.status, body.accepted_proposal)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }

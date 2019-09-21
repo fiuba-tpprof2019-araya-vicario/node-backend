@@ -17,9 +17,6 @@ class RequirementRepository {
     })
       .then(requirement => {
         return requirement.dataValues.id
-      }).catch((e) => {
-        console.error(e)
-        return null
       })
   }
 

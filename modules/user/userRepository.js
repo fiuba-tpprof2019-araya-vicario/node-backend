@@ -189,8 +189,6 @@ class UserRepository {
         })
         .then(user => {
           return user
-        }).catch(() => {
-          return null
         })
     })
   }
@@ -211,7 +209,7 @@ class UserRepository {
           return true
         }
         return false
-      }).catch(() => { return getServiceError() })
+      })
   }
 
   static existStudents (studentsId) {
@@ -230,7 +228,7 @@ class UserRepository {
           return true
         }
         return false
-      }).catch(() => { return getServiceError() })
+      })
   }
 
   static getStudentProjects (id) {
@@ -316,7 +314,6 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Creations': user.Creations, 'Participations': user.Participations } })
-      .catch(() => { return getServiceError() })
   }
 
   static getTutorProjects (id) {
@@ -412,7 +409,6 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Tutorials': user.Tutorials, 'Cotutorials': user.Cotutorials } })
-      .catch(() => { return getServiceError() })
   }
 
   static getCareers (id) {
@@ -423,7 +419,6 @@ class UserRepository {
       }]
     })
       .then(user => { return { 'Careers': user.Careers } })
-      .catch(() => { return getServiceError() })
   }
 
   static edit (id, profiles) {
@@ -434,7 +429,6 @@ class UserRepository {
           return user.setProfiles(profiles).then(() => { return id })
         }
       })
-      .catch(() => { return getServiceError() })
   }
 }
 

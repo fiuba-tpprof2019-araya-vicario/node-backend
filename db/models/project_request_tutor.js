@@ -6,6 +6,10 @@ module.exports = (sequelize) => {
       type: ENUM,
       values: ['pending', 'accepted', 'rejected']
     },
+    accepted_proposal: {
+      type: ENUM,
+      values: ['pending', 'accepted', 'rejected']
+    },
     type: {
       type: ENUM,
       values: ['tutor', 'cotutor']

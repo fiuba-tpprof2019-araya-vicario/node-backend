@@ -9,6 +9,10 @@ export async function up (queryInterface, Sequelize) {
       type: Sequelize.ENUM,
       values: ['pending', 'accepted', 'rejected']
     },
+    accepted_proposal: {
+      type: Sequelize.ENUM,
+      values: ['pending', 'accepted', 'rejected']
+    },
     type: {
       type: Sequelize.ENUM,
       values: ['tutor', 'cotutor']

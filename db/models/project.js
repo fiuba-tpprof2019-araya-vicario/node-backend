@@ -22,6 +22,9 @@ module.exports = (sequelize) => {
         is: /^https:\/\/drive.google.com\/*/i
       }
     },
+    proposal_drive_id: {
+      type: STRING
+    },
     proposal_name: {
       type: STRING,
       isUnique: true
