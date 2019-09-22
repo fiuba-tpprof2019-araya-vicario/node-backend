@@ -20,6 +20,26 @@
 
 ```sequelize db:seed:all```
 
+## Como correr los test
+
+Si es la primera vez, se debe correr el script ```testRestartDB.sh``` de la carpeta scripts del proyecto docker.
+
+1- Levantar el docker-compose
+
+2- Ejecutar bash dentro del container de node:
+
+* iOS / Linux:
+
+  ```docker exec -it nodeBack bash```
+
+* Windows
+
+  ```winpty docker exec -it nodeBack bash```
+  
+3- Dentro de la consola de bash correr el comando:
+
+  ```npm run test```
+
 ## Environment
 
 Crear el archivo .env en la carpeta root del proyecto con los siguientes campos:
