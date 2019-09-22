@@ -30,7 +30,7 @@ const modifyProposalStatusRequestStudent = async (requestId, proposalStatus) => 
   if (response == null) return Promise.reject(getBadRequest())
 
   let project = await ProjectRepository.getProjectByRequestStudentId(requestId)
-  checkSendProjectRevision(project)
+  await checkSendProjectRevision(project)
 
   // TODO: AGREGAR ENVIO DE MAIL
 
@@ -61,7 +61,7 @@ const modifyProposalStatusRequestTutor = async (requestId, proposalStatus) => {
   if (response == null) return Promise.reject(getBadRequest())
 
   let project = await ProjectRepository.getProjectByRequestTutorId(requestId)
-  checkSendProjectRevision(project)
+  await checkSendProjectRevision(project)
 
   // TODO: AGREGAR ENVIO DE MAIL
 
