@@ -1,0 +1,271 @@
+import { describe, it, after } from 'mocha'
+import { assert } from 'chai'
+import app from '../app'
+import request from 'supertest'
+
+let TOKENS = {
+  CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIl0sImlhdCI6MTU2OTE4NDMyMywiZXhwIjoxNTcxNzc2MzIzfQ.J7Q4NmrvDHZOq7ZOgS7Xx4R-94ANkISjGb0ppUsaM3Y',
+  TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyJdLCJpYXQiOjE1NjkxODQzOTcsImV4cCI6MTU3MTc3NjM5N30.W5UNYWNXCs0BE17oH6wMaOD35JmAjdVsj1bX6IL2ySA',
+  STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJzdmljYXJpb0BjeXMuY29tLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1NjkxODQ0MzMsImV4cCI6MTU3MTc3NjQzM30.2F7VzxkzOkyAg4CQGt95BOFMfiTxKTJdcOq3KtOY5UQ',
+  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkVESVRfVVNFUlMiLCJHRVRfVVNFUlMiLCJFRElUX1BST0ZJTEVTIiwiR0VUX1BST0ZJTEVTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkFQUFJPVkVfUFJPSkVDVFMiLCJFRElUX1JFUVVJUkVNRU5UUyIsIkdFVF9SRVFVSVJFTUVOVFMiXSwiaWF0IjoxNTY5MTg0NDY5LCJleHAiOjE1NzE3NzY0Njl9.m85LzPtbfygs3qxeDcddJ6QH5V5OArz0_jUMsyP6kGs'
+}
+
+let projectId
+let studentRequestId
+let tutorRequestId
+let cotutorRequestId
+
+describe('Project /v0/api/projects/', () => {
+  it('Create basic project', (done) => {
+    request(app)
+      .post('/v0/api/projects/')
+      .send({ 'name': 'Little War Online',
+        'description': 'MMORPG Game',
+        'type_id': 1,
+        'students': [8],
+        'tutor_id': 9,
+        'cotutors': [7],
+        'careers': [1] })
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.code, 201)
+        projectId = response.body.data
+        done()
+      }).catch(done)
+  })
+
+  it('Obtain all projects by filter', (done) => {
+    request(app)
+      .get('/v0/api/projects?state=1')
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data[0].id, projectId)
+        assert.equal(response.body.data[0].name, 'Little War Online')
+        assert.equal(response.body.data[0].Type.id, 1)
+        assert.equal(response.body.data[0].Type.name, 'Trabajo Profesional')
+        assert.equal(response.body.data[0].State.id, 1)
+        assert.equal(response.body.data[0].State.name, 'Idea en revisión')
+        assert.equal(response.body.data[0].Creator.id, 1)
+        assert.equal(response.body.data[0].Creator.email, 'svicario@fi.uba.ar')
+        assert.equal(response.body.data[0].Tutor.id, 9)
+        assert.equal(response.body.data[0].Tutor.email, 'vicario.sebastian@gmail.com')
+        assert.equal(response.body.data[0].Students[0].id, 8)
+        assert.equal(response.body.data[0].Students[0].email, 'svicario@cys.com.ar')
+        assert.equal(response.body.data[0].Cotutors[0].id, 7)
+        assert.equal(response.body.data[0].Cotutors[0].email, 'arrowgamemaster@gmail.com')
+        assert.equal(response.body.data[0].Careers[0].id, 1)
+        assert.equal(response.body.data[0].Careers[0].name, 'Ingeniería en Informática')
+        done()
+      }).catch(done)
+  })
+
+  it('Obtain all projects students', (done) => {
+    request(app)
+      .get('/v0/api/projects/students')
+      .set({ 'Authorization': TOKENS.STUDENT, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.Creations.length, 0)
+        assert.equal(response.body.data.Participations.length, 1)
+        request(app)
+          .get('/v0/api/projects/students')
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.Creations.length, 1)
+            assert.equal(response.body.data.Participations.length, 0)
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Obtain all projects tutors', (done) => {
+    request(app)
+      .get('/v0/api/projects/tutors')
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.Tutorials.length, 1)
+        assert.equal(response.body.data.Cotutorials.length, 0)
+        request(app)
+          .get('/v0/api/projects/tutors')
+          .set({ 'Authorization': TOKENS.COTUTOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.Tutorials.length, 0)
+            assert.equal(response.body.data.Cotutorials.length, 1)
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Obtain project by id', (done) => {
+    request(app)
+      .get(`/v0/api/projects/${projectId}`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, projectId)
+        assert.equal(response.body.data.name, 'Little War Online')
+        assert.equal(response.body.data.Type.id, 1)
+        assert.equal(response.body.data.Type.name, 'Trabajo Profesional')
+        assert.equal(response.body.data.State.id, 1)
+        assert.equal(response.body.data.State.name, 'Idea en revisión')
+        assert.equal(response.body.data.Creator.id, 1)
+        assert.equal(response.body.data.Creator.email, 'svicario@fi.uba.ar')
+        assert.equal(response.body.data.Tutor.id, 9)
+        assert.equal(response.body.data.Tutor.email, 'vicario.sebastian@gmail.com')
+        assert.equal(response.body.data.Tutor.TutorRequests[0].type, 'tutor')
+        tutorRequestId = response.body.data.Tutor.TutorRequests[0].id
+        assert.equal(response.body.data.Students[0].id, 8)
+        assert.equal(response.body.data.Students[0].email, 'svicario@cys.com.ar')
+        assert.equal(response.body.data.Students[0].StudentRequests.length, 1)
+        studentRequestId = response.body.data.Students[0].StudentRequests[0].id
+        assert.equal(response.body.data.Cotutors[0].id, 7)
+        assert.equal(response.body.data.Cotutors[0].email, 'arrowgamemaster@gmail.com')
+        assert.equal(response.body.data.Cotutors[0].TutorRequests[0].type, 'cotutor')
+        cotutorRequestId = response.body.data.Cotutors[0].TutorRequests[0].id
+        assert.equal(response.body.data.Careers[0].id, 1)
+        assert.equal(response.body.data.Careers[0].name, 'Ingeniería en Informática')
+        done()
+      }).catch(done)
+  })
+
+  it('Edit some fiedls project', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}`)
+      .send({ 'type_id': 2,
+        'careers': [1, 2] })
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.Type.id, 2)
+            assert.equal(response.body.data.Type.name, 'Tesis')
+            assert.equal(response.body.data.Careers.length, 2)
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Tutor accept request project', (done) => {
+    request(app)
+      .put(`/v0/api/requests/tutors/${tutorRequestId}`)
+      .send({ 'status': 'accepted', 'type': 'tutor' })
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data, tutorRequestId)
+        done()
+      }).catch(done)
+  })
+
+  it('Student accept request project', (done) => {
+    request(app)
+      .put(`/v0/api/requests/students/${studentRequestId}`)
+      .send({ 'status': 'accepted' })
+      .set({ 'Authorization': TOKENS.STUDENT, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, studentRequestId)
+        assert.equal(response.body.data.status, 'accepted')
+        done()
+      }).catch(done)
+  })
+
+  it('Cotutor reject request project', (done) => {
+    request(app)
+      .put(`/v0/api/requests/tutors/${cotutorRequestId}`)
+      .send({ 'status': 'rejected', 'type': 'cotutor' })
+      .set({ 'Authorization': TOKENS.COTUTOR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, cotutorRequestId)
+        assert.equal(response.body.data.status, 'rejected')
+        done()
+      }).catch(done)
+  })
+
+  it('Delete cotutor project', (done) => {
+    request(app)
+      .delete(`/v0/api/projects/${projectId}/tutors/7`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        done()
+      }).catch(done)
+  })
+
+  it('Creator upload proposal', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/proposal`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .attach('file', './test/example.pdf', 'example.pdf')
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data[0], 1)
+        done()
+      }).catch(done)
+  })
+
+  it('Tutor accept proposal project', (done) => {
+    request(app)
+      .put(`/v0/api/requests/tutors/${tutorRequestId}`)
+      .send({ 'accepted_proposal': 'accepted' })
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, tutorRequestId)
+        assert.equal(response.body.data.accepted_proposal, 'accepted')
+        done()
+      }).catch(done)
+  })
+
+  it('Student accept proposal project', (done) => {
+    request(app)
+      .put(`/v0/api/requests/students/${studentRequestId}`)
+      .send({ 'accepted_proposal': 'accepted' })
+      .set({ 'Authorization': TOKENS.STUDENT, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, studentRequestId)
+        assert.equal(response.body.data.accepted_proposal, 'accepted')
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            console.log(response.body.data)
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.State.id, 3)
+            assert.equal(response.body.data.State.name, 'Propuesta en revisión')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+//   router.get('/students/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(getStudentRequests))
+// router.get('/tutors/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(getTutorRequests))
+// router.put('/students/:id([0-9]+)?/', putStudentValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(putStudentRequest))
+// router.put('/tutors/:id([0-9]+)?/', putTutorValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_TUTOR_REQUESTS'), validate(putTutorRequest))
+
+  // router.delete('/:id([0-9]+)?/', getValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(projectController.deleteProject))
+  // router.delete('/:id([0-9]+)?/students/:user_id([0-9]+)?/', deleteUserProjectValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(projectController.deleteStudentProject))
+  // router.delete('/:id([0-9]+)?/tutors/:user_id([0-9]+)?/', deleteUserProjectValidations, validateWithExpress, checkIsLoggedWithCredentials('GET_PROJECTS'), validate(projectController.deleteTutorProject))
+  // router.put('/:id([0-9]+)?/proposal/', upload.single('file'), validate(projectController.uploadProposal))
+
+  after((done) => {
+    request(app)
+      .delete(`/v0/api/projects/${projectId}`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .then(() => done())
+  })
+})

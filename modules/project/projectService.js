@@ -1,4 +1,4 @@
-import { getServiceError, getNotFound, getBadRequest } from '../util/error'
+import { getNotFound, getBadRequest } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
 import RequestRepository from '../request/requestRepository'
@@ -9,7 +9,7 @@ import { uploadFile, removeFile } from '../util/googleDriveService'
 export const getSpecificProject = async (projectId) => {
   return ProjectRepository.getProjectFullById(projectId)
     .then(project => {
-      if (project == null) return reject(getNotFound())
+      if (project == null) return Promise.reject(getNotFound())
       else return Promise.resolve(project)
     })
 }
@@ -17,7 +17,7 @@ export const getSpecificProject = async (projectId) => {
 export const getProjects = async (filter) => {
   return ProjectRepository.getProjects(filter)
     .then(project => {
-      if (project == null) return reject(getNotFound())
+      if (project == null) return Promise.reject(getNotFound())
       else return Promise.resolve(project)
     })
 }
@@ -105,6 +105,8 @@ export const editProject = async (creatorId, projectId, data) => {
 }
 
 export const removeProject = async (projectId) => {
+  let project = await ProjectRepository.getProjectById(projectId)
+  if (project != null && project.proposal_drive_id != null) removeFile(project.proposal_drive_id)
   return ProjectRepository.deleteProjectById(projectId)
     .then(projectId => {
       return Promise.resolve(projectId)
