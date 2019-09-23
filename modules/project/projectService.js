@@ -160,3 +160,11 @@ export const uploadProposal = async (projectId, file) => {
   if (response !== null) return Promise.resolve(response)
   else return Promise.reject(getBadRequest())
 }
+
+export const evaluateProposal = async (projectId, status) => {
+  if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+  if (!(await ProjectRepository.canEvaluateProject(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra en revisión'))
+  if (status == 'approved') await ProjectRepository.approveProject(projectId)
+  else await ProjectRepository.approveProject(projectId)
+  return Promise.resolve(projectId)
+} 

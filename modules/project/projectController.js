@@ -75,3 +75,11 @@ export const uploadProposal = async function (req, res) {
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
+
+export const evaluateProposal = async function (req, res) {
+  console.log('projectController::evaluateProposal')
+  let body = req.body
+  let response = await projectService.evaluateProposal(req.params.id, body.status)
+  res.statusCode = codes.OK
+  res.json(createSuccessResponse(res.statusCode, response))
+}

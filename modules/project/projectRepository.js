@@ -546,6 +546,45 @@ class ProjectRepository {
       { where: { id: project.dataValues.id } }
     )
   }
+
+  static canEvaluateProject (projectId) {
+    return Project.findOne({
+      where: { proposal_url: { [Op.ne]: null }, state_id: State.pendingRevision(), id: projectId }
+    })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static async approveProject (projectId) {
+    let project = await Project.findByPk(projectId)
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        primary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.secondary_state },
+      { where: { id: projectId } }
+    )
+  }
+
+  static async rejectProject (projectId) {
+    let project = await Project.findByPk(projectId)
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        secondary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.primary_state },
+      { where: { id: projectId } }
+    )
+  }
 }
 
 export default ProjectRepository

@@ -40,7 +40,8 @@
 									"value": "1"
 								}
 							]
-						}
+						},
+						"description": "Filter url param: state"
 					},
 					"response": []
 				},
@@ -316,12 +317,7 @@
 									"type": "file",
 									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/proposal",
@@ -336,8 +332,45 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "EvaluateProject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"assessments\": \"approved\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/projects/1/assessments/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1",
+								"assessments",
+								""
+							]
+						}
+					},
+					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Requests",
@@ -385,12 +418,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/requests/students/1",
@@ -451,12 +479,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/requests/tutors/1",
@@ -473,7 +496,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Requirements",
@@ -590,7 +614,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Careers",
@@ -707,7 +732,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Profiles",
@@ -826,7 +852,7 @@
 					"response": []
 				},
 				{
-					"name": "EditUser",
+					"name": "EditProfilesUser",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -838,18 +864,13 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"profiles\": [2, 3]\n}"
 						},
 						"url": {
 							"raw": "{{url}}/users/1",
@@ -864,7 +885,9 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
