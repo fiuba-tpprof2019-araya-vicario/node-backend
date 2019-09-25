@@ -9,6 +9,8 @@ const Project = require('../../db/models').Project
 const ProjectType = require('../../db/models').ProjectType
 const State = require('../../db/models').State
 const Career = require('../../db/models').Career
+const ProjectCareer = require('../../db/models').ProjectCareer
+const UserCareer = require('../../db/models').UserCareer
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 
@@ -20,17 +22,17 @@ const getWhereForAllUsers = (params) => {
     if (names.length > 1) whereCondition.surname = { [Op.iLike]: `%${names[1]}%` }
   }
   if (params.email != null) whereCondition.email = { [Op.iLike]: `%${params.email}%` }
-  return whereCondition;
+  return whereCondition
 }
 
 const getWhereForTypeOfUsers = (params) => {
   let whereCondition = []
   if (params.type != null) {
-    let credential_id;
+    let credential_id
     if (params.type === 'student') {
-      credential_id = 1;
+      credential_id = 1
     } else if (params.type === 'tutor') {
-      credential_id = 8;
+      credential_id = 8
     }
 
     credential_id && whereCondition.push({
@@ -51,7 +53,7 @@ const getWhereForTypeOfUsers = (params) => {
       }
     })
   }
-  return whereCondition;
+  return whereCondition
 }
 
 class UserRepository {
@@ -267,9 +269,8 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Career,
-          as: 'Careers',
-          through: { attributes: [] }
+          model: ProjectCareer,
+          include: [{ model: Career }]
         }]
       },
       {
@@ -307,9 +308,8 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Career,
-          as: 'Careers',
-          through: { attributes: [] }
+          model: ProjectCareer,
+          include: [{ model: Career }]
         }]
       }]
     })
@@ -352,9 +352,8 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Career,
-          as: 'Careers',
-          through: { attributes: [] }
+          model: ProjectCareer,
+          include: [{ model: Career }]
         },
         {
           model: ProjectRequestTutor,
@@ -397,9 +396,8 @@ class UserRepository {
           through: { attributes: [] }
         },
         {
-          model: Career,
-          as: 'Careers',
-          through: { attributes: [] }
+          model: ProjectCareer,
+          include: [{ model: Career }]
         },
         {
           model: ProjectRequestTutor,
@@ -428,6 +426,13 @@ class UserRepository {
         else {
           return user.setProfiles(profiles).then(() => { return id })
         }
+      })
+  }
+
+  static hasCareer (id, careerId) {
+    return UserCareer.findOne({ where: { user_id: id, career_id: careerId } })
+      .then(result => {
+        return result != null
       })
   }
 }

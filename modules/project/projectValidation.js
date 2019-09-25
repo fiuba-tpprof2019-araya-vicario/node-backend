@@ -12,6 +12,7 @@ const MISS_DEPARTMENTS = 'Faltan los departamentos'
 const MISS_USER_ID = 'Falta el id del usuario'
 const MISS_STATUS = 'Falta el estado'
 const WRONG_STATUS_VALUE = 'Estado invalido'
+const MISS_CAREER = 'Falta la carrera'
 // const MISS_PROPOSAL_URL = 'Falta el link de la propuesta'
 
 const baseCreateValidations = [
@@ -59,15 +60,6 @@ const modifyValidations = [
   ...getValidations
 ]
 
-const assessmentsValidations = [
-  ...getValidations,
-  check('status')
-    .not().isEmpty()
-    .withMessage(MISS_STATUS)
-    .isIn(['accepted', 'rejected'])
-    .withMessage(WRONG_STATUS_VALUE)
-]
-
 const deleteUserProjectValidations = [
   ...getValidations,
   param('user_id')
@@ -75,4 +67,16 @@ const deleteUserProjectValidations = [
     .withMessage(MISS_USER_ID)
 ]
 
-export { createValidations, getValidations, modifyValidations, deleteUserProjectValidations, assessmentsValidations }
+const evaluateValidations = [
+  ...getValidations,
+  check('status')
+    .not().isEmpty()
+    .withMessage(MISS_STATUS)
+    .isIn(['accepted', 'rejected'])
+    .withMessage(WRONG_STATUS_VALUE),
+  check('career')
+    .not().isEmpty()
+    .withMessage(MISS_CAREER)
+]
+
+export { createValidations, getValidations, modifyValidations, deleteUserProjectValidations, evaluateValidations }

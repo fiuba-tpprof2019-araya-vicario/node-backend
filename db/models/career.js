@@ -30,11 +30,8 @@ module.exports = (sequelize) => {
       }
     })
 
-    Career.belongsToMany(models.Credential, {
-      as: 'Projects',
-      through: {
-        model: models.ProjectCareer
-      }
+    Career.hasMany(models.ProjectCareer, {
+      foreignKey: 'career_id'
     })
   }
   return Career

@@ -10,6 +10,7 @@ const State = require('../../db/models').State
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const Requirement = require('../../db/models').Requirement
+const ProjectCareer = require('../../db/models').ProjectCareer
 const Career = require('../../db/models').Career
 const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 
@@ -64,9 +65,8 @@ const getFullIncludeProjectsData = () => {
     as: 'State'
   },
   {
-    model: Career,
-    as: 'Careers',
-    through: { attributes: [] }
+    model: ProjectCareer,
+    include: [{ model: Career }]
   }]
 }
 
@@ -117,9 +117,8 @@ const getFullIncludeProjectData = (id) => {
     as: 'State'
   },
   {
-    model: Career,
-    as: 'Careers',
-    through: { attributes: [] }
+    model: ProjectCareer,
+    include: [{ model: Career }]
   }]
 }
 
@@ -190,7 +189,13 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(data.students, { transaction })
           let p2 = project.setCotutors(data.cotutors, { transaction })
-          let p3 = project.setCareers(data.careers, { transaction })
+          let p3 = data.careers.map(career => {
+            return ProjectCareer.create({
+              project_id: project.dataValues.id,
+              career_id: career,
+              status: STATUS_REQUEST.PENDING
+            }, { transaction })
+          })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -243,7 +248,13 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(data.students, { transaction })
           let p2 = project.setCotutors(data.cotutors, { transaction })
-          let p3 = project.setCareers(data.careers, { transaction })
+          let p3 = data.careers.map(career => {
+            return ProjectCareer.create({
+              project_id: project.dataValues.id,
+              career_id: career,
+              status: STATUS_REQUEST.PENDING
+            }, { transaction })
+          })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -331,6 +342,13 @@ class ProjectRepository {
             requestDeletePromise.push(p1)
           }
 
+          if (data.careers !== undefined) {
+            let p1 = ProjectCareer.destroy({
+              where: { [Op.and]: { project_id: project.dataValues.id } }, transaction
+            })
+            requestDeletePromise.push(p1)
+          }
+
           return Promise.all(requestDeletePromise).then(() => {
             let updatePromises = []
 
@@ -388,7 +406,13 @@ class ProjectRepository {
             }
 
             if (data.careers !== undefined) {
-              let p1 = project.setCareers(data.careers, { transaction })
+              let p1 = data.careers.map(career => {
+                return ProjectCareer.create({
+                  project_id: project.dataValues.id,
+                  career_id: career,
+                  status: STATUS_REQUEST.PENDING
+                }, { transaction })
+              })
               updatePromises.push(p1)
             }
 
@@ -547,13 +571,28 @@ class ProjectRepository {
     )
   }
 
-  static canEvaluateProject (projectId) {
+  static async canEvaluateProject (projectId, carrerId) {
     return Project.findOne({
-      where: { proposal_url: { [Op.ne]: null }, state_id: State.pendingRevision(), id: projectId }
+      where: { proposal_url: { [Op.ne]: null }, state_id: State.pendingRevision(), id: projectId },
+      include: {
+        model: ProjectCareer,
+        required: true,
+        attributes: [],
+        where: {
+          career_id: carrerId
+        }
+      }
     })
       .then(project => {
         return project != null
       })
+  }
+
+  static async approveProjectCareer (projectId, careerId) {
+    return ProjectCareer.update(
+      { status: STATUS_REQUEST.ACCEPTED },
+      { where: { project_id: projectId, career_id: careerId } }
+    )
   }
 
   static async approveProject (projectId) {
@@ -584,6 +623,20 @@ class ProjectRepository {
       { state_id: projectTypeState.dataValues.primary_state },
       { where: { id: projectId } }
     )
+  }
+
+  static hasAllCareerEvaluationAccepted (projectId) {
+    return Project.findByPk(projectId, {
+      include: {
+        model: ProjectCareer,
+        required: true,
+        attributes: [],
+        where: { status: { [Op.ne]: 'accepted' } }
+      }
+    })
+      .then(project => {
+        return project == null
+      })
   }
 }
 
