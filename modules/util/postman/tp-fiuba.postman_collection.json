@@ -317,7 +317,12 @@
 									"type": "file",
 									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
 								}
-							]
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/proposal",
@@ -352,7 +357,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"assessments\": \"approved\"\n}"
+							"raw": "{\n\t\"status\": \"accepted\",\n\t\"career\": 1\n}"
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/assessments/",
@@ -369,8 +374,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Requests",
@@ -418,7 +422,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/requests/students/1",
@@ -479,7 +488,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/requests/tutors/1",
@@ -496,8 +510,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Requirements",
@@ -614,8 +627,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Careers",
@@ -732,8 +744,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Profiles",
@@ -870,7 +881,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2, 3]\n}"
+							"raw": "{\n\t\"profiles\": [2, 3]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/users/1",
@@ -885,9 +901,43 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
+		},
+		{
+			"name": "Push Notification Prueba",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "key=AAAA6idkOGc:APA91bELcGCT7HTUhKZMij_Y24gf_HzF03R7bbNmsHON1JG-z1xSQMcMPwx7BslVZlD9NiU4OgGna-bi8MIoYzRr4QNtRUEHD6-NSlxss7w963HMVsF73GmpK-HLjgwrYr05yiiLPQFj",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"to\" : \"eFSqtyo6OII:APA91bEKOFDXqgGkq0AIOXpgeu2s4ENuO_St1ZHqLENcFOfQnusH1Fyq7p6vLecUjXSw5-mW2WL85MB2IjT4d3vm_hLkee9IzZVlJ7WqidhLU5cGfpFGhy_36mhowdkPxDF1i4h1_f85\",\n \"collapse_key\" : \"type_a\",\n \"notification\" : {\n     \"body\" : \"Sending Notification Body From Data\",\n     \"title\": \"Notification Title from Data\",\n     \"key_1\" : \"Value for key_1\",\n     \"key_2\" : \"Value for key_2\"\n }\n}"
+				},
+				"url": {
+					"raw": "https://fcm.googleapis.com/fcm/send",
+					"protocol": "https",
+					"host": [
+						"fcm",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"fcm",
+						"send"
+					]
+				}
+			},
+			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
