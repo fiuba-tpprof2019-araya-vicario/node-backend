@@ -1,6 +1,7 @@
 
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Users', [{
+    // Estudiante
     name: 'Sebastian',
     surname: 'Vicario',
     email: 'svicario@fi.uba.ar',
@@ -10,6 +11,7 @@ export function up (queryInterface) {
     padron: 92223
   },
   {
+    // Estudiante
     name: 'Nicolas',
     surname: 'Araya',
     email: 'naraya@fi.uba.ar',
@@ -19,6 +21,7 @@ export function up (queryInterface) {
     padron: 93203
   },
   {
+    // Estudiante
     name: 'Marcelo',
     surname: 'Cavazzoli',
     email: 'mcavazzoli@fi.uba.ar',
@@ -28,6 +31,7 @@ export function up (queryInterface) {
     padron: 93203
   },
   {
+    // Tutor
     name: 'Pablo',
     surname: 'Cosso',
     email: 'pcosso@fi.uba.ar',
@@ -36,6 +40,7 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    // Tutor
     name: 'Ricardo',
     surname: 'Veiga',
     email: 'rveiga@fi.uba.ar',
@@ -44,6 +49,7 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    // Tutor
     name: 'Alejandro',
     surname: 'Molinari',
     email: 'amolinari@fi.uba.ar',
@@ -52,6 +58,7 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    // Comision Curricular
     name: 'Arrow',
     surname: 'GameMaster',
     email: 'arrowgamemaster@gmail.com',
@@ -60,6 +67,7 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    // Estudiante
     name: 'Sebastian',
     surname: 'Cys',
     email: 'svicario@cys.com.ar',
@@ -68,6 +76,7 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    // Tutor
     name: 'Sebastian',
     surname: 'Main',
     email: 'vicario.sebastian@gmail.com',
@@ -76,9 +85,37 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    // Admin
     name: 'Nicolas',
     surname: 'Main',
     email: 'nwaraya@gmail.com',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Admin
+    name: 'Belen',
+    surname: 'Lemonatio',
+    email: 'belen@lemonat.io',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Tutor
+    name: 'Design',
+    surname: 'Lemonatio',
+    email: 'design@lemonat.io',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Estudiante
+    name: 'Chelo',
+    surname: 'Main',
+    email: 'chelinho1397@gmail.com',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
