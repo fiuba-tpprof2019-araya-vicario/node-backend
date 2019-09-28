@@ -17,10 +17,13 @@ const createToken = (id, email, credentials) => {
 }
 
 const validateGoogleToken = async (idToken) => {
+  console.log('Token cliente: ', idToken)
   let audience = process.env.AUDIENCE
+  let audienceAndroid = process.env.AUDIENCE_ANDROID
+  let audienceIOS = process.env.AUDIENCE_IOS
   return client.verifyIdToken({
     idToken: idToken,
-    audience: audience
+    audience: [audience, audienceAndroid, audienceIOS]
   })
     .then(ticket => {
       let payload = ticket.getPayload()
