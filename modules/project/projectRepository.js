@@ -335,7 +335,7 @@ class ProjectRepository {
             requestDeletePromise.push(p1)
           }
 
-          if (data.tutor_id !== undefined) {
+          if (data.tutor_id !== undefined && data.tutor_id !== project.dataValues.tutor_id) {
             let p1 = ProjectRequestTutor.destroy({
               where: { [Op.and]: { project_id: project.dataValues.id, user_id: project.dataValues.tutor_id } }, transaction
             })
@@ -353,11 +353,11 @@ class ProjectRepository {
             let updatePromises = []
 
             let updateObject = {}
+            if (data.tutor_id !== undefined && data.tutor_id !== project.dataValues.tutor_id) updateObject.state_id = STATE_ID_START
             if (data.name !== undefined) updateObject.name = data.name
             if (data.description !== undefined) updateObject.description = data.description
             if (data.tutor_id !== undefined) updateObject.tutor_id = data.tutor_id
             if (data.type_id !== undefined) updateObject.type_id = data.type_id
-            if (data.proposal_url !== undefined) updateObject.proposal_url = data.proposal_url
 
             if (Object.keys(updateObject).length > 0) {
               let p1 = Project.update(
@@ -394,7 +394,7 @@ class ProjectRepository {
               updatePromises = [...updatePromises, p1, ...p2]
             }
 
-            if (data.tutor_id !== undefined) {
+            if (data.tutor_id !== undefined && data.tutor_id !== project.dataValues.tutor_id) {
               let p1 = ProjectRequestTutor.create({
                 project_id: project.dataValues.id,
                 user_id: data.tutor_id,
@@ -637,6 +637,10 @@ class ProjectRepository {
       .then(project => {
         return project == null
       })
+  }
+
+  static rejectProjectEvaluation (projectId) {
+    
   }
 }
 

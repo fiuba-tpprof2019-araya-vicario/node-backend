@@ -99,6 +99,8 @@ export const editProject = async (creatorId, projectId, data) => {
   let response = await ProjectRepository.edit(projectId, data)
   if (response === undefined) return Promise.reject(getBadRequest())
 
+  await RequestRepository.resetAcceptProposal(projectId)
+
   sendRequestMails(data)
 
   return Promise.resolve(response)
@@ -174,7 +176,7 @@ export const evaluateProposal = async (projectId, userId, careerId, status) => {
   if (status === 'accepted') {
     await ProjectRepository.approveProjectCareer(projectId, careerId)
     await checkSendProjectPresentation(projectId)
-  }
+  } else ProjectRepository.rejectProjectEvaluation(projectId, careerId)
 
   // TODO: else -> ver que se hace si uno rechaza la propuesta
 
