@@ -10,6 +10,7 @@ const State = require('../../db/models').State
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const Requirement = require('../../db/models').Requirement
+const ProjectCareer = require('../../db/models').ProjectCareer
 const Career = require('../../db/models').Career
 const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
 
@@ -64,9 +65,12 @@ const getFullIncludeProjectsData = () => {
     as: 'State'
   },
   {
-    model: Career,
-    as: 'Careers',
-    through: { attributes: [] }
+    model: Requirement,
+    as: 'Requirement'
+  },
+  {
+    model: ProjectCareer,
+    include: [{ model: Career }]
   }]
 }
 
@@ -117,9 +121,12 @@ const getFullIncludeProjectData = (id) => {
     as: 'State'
   },
   {
-    model: Career,
-    as: 'Careers',
-    through: { attributes: [] }
+    model: Requirement,
+    as: 'Requirement'
+  },
+  {
+    model: ProjectCareer,
+    include: [{ model: Career }]
   }]
 }
 
@@ -162,11 +169,12 @@ class ProjectRepository {
   }
 
   static async createWithRequirement (creatorId, data) {
+    console.log('ProjectRepository::createWithRequirement')
+    console.log(data)
     let requirement = await Requirement.findOne(
       {
         where: {
-          id: data.requirement_id,
-          status: 'active'
+          id: data.requirement_id
         },
         include: [{
           model: User,
@@ -178,10 +186,10 @@ class ProjectRepository {
     let projectId
     return sequelize.transaction(transaction => {
       return Project.create({
-        name: requirement.dataValues.name,
-        description: requirement.dataValues.description,
+        name: data.name,
+        description: data.description,
         creator_id: creatorId,
-        tutor_id: requirement.Creator.dataValues.id,
+        tutor_id: data.tutor_id,
         type_id: data.type_id,
         state_id: STATE_ID_START,
         requirement_id: data.requirement_id
@@ -190,7 +198,13 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(data.students, { transaction })
           let p2 = project.setCotutors(data.cotutors, { transaction })
-          let p3 = project.setCareers(data.careers, { transaction })
+          let p3 = data.careers.map(career => {
+            return ProjectCareer.create({
+              project_id: project.dataValues.id,
+              career_id: career,
+              status: STATUS_REQUEST.PENDING
+            }, { transaction })
+          })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -198,7 +212,7 @@ class ProjectRepository {
           }, { transaction })
           let p5 = ProjectRequestTutor.create({
             project_id: project.dataValues.id,
-            user_id: requirement.Creator.dataValues.id,
+            user_id: data.tutor_id,
             status: STATUS_REQUEST.PENDING,
             accepted_proposal: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
@@ -243,7 +257,13 @@ class ProjectRepository {
           projectId = project.dataValues.id
           let p1 = project.setStudents(data.students, { transaction })
           let p2 = project.setCotutors(data.cotutors, { transaction })
-          let p3 = project.setCareers(data.careers, { transaction })
+          let p3 = data.careers.map(career => {
+            return ProjectCareer.create({
+              project_id: project.dataValues.id,
+              career_id: career,
+              status: STATUS_REQUEST.PENDING
+            }, { transaction })
+          })
           let p4 = ProjectHistory.create({
             project_id: project.dataValues.id,
             created_by: creatorId,
@@ -324,9 +344,16 @@ class ProjectRepository {
             requestDeletePromise.push(p1)
           }
 
-          if (data.tutor_id !== undefined) {
+          if (data.tutor_id !== undefined && data.tutor_id !== project.dataValues.tutor_id) {
             let p1 = ProjectRequestTutor.destroy({
               where: { [Op.and]: { project_id: project.dataValues.id, user_id: project.dataValues.tutor_id } }, transaction
+            })
+            requestDeletePromise.push(p1)
+          }
+
+          if (data.careers !== undefined) {
+            let p1 = ProjectCareer.destroy({
+              where: { [Op.and]: { project_id: project.dataValues.id } }, transaction
             })
             requestDeletePromise.push(p1)
           }
@@ -335,11 +362,11 @@ class ProjectRepository {
             let updatePromises = []
 
             let updateObject = {}
+            if (data.tutor_id !== undefined && data.tutor_id !== project.dataValues.tutor_id) updateObject.state_id = STATE_ID_START
             if (data.name !== undefined) updateObject.name = data.name
             if (data.description !== undefined) updateObject.description = data.description
             if (data.tutor_id !== undefined) updateObject.tutor_id = data.tutor_id
             if (data.type_id !== undefined) updateObject.type_id = data.type_id
-            if (data.proposal_url !== undefined) updateObject.proposal_url = data.proposal_url
 
             if (Object.keys(updateObject).length > 0) {
               let p1 = Project.update(
@@ -376,7 +403,7 @@ class ProjectRepository {
               updatePromises = [...updatePromises, p1, ...p2]
             }
 
-            if (data.tutor_id !== undefined) {
+            if (data.tutor_id !== undefined && data.tutor_id !== project.dataValues.tutor_id) {
               let p1 = ProjectRequestTutor.create({
                 project_id: project.dataValues.id,
                 user_id: data.tutor_id,
@@ -388,7 +415,13 @@ class ProjectRepository {
             }
 
             if (data.careers !== undefined) {
-              let p1 = project.setCareers(data.careers, { transaction })
+              let p1 = data.careers.map(career => {
+                return ProjectCareer.create({
+                  project_id: project.dataValues.id,
+                  career_id: career,
+                  status: STATUS_REQUEST.PENDING
+                }, { transaction })
+              })
               updatePromises.push(p1)
             }
 
@@ -515,7 +548,6 @@ class ProjectRepository {
         where: { accepted_proposal: { [Op.ne]: 'accepted' } }
       }]
     })
-    console.log('Project: ', project)
 
     if (project != null) return false
 
@@ -528,7 +560,6 @@ class ProjectRepository {
         where: { accepted_proposal: { [Op.ne]: 'accepted' } }
       }]
     })
-    console.log('Project: ', project)
 
     return project == null
   }
@@ -545,6 +576,78 @@ class ProjectRepository {
       { state_id: projectTypeState.dataValues.secondary_state },
       { where: { id: project.dataValues.id } }
     )
+  }
+
+  static async canEvaluateProject (projectId, carrerId) {
+    return Project.findOne({
+      where: { proposal_url: { [Op.ne]: null }, state_id: State.pendingRevision(), id: projectId },
+      include: {
+        model: ProjectCareer,
+        required: true,
+        attributes: [],
+        where: {
+          career_id: carrerId
+        }
+      }
+    })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static async approveProjectCareer (projectId, careerId) {
+    return ProjectCareer.update(
+      { status: STATUS_REQUEST.ACCEPTED },
+      { where: { project_id: projectId, career_id: careerId } }
+    )
+  }
+
+  static async approveProject (projectId) {
+    let project = await Project.findByPk(projectId)
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        primary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.secondary_state },
+      { where: { id: projectId } }
+    )
+  }
+
+  static async rejectProject (projectId) {
+    let project = await Project.findByPk(projectId)
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        secondary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.primary_state },
+      { where: { id: projectId } }
+    )
+  }
+
+  static hasAllCareerEvaluationAccepted (projectId) {
+    return Project.findByPk(projectId, {
+      include: {
+        model: ProjectCareer,
+        required: true,
+        attributes: [],
+        where: { status: { [Op.ne]: 'accepted' } }
+      }
+    })
+      .then(project => {
+        return project == null
+      })
+  }
+
+  static rejectProjectEvaluation (projectId) {
+    // TODO
   }
 }
 

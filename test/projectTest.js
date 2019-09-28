@@ -7,7 +7,8 @@ let TOKENS = {
   CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIl0sImlhdCI6MTU2OTE4NDMyMywiZXhwIjoxNTcxNzc2MzIzfQ.J7Q4NmrvDHZOq7ZOgS7Xx4R-94ANkISjGb0ppUsaM3Y',
   TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyJdLCJpYXQiOjE1NjkxODQzOTcsImV4cCI6MTU3MTc3NjM5N30.W5UNYWNXCs0BE17oH6wMaOD35JmAjdVsj1bX6IL2ySA',
   STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJzdmljYXJpb0BjeXMuY29tLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1NjkxODQ0MzMsImV4cCI6MTU3MTc3NjQzM30.2F7VzxkzOkyAg4CQGt95BOFMfiTxKTJdcOq3KtOY5UQ',
-  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkVESVRfVVNFUlMiLCJHRVRfVVNFUlMiLCJFRElUX1BST0ZJTEVTIiwiR0VUX1BST0ZJTEVTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkFQUFJPVkVfUFJPSkVDVFMiLCJFRElUX1JFUVVJUkVNRU5UUyIsIkdFVF9SRVFVSVJFTUVOVFMiXSwiaWF0IjoxNTY5MTg0NDY5LCJleHAiOjE1NzE3NzY0Njl9.m85LzPtbfygs3qxeDcddJ6QH5V5OArz0_jUMsyP6kGs'
+  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkVESVRfVVNFUlMiLCJHRVRfVVNFUlMiLCJFRElUX1BST0ZJTEVTIiwiR0VUX1BST0ZJTEVTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkFQUFJPVkVfUFJPSkVDVFMiLCJFRElUX1JFUVVJUkVNRU5UUyIsIkdFVF9SRVFVSVJFTUVOVFMiXSwiaWF0IjoxNTY5MTg0NDY5LCJleHAiOjE1NzE3NzY0Njl9.m85LzPtbfygs3qxeDcddJ6QH5V5OArz0_jUMsyP6kGs',
+  CURRICULAR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkVESVRfVVNFUlMiLCJHRVRfVVNFUlMiLCJFRElUX1BST0ZJTEVTIiwiR0VUX1BST0ZJTEVTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkFQUFJPVkVfUFJPSkVDVFMiLCJFRElUX1JFUVVJUkVNRU5UUyIsIkdFVF9SRVFVSVJFTUVOVFMiXSwiaWF0IjoxNTY5NDQzNTY4LCJleHAiOjE1NzIwMzU1Njh9.Vw2jJTQqij-gn-gnCbspXl5ScwsyMQCec25jARNmEKM'
 }
 
 let projectId
@@ -55,8 +56,8 @@ describe('Project /v0/api/projects/', () => {
         assert.equal(response.body.data[0].Students[0].email, 'svicario@cys.com.ar')
         assert.equal(response.body.data[0].Cotutors[0].id, 7)
         assert.equal(response.body.data[0].Cotutors[0].email, 'arrowgamemaster@gmail.com')
-        assert.equal(response.body.data[0].Careers[0].id, 1)
-        assert.equal(response.body.data[0].Careers[0].name, 'Ingeniería en Informática')
+        assert.equal(response.body.data[0].ProjectCareers[0].Career.id, 1)
+        assert.equal(response.body.data[0].ProjectCareers[0].Career.name, 'Ingeniería en Informática')
         done()
       }).catch(done)
   })
@@ -127,8 +128,8 @@ describe('Project /v0/api/projects/', () => {
         assert.equal(response.body.data.Cotutors[0].email, 'arrowgamemaster@gmail.com')
         assert.equal(response.body.data.Cotutors[0].TutorRequests[0].type, 'cotutor')
         cotutorRequestId = response.body.data.Cotutors[0].TutorRequests[0].id
-        assert.equal(response.body.data.Careers[0].id, 1)
-        assert.equal(response.body.data.Careers[0].name, 'Ingeniería en Informática')
+        assert.equal(response.body.data.ProjectCareers[0].Career.id, 1)
+        assert.equal(response.body.data.ProjectCareers[0].Career.name, 'Ingeniería en Informática')
         done()
       }).catch(done)
   })
@@ -150,7 +151,7 @@ describe('Project /v0/api/projects/', () => {
             assert.equal(response.body.data.id, projectId)
             assert.equal(response.body.data.Type.id, 2)
             assert.equal(response.body.data.Type.name, 'Tesis')
-            assert.equal(response.body.data.Careers.length, 2)
+            assert.equal(response.body.data.ProjectCareers.length, 2)
             done()
           }).catch(done)
       }).catch(done)
@@ -243,7 +244,6 @@ describe('Project /v0/api/projects/', () => {
           .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
           .expect(200)
           .then(response => {
-            console.log(response.body.data)
             assert.equal(response.body.data.id, projectId)
             assert.equal(response.body.data.State.id, 3)
             assert.equal(response.body.data.State.name, 'Propuesta en revisión')
@@ -252,15 +252,51 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
-//   router.get('/students/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(getStudentRequests))
-// router.get('/tutors/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(getTutorRequests))
-// router.put('/students/:id([0-9]+)?/', putStudentValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(putStudentRequest))
-// router.put('/tutors/:id([0-9]+)?/', putTutorValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_TUTOR_REQUESTS'), validate(putTutorRequest))
+  it('Curricular accept proposal of one project', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/assessments`)
+      .send({ 'status': 'accepted', 'career': 1 })
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.ProjectCareers[0].status, 'pending')
+            assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.State.id, 3)
+            assert.equal(response.body.data.State.name, 'Propuesta en revisión')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
 
-  // router.delete('/:id([0-9]+)?/', getValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(projectController.deleteProject))
-  // router.delete('/:id([0-9]+)?/students/:user_id([0-9]+)?/', deleteUserProjectValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(projectController.deleteStudentProject))
-  // router.delete('/:id([0-9]+)?/tutors/:user_id([0-9]+)?/', deleteUserProjectValidations, validateWithExpress, checkIsLoggedWithCredentials('GET_PROJECTS'), validate(projectController.deleteTutorProject))
-  // router.put('/:id([0-9]+)?/proposal/', upload.single('file'), validate(projectController.uploadProposal))
+  it('Curricular accept proposal of last project', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/assessments`)
+      .send({ 'status': 'accepted', 'career': 2 })
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.ProjectCareers[0].status, 'accepted')
+            assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.State.id, 4)
+            assert.equal(response.body.data.State.name, 'Pendiente de presentación')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
 
   after((done) => {
     request(app)

@@ -20,5 +20,7 @@ module.exports = (sequelize) => {
     return STATES.PENDING_DOC
   }
 
+  State.pendingRevision = () => { return STATES.PENDING_REV }
+
   return State
 }

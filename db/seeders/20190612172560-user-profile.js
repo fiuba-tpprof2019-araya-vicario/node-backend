@@ -43,7 +43,7 @@ export function up (queryInterface) {
   },
   {
     user_id: 7,
-    profile_id: 1,
+    profile_id: 4,
     created_at: new Date(),
     updated_at: new Date()
   },

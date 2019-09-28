@@ -99,6 +99,8 @@ export const editProject = async (creatorId, projectId, data) => {
   let response = await ProjectRepository.edit(projectId, data)
   if (response === undefined) return Promise.reject(getBadRequest())
 
+  await RequestRepository.resetAcceptProposal(projectId)
+
   sendRequestMails(data)
 
   return Promise.resolve(response)
@@ -159,4 +161,24 @@ export const uploadProposal = async (projectId, file) => {
   let response = await ProjectRepository.updateProposal(projectId, fileResponse.id, fileResponse.link, fileResponse.name)
   if (response !== null) return Promise.resolve(response)
   else return Promise.reject(getBadRequest())
+}
+
+const checkSendProjectPresentation = async (projectId) => {
+  if (!(await ProjectRepository.hasAllCareerEvaluationAccepted(projectId))) return
+  let project = await ProjectRepository.getProjectById(projectId)
+  await ProjectRepository.updateNextState(project)
+}
+
+export const evaluateProposal = async (projectId, userId, careerId, status) => {
+  if (!(await UserRepository.hasCareer(userId, careerId))) return Promise.reject(getBadRequest('El usuario no pertenece a la carrera'))
+  if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+  if (!(await ProjectRepository.canEvaluateProject(projectId, careerId))) return Promise.reject(getBadRequest('El proyecto no se encuentra en revisión'))
+  if (status === 'accepted') {
+    await ProjectRepository.approveProjectCareer(projectId, careerId)
+    await checkSendProjectPresentation(projectId)
+  } else ProjectRepository.rejectProjectEvaluation(projectId, careerId)
+
+  // TODO: else -> ver que se hace si uno rechaza la propuesta
+
+  return Promise.resolve(projectId)
 }

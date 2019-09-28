@@ -51,13 +51,13 @@ const processUserResponse = (user) => {
 }
 
 const validateUser = async (token, email) => {
-    // TODO: CAMBIAR ESTE HARDCODEO
-    // return UserRepository.getByEmailAndToken(email, token)
-    return UserRepository.getByEmailAndToken(email, null)
-      .then(user => {
-        if (user == null) return Promise.resolve(user)
-        return processUserResponse(user)
-      })
+  // TODO: CAMBIAR ESTE HARDCODEO
+  // return UserRepository.getByEmailAndToken(email, token)
+  return UserRepository.getByEmailAndToken(email, null)
+    .then(user => {
+      if (user == null) return Promise.resolve(user)
+      return processUserResponse(user)
+    })
 }
 
 const getUser = async (userId) => {

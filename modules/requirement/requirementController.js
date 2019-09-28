@@ -10,7 +10,7 @@ const getRequirements = async function (req, res) {
 const createRequirement = async function (req, res) {
   let body = req.body
   let response = await addRequirement(req.id, body.name, body.description)
-  res.statusCode = codes.OK
+  res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
 

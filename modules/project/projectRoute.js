@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createValidations, getValidations, modifyValidations, deleteUserProjectValidations } from './projectValidation'
+import { createValidations, getValidations, modifyValidations, deleteUserProjectValidations, evaluateValidations } from './projectValidation'
 import * as projectController from './projectController'
 import { validate, validateWithExpress } from '../util/requestValidator'
 import { checkIsLoggedWithCredentials } from '../auth/authMiddleware'
@@ -17,5 +17,6 @@ router.delete('/:id([0-9]+)?/', getValidations, validateWithExpress, checkIsLogg
 router.delete('/:id([0-9]+)?/students/:user_id([0-9]+)?/', deleteUserProjectValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(projectController.deleteStudentProject))
 router.delete('/:id([0-9]+)?/tutors/:user_id([0-9]+)?/', deleteUserProjectValidations, validateWithExpress, checkIsLoggedWithCredentials('GET_PROJECTS'), validate(projectController.deleteTutorProject))
 router.put('/:id([0-9]+)?/proposal/', upload.single('file'), validate(projectController.uploadProposal))
+router.put('/:id([0-9]+)?/assessments/', evaluateValidations, validateWithExpress, checkIsLoggedWithCredentials('APPROVE_PROJECTS'), validate(projectController.evaluateProposal))
 
 export default router

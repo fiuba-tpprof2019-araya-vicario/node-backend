@@ -40,7 +40,8 @@
 									"value": "1"
 								}
 							]
-						}
+						},
+						"description": "Filter url param: state"
 					},
 					"response": []
 				},
@@ -136,7 +137,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"proposal_url\": \"https://drive.google.com/file/d/1Z2B-Ro66RmOuAKQ2U0_oVRYfzKPdwxG1/view?usp=sharing\",\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"tutor_id\": 9,\n\t\"cotutors\": [4,7],\n\t\"careers\": [2,3]\n}"
+							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"tutor_id\": 9,\n\t\"cotutors\": [4,7],\n\t\"careers\": [2,3]\n}"
 						},
 						"url": {
 							"raw": "{{url}}/projects",
@@ -168,7 +169,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"requirement_id\": 1,\n\t\"proposalUrl\": null,\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"cotutors\": [4,5],\n\t\"careers\": [2,3]\n}"
+							"raw": "{\n\t\"requirement_id\": 1,\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"tutor_id\": 9,\n\t\"cotutors\": [4,7],\n\t\"careers\": [2,3]\n}"
 						},
 						"url": {
 							"raw": "{{url}}/projects",
@@ -332,6 +333,42 @@
 								"projects",
 								"1",
 								"proposal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EvaluateProject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": \"accepted\",\n\t\"career\": 1\n}"
+						},
+						"url": {
+							"raw": "{{url}}/projects/1/assessments/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"1",
+								"assessments",
+								""
 							]
 						}
 					},
@@ -826,7 +863,7 @@
 					"response": []
 				},
 				{
-					"name": "EditUser",
+					"name": "EditProfilesUser",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -838,13 +875,13 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2]\n}",
+							"raw": "{\n\t\"profiles\": [2, 3]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -865,6 +902,42 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Push Notification Prueba",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "key=AAAA6idkOGc:APA91bELcGCT7HTUhKZMij_Y24gf_HzF03R7bbNmsHON1JG-z1xSQMcMPwx7BslVZlD9NiU4OgGna-bi8MIoYzRr4QNtRUEHD6-NSlxss7w963HMVsF73GmpK-HLjgwrYr05yiiLPQFj",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"to\" : \"eFSqtyo6OII:APA91bEKOFDXqgGkq0AIOXpgeu2s4ENuO_St1ZHqLENcFOfQnusH1Fyq7p6vLecUjXSw5-mW2WL85MB2IjT4d3vm_hLkee9IzZVlJ7WqidhLU5cGfpFGhy_36mhowdkPxDF1i4h1_f85\",\n \"collapse_key\" : \"type_a\",\n \"notification\" : {\n     \"body\" : \"Sending Notification Body From Data\",\n     \"title\": \"Notification Title from Data\",\n     \"key_1\" : \"Value for key_1\",\n     \"key_2\" : \"Value for key_2\"\n }\n}"
+				},
+				"url": {
+					"raw": "https://fcm.googleapis.com/fcm/send",
+					"protocol": "https",
+					"host": [
+						"fcm",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"fcm",
+						"send"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -20,7 +20,7 @@ export async function up (queryInterface, Sequelize) {
         model: 'Users',
         key: 'id'
       }
-    },
+    }
   })
 }
 export function down (queryInterface) {
