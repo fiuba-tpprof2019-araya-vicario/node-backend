@@ -63,7 +63,7 @@ const validateUser = async (token, email) => {
 const getUser = async (userId) => {
   return UserRepository.getById(userId)
     .then(user => {
-      if (user == null) return reject(getUsuarioNoExistente())
+      if (user == null) return Promise.reject(getUsuarioNoExistente())
       return Promise.resolve(user)
     })
 }
@@ -71,7 +71,7 @@ const getUser = async (userId) => {
 const getUsers = async (params) => {
   return UserRepository.getAll(params)
     .then(users => {
-      if (users == null) return reject(getUsuarioNoExistente())
+      if (users == null) return Promise.reject(getUsuarioNoExistente())
       return Promise.resolve(users)
     })
 }
@@ -81,15 +81,15 @@ const createUser = async (email, name, surname, token, padron, type) => {
   // return UserRepository.create(email, name, surname, token, padron, type)
   return UserRepository.create(email, name, surname, null, padron, type)
     .then(user => {
-      if (user == null) return reject(getServiceError())
+      if (user == null) return Promise.reject(getServiceError())
       return processUserResponse(user)
     })
 }
 
-const editUser = async (userId, profiles) => {
-  return UserRepository.edit(userId, profiles)
+const editUser = async (userId, profiles, careers) => {
+  return UserRepository.edit(userId, profiles, careers)
     .then(userId => {
-      if (userId == null) return reject(getServiceError())
+      if (userId == null) return Promise.reject(getServiceError())
       return Promise.resolve(userId)
     })
 }

@@ -37,15 +37,17 @@ describe('GET /v0/api/users/', () => {
         assert.equal(response.body.data.Profiles[0].id, 2)
         assert.equal(response.body.data.Profiles[0].name, 'Estudiante')
         assert.equal(response.body.data.Profiles[0].description, 'Estudiante FIUBA')
+        assert.equal(response.body.data.Careers[0].id, 1)
+        assert.equal(response.body.data.Careers[0].name, 'Ingeniería en Informática')
         done()
       }).catch(done)
   })
 
-  it('Edit profiles specific user by id', (done) => {
+  it('Edit profiles / careers specific user by id', (done) => {
     request(app)
       .put('/v0/api/users/1')
       .set({ 'Authorization': token, Accept: 'application/json' })
-      .send({ profiles: [2, 3] })
+      .send({ profiles: [2, 3], careers: [2] })
       .expect(200)
       .then(response => {
         assert.equal(response.body.data, '1')
@@ -65,6 +67,8 @@ describe('GET /v0/api/users/', () => {
             assert.equal(response.body.data.Profiles[1].id, 3)
             assert.equal(response.body.data.Profiles[1].name, 'Tutor')
             assert.equal(response.body.data.Profiles[1].description, 'Docente Tutor FIUBA')
+            assert.equal(response.body.data.Careers[0].id, 2)
+            assert.equal(response.body.data.Careers[0].name, 'Ingeniería Civil')
             done()
           })
           .catch(done)
@@ -75,7 +79,7 @@ describe('GET /v0/api/users/', () => {
   after((done) => {
     request(app)
       .put('/v0/api/users/1')
-      .send({ profiles: [2] })
+      .send({ profiles: [2], careers: [1] })
       .set({ 'Authorization': token, Accept: 'application/json' })
       .then(() => done())
   })

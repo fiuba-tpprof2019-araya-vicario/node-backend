@@ -28,7 +28,8 @@ const editUser = async function (req, res) {
   console.log('userController::editUser')
   let userId = req.params.id
   let profiles = req.body.profiles
-  let response = await userService.editUser(userId, profiles)
+  let careers = req.body.careers
+  let response = await userService.editUser(userId, profiles, careers)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }

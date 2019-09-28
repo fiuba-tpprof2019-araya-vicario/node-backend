@@ -863,7 +863,7 @@
 					"response": []
 				},
 				{
-					"name": "EditProfilesUser",
+					"name": "EditUser",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -881,7 +881,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2, 3]\n}",
+							"raw": "{\n\t\"profiles\": [2, 3],\n\t\"careers\": [1, 2]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

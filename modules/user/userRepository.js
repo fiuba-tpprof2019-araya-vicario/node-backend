@@ -116,6 +116,11 @@ class UserRepository {
         model: Profile,
         as: 'Profiles',
         through: { attributes: [] }
+      },
+      {
+        model: Career,
+        as: 'Careers',
+        through: { attributes: [] }
       }]
     })
   }
@@ -419,14 +424,10 @@ class UserRepository {
       .then(user => { return { 'Careers': user.Careers } })
   }
 
-  static edit (id, profiles) {
-    return User.findByPk(id)
-      .then(user => {
-        if (user === null) return null
-        else {
-          return user.setProfiles(profiles).then(() => { return id })
-        }
-      })
+  static async edit (id, profiles, careers) {
+    let user = await User.findByPk(id)
+    if (user === null) return null
+    return Promise.all([user.setProfiles(profiles), user.setCareers(careers)]).then(() => { return id })
   }
 
   static hasCareer (id, careerId) {
