@@ -11,7 +11,7 @@ const getAllRequirements = async () => {
 const addRequirement = async (creatorId, name, description) => {
   return RequirementRepository.create(creatorId, name, description)
     .then(requirementId => {
-      if (requirementId == null) return reject(getServiceError())
+      if (requirementId == null) return Promise.reject(getServiceError())
       return Promise.resolve(requirementId)
     })
 }
@@ -28,7 +28,7 @@ const editRequirement = async (creatorId, requirementId, name, description) => {
 const removeRequirement = async (requirementId) => {
   return RequirementRepository.delete(requirementId)
     .then(requirementId => {
-      if (requirementId == null) return reject(getBadRequest('No existe el requerimiento que quiere eliminar'))
+      if (requirementId == null) return Promise.reject(getBadRequest('No existe el requerimiento que quiere eliminar'))
       return Promise.resolve(requirementId)
     })
 }

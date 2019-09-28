@@ -265,7 +265,6 @@ describe('Project /v0/api/projects/', () => {
           .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
           .expect(200)
           .then(response => {
-            console.log(response.body.data.ProjectCareers)
             assert.equal(response.body.data.ProjectCareers[0].status, 'pending')
             assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
             assert.equal(response.body.data.id, projectId)

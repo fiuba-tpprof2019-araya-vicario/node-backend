@@ -4,8 +4,7 @@ import { codes, createSuccessResponse } from '../util/responser'
 export const createProject = async function (req, res) {
   let body = req.body
   let response
-  console.log(body)
-  if (body.requirementId != null) response = await projectService.addProjectWithRequirement(req.id, body)
+  if (body.requirement_id != null) response = await projectService.addProjectWithRequirement(req.id, body)
   else response = await projectService.addProject(req.id, body)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
@@ -21,7 +20,6 @@ export const getProject = async function (req, res) {
 
 export const getProjects = async function (req, res) {
   console.log('projectController::getProjects')
-  console.log(req.query)
   let response = await projectService.getProjects(req.query)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))

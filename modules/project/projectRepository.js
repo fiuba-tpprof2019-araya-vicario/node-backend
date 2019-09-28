@@ -65,6 +65,10 @@ const getFullIncludeProjectsData = () => {
     as: 'State'
   },
   {
+    model: Requirement,
+    as: 'Requirement'
+  },
+  {
     model: ProjectCareer,
     include: [{ model: Career }]
   }]
@@ -117,6 +121,10 @@ const getFullIncludeProjectData = (id) => {
     as: 'State'
   },
   {
+    model: Requirement,
+    as: 'Requirement'
+  },
+  {
     model: ProjectCareer,
     include: [{ model: Career }]
   }]
@@ -161,11 +169,12 @@ class ProjectRepository {
   }
 
   static async createWithRequirement (creatorId, data) {
+    console.log('ProjectRepository::createWithRequirement')
+    console.log(data)
     let requirement = await Requirement.findOne(
       {
         where: {
-          id: data.requirement_id,
-          status: 'active'
+          id: data.requirement_id
         },
         include: [{
           model: User,
@@ -177,10 +186,10 @@ class ProjectRepository {
     let projectId
     return sequelize.transaction(transaction => {
       return Project.create({
-        name: requirement.dataValues.name,
-        description: requirement.dataValues.description,
+        name: data.name,
+        description: data.description,
         creator_id: creatorId,
-        tutor_id: requirement.Creator.dataValues.id,
+        tutor_id: data.tutor_id,
         type_id: data.type_id,
         state_id: STATE_ID_START,
         requirement_id: data.requirement_id
@@ -203,7 +212,7 @@ class ProjectRepository {
           }, { transaction })
           let p5 = ProjectRequestTutor.create({
             project_id: project.dataValues.id,
-            user_id: requirement.Creator.dataValues.id,
+            user_id: data.tutor_id,
             status: STATUS_REQUEST.PENDING,
             accepted_proposal: STATUS_REQUEST.PENDING,
             type: TYPE_TUTOR_REQUEST.TUTOR
@@ -539,7 +548,6 @@ class ProjectRepository {
         where: { accepted_proposal: { [Op.ne]: 'accepted' } }
       }]
     })
-    console.log('Project: ', project)
 
     if (project != null) return false
 
@@ -552,7 +560,6 @@ class ProjectRepository {
         where: { accepted_proposal: { [Op.ne]: 'accepted' } }
       }]
     })
-    console.log('Project: ', project)
 
     return project == null
   }
@@ -640,7 +647,7 @@ class ProjectRepository {
   }
 
   static rejectProjectEvaluation (projectId) {
-    
+    // TODO
   }
 }
 

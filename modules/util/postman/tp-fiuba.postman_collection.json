@@ -137,7 +137,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"proposal_url\": \"https://drive.google.com/file/d/1Z2B-Ro66RmOuAKQ2U0_oVRYfzKPdwxG1/view?usp=sharing\",\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"tutor_id\": 9,\n\t\"cotutors\": [4,7],\n\t\"careers\": [2,3]\n}"
+							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"tutor_id\": 9,\n\t\"cotutors\": [4,7],\n\t\"careers\": [2,3]\n}"
 						},
 						"url": {
 							"raw": "{{url}}/projects",
@@ -169,7 +169,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"requirement_id\": 1,\n\t\"proposalUrl\": null,\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"cotutors\": [4,5],\n\t\"careers\": [2,3]\n}"
+							"raw": "{\n\t\"requirement_id\": 1,\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\",\n\t\"type_id\": 1,\n\t\"students\": [8],\n\t\"tutor_id\": 9,\n\t\"cotutors\": [4,7],\n\t\"careers\": [2,3]\n}"
 						},
 						"url": {
 							"raw": "{{url}}/projects",
