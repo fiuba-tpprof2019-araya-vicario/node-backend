@@ -67,19 +67,19 @@ export function up (queryInterface) {
   },
   {
     user_id: 11,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 12,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     user_id: 13,
-    profile_id: 1,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   }], {})
