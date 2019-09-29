@@ -165,6 +165,10 @@ class UserRepository {
       {
         model: Project,
         as: 'Creations'
+      },
+      {
+        model: Career,
+        as: 'Careers'
       }]
     })
   }
