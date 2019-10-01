@@ -8,6 +8,7 @@ export async function up (queryInterface, Sequelize) {
     },
     created_at: Sequelize.DATE,
     updated_at: Sequelize.DATE,
+    reject_reason: Sequelize.TEXT,
     status: {
       type: Sequelize.ENUM,
       values: ['pending', 'accepted', 'rejected']

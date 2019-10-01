@@ -205,6 +205,104 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
+  // CASO NO FELIZ TODOS LOS DE LA CC ACEPTAN LA PROPUESTA SALVO UNO
+
+  it('Creator upload proposal', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/proposal`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .attach('file', './test/example.pdf', 'example.pdf')
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data[0], 1)
+        done()
+      }).catch(done)
+  })
+
+  it('Tutor accept proposal project', (done) => {
+    request(app)
+      .put(`/v0/api/requests/tutors/${tutorRequestId}`)
+      .send({ 'accepted_proposal': 'accepted' })
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, tutorRequestId)
+        assert.equal(response.body.data.accepted_proposal, 'accepted')
+        done()
+      }).catch(done)
+  })
+
+  it('Student accept proposal project', (done) => {
+    request(app)
+      .put(`/v0/api/requests/students/${studentRequestId}`)
+      .send({ 'accepted_proposal': 'accepted' })
+      .set({ 'Authorization': TOKENS.STUDENT, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, studentRequestId)
+        assert.equal(response.body.data.accepted_proposal, 'accepted')
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.State.id, 3)
+            assert.equal(response.body.data.State.name, 'Propuesta en revisión')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Curricular reject proposal of one career', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/assessments`)
+      .send({ 'status': 'rejected', 'career': 2, 'reject_reason': 'Falta contenido' })
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.ProjectCareers[0].status, 'pending')
+            assert.equal(response.body.data.ProjectCareers[1].reject_reason, 'Falta contenido')
+            assert.equal(response.body.data.ProjectCareers[1].status, 'rejected')
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.State.id, 3)
+            assert.equal(response.body.data.State.name, 'Propuesta en revisión')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Curricular accept proposal of last career', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/assessments`)
+      .send({ 'status': 'accepted', 'career': 1 })
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.ProjectCareers[0].status, 'rejected')
+            assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.State.id, 2)
+            assert.equal(response.body.data.State.name, 'Pendiente de propuesta')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  // CASO FELIZ TODOS LOS DE LA CC ACEPTAN LA PROPUESTA
+
   it('Creator upload proposal', (done) => {
     request(app)
       .put(`/v0/api/projects/${projectId}/proposal`)

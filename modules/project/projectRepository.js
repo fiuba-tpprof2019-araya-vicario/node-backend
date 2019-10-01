@@ -170,7 +170,6 @@ class ProjectRepository {
 
   static async createWithRequirement (creatorId, data) {
     console.log('ProjectRepository::createWithRequirement')
-    console.log(data)
     let requirement = await Requirement.findOne(
       {
         where: {
@@ -578,7 +577,7 @@ class ProjectRepository {
     )
   }
 
-  static async canEvaluateProject (projectId, carrerId) {
+  static canEvaluateProject (projectId, carrerId) {
     return Project.findOne({
       where: { proposal_url: { [Op.ne]: null }, state_id: State.pendingRevision(), id: projectId },
       include: {
@@ -595,7 +594,7 @@ class ProjectRepository {
       })
   }
 
-  static async approveProjectCareer (projectId, careerId) {
+  static approveProjectCareer (projectId, careerId) {
     return ProjectCareer.update(
       { status: STATUS_REQUEST.ACCEPTED },
       { where: { project_id: projectId, career_id: careerId } }
@@ -617,21 +616,6 @@ class ProjectRepository {
     )
   }
 
-  static async rejectProject (projectId) {
-    let project = await Project.findByPk(projectId)
-    let projectTypeState = await ProjectTypeTransaction.findOne({
-      where: {
-        project_type: project.dataValues.type_id,
-        secondary_state: project.dataValues.state_id
-      }
-    })
-    if (projectTypeState == null) return Promise.reject(getBadRequest())
-    return Project.update(
-      { state_id: projectTypeState.dataValues.primary_state },
-      { where: { id: projectId } }
-    )
-  }
-
   static hasAllCareerEvaluationAccepted (projectId) {
     return Project.findByPk(projectId, {
       include: {
@@ -646,8 +630,63 @@ class ProjectRepository {
       })
   }
 
-  static rejectProjectEvaluation (projectId) {
-    // TODO
+  static hasAllCareerEvaluated (projectId) {
+    return Project.findByPk(projectId, {
+      include: {
+        model: ProjectCareer,
+        required: true,
+        attributes: [],
+        where: { status: { [Op.eq]: 'pending' } }
+      }
+    })
+      .then(project => {
+        return project == null
+      })
+  }
+
+  static async setProjectStateBefore (projectId) {
+    let project = await Project.findByPk(projectId)
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        secondary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.primary_state },
+      { where: { id: projectId } }
+    )
+  }
+
+  static async setProjectStateAfter (projectId) {
+    let project = await Project.findByPk(projectId)
+    let projectTypeState = await ProjectTypeTransaction.findOne({
+      where: {
+        project_type: project.dataValues.type_id,
+        primary_state: project.dataValues.state_id
+      }
+    })
+    if (projectTypeState == null) return Promise.reject(getBadRequest())
+    return Project.update(
+      { state_id: projectTypeState.dataValues.secondary_state },
+      { where: { id: projectId } }
+    )
+  }
+
+  static async rejectProjectCareer (projectId, careerId, rejectReason) {
+    return ProjectCareer.update(
+      { status: STATUS_REQUEST.REJECTED, reject_reason: rejectReason },
+      { where: { project_id: projectId, career_id: careerId } }
+    )
+  }
+
+  static async sendProjectRevision (projectId) {
+    await ProjectCareer.update(
+      { status: STATUS_REQUEST.PENDING, reject_reason: null },
+      { where: { project_id: projectId } }
+    )
+    return ProjectRepository.setProjectStateAfter(projectId)
   }
 }
 
