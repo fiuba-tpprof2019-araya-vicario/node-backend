@@ -7,15 +7,22 @@ const STATE_ID_LAST = 7
 const STUDENT_PROFILE_ID = 2
 
 const getResponseUser = (user, token) => {
+  console.log('>>', user);
+
   return {
     token: token,
     id: user.id,
     email: user.email,
     name: user.name,
     surname: user.surname,
-    credentials: getCredentials(user)
+    credentials: getCredentials(user),
+    careers: getCareers(user)
   }
 }
+
+const getCareers = (user) => (
+    user.Careers.map((career) => ({ id: career.id, name: career.name}))
+  )
 
 const getCredentials = function (user) {
   let credentials = []

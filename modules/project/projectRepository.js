@@ -579,7 +579,8 @@ class ProjectRepository {
 
   static canEvaluateProject (projectId, carrerId) {
     return Project.findOne({
-      where: { proposal_url: { [Op.ne]: null }, state_id: State.pendingRevision(), id: projectId },
+      attributes: ['id'],
+      where: { proposal_url: { [Op.ne]: null }, state_id: State.pendingRevision(), id: parseInt(projectId) },
       include: {
         model: ProjectCareer,
         required: true,
