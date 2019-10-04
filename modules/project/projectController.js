@@ -37,6 +37,12 @@ export const getTutorProjects = async function (req, res) {
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
+export const getTypesProjects = async function (req, res) {
+  let response = await projectService.getTypesProjects()
+  res.statusCode = codes.OK
+  res.json(createSuccessResponse(res.statusCode, response))
+}
+
 export const putProject = async function (req, res) {
   let body = req.body
   let response = await projectService.editProject(req.id, req.params.id, body)

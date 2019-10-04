@@ -151,6 +151,10 @@ class ProjectRepository {
     return Project.findAll({ include: getFullIncludeProjectsData(), where: getWhereForProjects(filter) })
   }
 
+  static getProjectsTypes () {
+    return ProjectType.findAll()
+  }
+
   static createProject (name, type, description) {
     return Project.create({
       name,
