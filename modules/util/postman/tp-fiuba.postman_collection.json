@@ -120,6 +120,39 @@
 					"response": []
 				},
 				{
+					"name": "GetProjectTypes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/projects/types/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"types",
+								""
+							]
+						},
+						"description": "Filter url param: state"
+					},
+					"response": []
+				},
+				{
 					"name": "CreateProject",
 					"request": {
 						"method": "POST",
@@ -228,9 +261,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/projects/5",
+							"raw": "{{url_prod}}/projects/5",
 							"host": [
-								"{{url}}"
+								"{{url_prod}}"
 							],
 							"path": [
 								"projects",

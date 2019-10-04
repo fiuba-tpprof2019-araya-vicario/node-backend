@@ -36,6 +36,13 @@ export const getAllTutorProjects = async (userId) => {
     })
 }
 
+export const getTypesProjects = async () => {
+  return ProjectRepository.getProjectsTypes()
+    .then(types => {
+      return Promise.resolve(types)
+    })
+}
+
 const sendRequestMails = (data) => {
   console.log('Active mails: ', process.env.ACTIVE_MAILS)
   if (process.env.ACTIVE_MAILS !== 'true') return
