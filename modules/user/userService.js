@@ -7,8 +7,6 @@ const STATE_ID_LAST = 7
 const STUDENT_PROFILE_ID = 2
 
 const getResponseUser = (user, token) => {
-  console.log('>>', user);
-
   return {
     token: token,
     id: user.id,
@@ -20,9 +18,7 @@ const getResponseUser = (user, token) => {
   }
 }
 
-const getCareers = (user) => (
-    user.Careers.map((career) => ({ id: career.id, name: career.name}))
-  )
+const getCareers = (user) => (user.Careers.map((career) => ({ id: career.id, name: career.name })))
 
 const getCredentials = function (user) {
   let credentials = []
@@ -33,7 +29,13 @@ const getCredentials = function (user) {
 }
 
 const isStudent = (user) => {
-  return user.Profiles.find(profile => { return profile.id === STUDENT_PROFILE_ID }) != null
+  return user.Profiles.find(
+    profile => {
+      return profile.dataValues.Credentials.find(
+        credential => {
+          return credential.dataValues.name === 'EDIT_PROJECTS'
+        }) != null
+    }) != null
 }
 
 const getActiveProject = (creations, participations) => {
@@ -49,6 +51,7 @@ const processUserResponse = (user) => {
   console.log('authToken: ', authToken)
   let response = getResponseUser(user, authToken)
   if (isStudent(user)) {
+    console.log('ES ESTUDIANTE!!!')
     let activeProject = getActiveProject(user.Creations, user.Participations)
     console.log(activeProject)
     if (activeProject != null) response.projectId = activeProject.dataValues.id

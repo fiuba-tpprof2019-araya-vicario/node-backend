@@ -28,21 +28,28 @@ const getWhereForAllUsers = (params) => {
 const getWhereForTypeOfUsers = (params) => {
   let whereCondition = []
   if (params.type != null) {
-    let profile_id
+    let credentialId
     if (params.type === 'student') {
-      profile_id = 2
+      credentialId = 2
     } else if (params.type === 'tutor') {
-      profile_id = 3
+      credentialId = 8
     }
 
-    profile_id && whereCondition.push({
+    credentialId && whereCondition.push({
       model: Profile,
       as: 'Profiles',
       required: true,
       attributes: [],
       through: { attributes: [] },
-      where: {
-        id: profile_id
+      include: {
+        model: Credential,
+        as: 'Credentials',
+        required: true,
+        attributes: [],
+        through: { attributes: [] },
+        where: {
+          id: credentialId
+        }
       }
     })
   }
