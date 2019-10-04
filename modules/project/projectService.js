@@ -155,7 +155,10 @@ const removeCotutorProject = async (projectId, userId) => {
 export const uploadProposal = async (projectId, file) => {
   console.log('projectService::uploadProposal')
   let project = await ProjectRepository.getProjectById(projectId)
-  if (project != null && project.proposal_drive_id != null) removeFile(project.proposal_drive_id)
+  if (project != null && project.proposal_drive_id != null) {
+    removeFile(project.proposal_drive_id)
+    await RequestRepository.resetAcceptProposal(projectId)
+  }
   let fileResponse = await uploadFile(file.originalname, file.path)
   console.log('fileResponse: ', fileResponse)
   let response = await ProjectRepository.updateProposal(projectId, fileResponse.id, fileResponse.link, fileResponse.name)
@@ -163,22 +166,20 @@ export const uploadProposal = async (projectId, file) => {
   else return Promise.reject(getBadRequest())
 }
 
-const checkSendProjectPresentation = async (projectId) => {
-  if (!(await ProjectRepository.hasAllCareerEvaluationAccepted(projectId))) return
-  let project = await ProjectRepository.getProjectById(projectId)
-  await ProjectRepository.updateNextState(project)
+const checkProjectEvalution = async (projectId) => {
+  if (!(await ProjectRepository.hasAllCareerEvaluated(projectId))) return
+  if ((await ProjectRepository.hasAllCareerEvaluationAccepted(projectId))) await ProjectRepository.setProjectStateAfter(projectId)
+  else await ProjectRepository.setProjectStateBefore(projectId)
 }
 
-export const evaluateProposal = async (projectId, userId, careerId, status) => {
+export const evaluateProposal = async (projectId, userId, careerId, status, rejectReason) => {
   if (!(await UserRepository.hasCareer(userId, careerId))) return Promise.reject(getBadRequest('El usuario no pertenece a la carrera'))
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
   if (!(await ProjectRepository.canEvaluateProject(projectId, careerId))) return Promise.reject(getBadRequest('El proyecto no se encuentra en revisión'))
-  if (status === 'accepted') {
-    await ProjectRepository.approveProjectCareer(projectId, careerId)
-    await checkSendProjectPresentation(projectId)
-  } else ProjectRepository.rejectProjectEvaluation(projectId, careerId)
+  if (status === 'accepted') await ProjectRepository.approveProjectCareer(projectId, careerId)
+  else await ProjectRepository.rejectProjectCareer(projectId, careerId, rejectReason)
 
-  // TODO: else -> ver que se hace si uno rechaza la propuesta
+  await checkProjectEvalution(projectId)
 
   return Promise.resolve(projectId)
 }

@@ -357,7 +357,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"status\": \"accepted\",\n\t\"career\": 1\n}"
+							"raw": "{\n\t\"status\": \"rejected\",\n\t\"career\": 1,\n\t\"reject_reason\": \"El proyecto no posee el alcance necesario para un trabajo profesional\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/assessments/",

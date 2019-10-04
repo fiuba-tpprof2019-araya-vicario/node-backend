@@ -1,7 +1,10 @@
-import { ENUM } from 'sequelize'
+import { ENUM, TEXT } from 'sequelize'
 
 export default (sequelize) => {
   const ProjectCareer = sequelize.define('ProjectCareer', {
+    reject_reason: {
+      type: TEXT
+    },
     status: {
       type: ENUM,
       values: ['pending', 'accepted', 'rejected']

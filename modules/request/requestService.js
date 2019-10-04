@@ -18,7 +18,7 @@ export const getAllTutorRequests = async (userId) => {
 
 const checkSendProjectRevision = async (project) => {
   if (!(await ProjectRepository.hasAllRequestAcceptedProposal(project.id))) return
-  await ProjectRepository.updateNextState(project)
+  await ProjectRepository.sendProjectRevision(project.id)
 }
 
 const modifyProposalStatusRequestStudent = async (requestId, proposalStatus) => {
