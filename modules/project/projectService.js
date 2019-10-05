@@ -183,8 +183,8 @@ export const evaluateProposal = async (projectId, userId, careerId, status, reje
   if (!(await UserRepository.hasCareer(userId, careerId))) return Promise.reject(getBadRequest('El usuario no pertenece a la carrera'))
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
   if (!(await ProjectRepository.canEvaluateProject(projectId, careerId))) return Promise.reject(getBadRequest('El proyecto no se encuentra en revisión'))
-  if (status === 'accepted') await ProjectRepository.approveProjectCareer(projectId, careerId)
-  else await ProjectRepository.rejectProjectCareer(projectId, careerId, rejectReason)
+  if (status === 'accepted') await ProjectRepository.approveProjectCareer(projectId, careerId, userId)
+  else await ProjectRepository.rejectProjectCareer(projectId, careerId, userId, rejectReason)
 
   await checkProjectEvalution(projectId)
 

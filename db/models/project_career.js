@@ -30,6 +30,15 @@ export default (sequelize) => {
         unique: true
       }
     })
+
+    ProjectCareer.belongsTo(models.User, {
+      as: 'Judge',
+      foreignKey: {
+        name: 'judge_id',
+        allowNull: true,
+        unique: true
+      }
+    })
   }
 
   return ProjectCareer

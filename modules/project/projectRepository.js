@@ -70,7 +70,7 @@ const getFullIncludeProjectsData = () => {
   },
   {
     model: ProjectCareer,
-    include: [{ model: Career }]
+    include: [{ model: Career }, { model: User, as: 'Judge', attributes: { exclude: ['google_id'] } }]
   }]
 }
 
@@ -126,7 +126,7 @@ const getFullIncludeProjectData = (id) => {
   },
   {
     model: ProjectCareer,
-    include: [{ model: Career }]
+    include: [{ model: Career }, { model: User, as: 'Judge', attributes: { exclude: ['google_id'] } }]
   }]
 }
 
@@ -599,9 +599,9 @@ class ProjectRepository {
       })
   }
 
-  static approveProjectCareer (projectId, careerId) {
+  static approveProjectCareer (projectId, careerId, judgeId) {
     return ProjectCareer.update(
-      { status: STATUS_REQUEST.ACCEPTED },
+      { status: STATUS_REQUEST.ACCEPTED, judge_id: judgeId },
       { where: { project_id: projectId, career_id: careerId } }
     )
   }
@@ -679,16 +679,16 @@ class ProjectRepository {
     )
   }
 
-  static async rejectProjectCareer (projectId, careerId, rejectReason) {
+  static async rejectProjectCareer (projectId, careerId, judgeId, rejectReason) {
     return ProjectCareer.update(
-      { status: STATUS_REQUEST.REJECTED, reject_reason: rejectReason },
+      { status: STATUS_REQUEST.REJECTED, judge_id: judgeId, reject_reason: rejectReason },
       { where: { project_id: projectId, career_id: careerId } }
     )
   }
 
   static async sendProjectRevision (projectId) {
     await ProjectCareer.update(
-      { status: STATUS_REQUEST.PENDING, reject_reason: null },
+      { status: STATUS_REQUEST.PENDING, reject_reason: null, judge_id: null },
       { where: { project_id: projectId } }
     )
     return ProjectRepository.setProjectStateAfter(projectId)

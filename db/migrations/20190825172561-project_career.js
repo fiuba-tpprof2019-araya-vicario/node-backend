@@ -30,6 +30,15 @@ export async function up (queryInterface, Sequelize) {
         model: 'Careers',
         key: 'id'
       }
+    },
+    judge_id: {
+      type: Sequelize.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     }
   })
 }

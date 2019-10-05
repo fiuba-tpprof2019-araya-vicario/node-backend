@@ -130,6 +130,7 @@ describe('Project /v0/api/projects/', () => {
         cotutorRequestId = response.body.data.Cotutors[0].TutorRequests[0].id
         assert.equal(response.body.data.ProjectCareers[0].Career.id, 1)
         assert.equal(response.body.data.ProjectCareers[0].Career.name, 'Ingeniería en Informática')
+        assert.equal(response.body.data.ProjectCareers[0].judge_id, null)
         done()
       }).catch(done)
   })
@@ -268,8 +269,11 @@ describe('Project /v0/api/projects/', () => {
           .expect(200)
           .then(response => {
             assert.equal(response.body.data.ProjectCareers[0].status, 'pending')
+            assert.equal(response.body.data.ProjectCareers[0].judge_id, null)
             assert.equal(response.body.data.ProjectCareers[1].reject_reason, 'Falta contenido')
             assert.equal(response.body.data.ProjectCareers[1].status, 'rejected')
+            assert.equal(response.body.data.ProjectCareers[1].Judge.id, 7)
+            assert.equal(response.body.data.ProjectCareers[1].Judge.email, 'arrowgamemaster@gmail.com')
             assert.equal(response.body.data.id, projectId)
             assert.equal(response.body.data.State.id, 3)
             assert.equal(response.body.data.State.name, 'Propuesta en revisión')
@@ -292,7 +296,9 @@ describe('Project /v0/api/projects/', () => {
           .expect(200)
           .then(response => {
             assert.equal(response.body.data.ProjectCareers[0].status, 'rejected')
+            assert.equal(response.body.data.ProjectCareers[0].Judge.id, 7)
             assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
+            assert.equal(response.body.data.ProjectCareers[1].Judge.id, 7)
             assert.equal(response.body.data.id, projectId)
             assert.equal(response.body.data.State.id, 2)
             assert.equal(response.body.data.State.name, 'Pendiente de propuesta')
@@ -364,7 +370,9 @@ describe('Project /v0/api/projects/', () => {
           .expect(200)
           .then(response => {
             assert.equal(response.body.data.ProjectCareers[0].status, 'pending')
+            assert.equal(response.body.data.ProjectCareers[0].judge_id, null)
             assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
+            assert.equal(response.body.data.ProjectCareers[1].Judge.id, 7)
             assert.equal(response.body.data.id, projectId)
             assert.equal(response.body.data.State.id, 3)
             assert.equal(response.body.data.State.name, 'Propuesta en revisión')
@@ -387,7 +395,9 @@ describe('Project /v0/api/projects/', () => {
           .expect(200)
           .then(response => {
             assert.equal(response.body.data.ProjectCareers[0].status, 'accepted')
+            assert.equal(response.body.data.ProjectCareers[0].Judge.id, 7)
             assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
+            assert.equal(response.body.data.ProjectCareers[1].Judge.id, 7)
             assert.equal(response.body.data.id, projectId)
             assert.equal(response.body.data.State.id, 4)
             assert.equal(response.body.data.State.name, 'Pendiente de presentación')
