@@ -177,7 +177,8 @@ class ProjectRepository {
     let requirement = await Requirement.findOne(
       {
         where: {
-          id: data.requirement_id
+          id: data.requirement_id,
+          status: 'inactive'
         },
         include: [{
           model: User,
@@ -237,7 +238,8 @@ class ProjectRepository {
               type: TYPE_TUTOR_REQUEST.COTUTOR
             }, { transaction })
           })
-          return Promise.all([p1, p2, p3, p4, p5, p6, p7])
+          let p8 = Requirement.update({ status: 'active' }, { where: { id: data.requirement_id }, transaction })
+          return Promise.all([p1, p2, p3, p4, p5, p6, p7, p8])
         })
     })
       .then(() => {

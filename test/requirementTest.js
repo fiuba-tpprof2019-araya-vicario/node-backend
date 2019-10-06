@@ -76,6 +76,7 @@ describe('Requirement /v0/api/requiremets/', () => {
         assert.equal(response.body.data.ProjectCareers[0].Career.name, 'Ingeniería en Informática')
         assert.equal(response.body.data.Requirement.id, requirementId)
         assert.equal(response.body.data.Requirement.name, 'Little War Online Requirement')
+        assert.equal(response.body.data.Requirement.status, 'active')
         done()
       }).catch(done)
   })

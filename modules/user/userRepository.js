@@ -77,20 +77,16 @@ class UserRepository {
       {
         model: Project,
         as: 'Participations',
-        through: { attributes: [] }
+        through: { attributes: [] },
+        include: [{ model: ProjectRequestStudent, as: 'StudentRequests', include: [{ model: User, where: { email } }] }]
       },
       {
         model: Project,
         as: 'Creations'
       },
       {
-        model: Project,
-        as: 'Cotutorials',
-        through: { attributes: [] }
-      },
-      {
-        model: Project,
-        as: 'Tutorials'
+        model: Career,
+        as: 'Careers'
       }]
     }
 
@@ -183,25 +179,21 @@ class UserRepository {
     })
   }
 
-  static create (email, name, surname, token, padron, profilesId) {
-    return sequelize.transaction(transaction => {
-      return User.create({
-        email: email,
-        name: name,
-        google_id: token,
-        surname: surname,
-        padron: padron
-      }, { transaction })
-        .then(userWithoutProfiles => {
-          return userWithoutProfiles.addProfiles(profilesId, { transaction })
-            .then(() => {
-              return UserRepository.get(userWithoutProfiles.dataValues.id, transaction)
-            })
-        })
-        .then(user => {
-          return user
-        })
-    })
+  static async create (email, name, surname, token, padron, profilesId) {
+    let transaction = await sequelize.transaction()
+    let user = await User.create({
+      email: email,
+      name: name,
+      google_id: token,
+      surname: surname,
+      padron: padron
+    }, { transaction })
+
+    await user.setProfiles(profilesId, { transaction })
+
+    let userWithoutProfiles = await UserRepository.get(user.dataValues.id, transaction)
+
+    return userWithoutProfiles
   }
 
   static existTutors (tutorsId) {
