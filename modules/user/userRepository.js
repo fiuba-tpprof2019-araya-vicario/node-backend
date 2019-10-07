@@ -78,7 +78,7 @@ class UserRepository {
         model: Project,
         as: 'Participations',
         through: { attributes: [] },
-        include: [{ model: ProjectRequestStudent, as: 'StudentRequests', include: [{ model: User, where: { email } }] }]
+        include: [{ model: ProjectRequestStudent, as: 'StudentRequests', include: [{ model: User, where: { id } }] }]
       },
       {
         model: Project,
