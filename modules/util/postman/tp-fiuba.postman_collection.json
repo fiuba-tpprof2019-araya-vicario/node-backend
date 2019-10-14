@@ -584,12 +584,28 @@
 							{
 								"key": "Content-Type",
 								"type": "text",
-								"value": "application/json"
+								"value": "multipart/form-data"
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"tp-prueba\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/example.pdf"
+								},
+								{
+									"key": "name",
+									"value": "tp-prueba",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "descripcion tp-prueba",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/requirements",
@@ -616,12 +632,28 @@
 							{
 								"key": "Content-Type",
 								"type": "text",
-								"value": "application/json"
+								"value": "multipart/form-data"
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"tp\",\n\t\"description\": \"descripcion tp-prueba\"\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/example.pdf"
+								},
+								{
+									"key": "name",
+									"value": "tp-prueba",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "descripcion tp-prueba",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/requirements/1",
