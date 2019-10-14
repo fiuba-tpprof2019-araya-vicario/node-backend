@@ -20,6 +20,21 @@
 
 ```sequelize db:seed:all```
 
+## Como agregar otra carpeta en Drive FIUBA
+
+1- Ingreo al drive con la cuenta de administrador de carpetas de FIUBA ```https://drive.google.com```
+
+1- Creo una carpeta
+
+2- Una vez creada, click derecho y ponemos compartir y agregamos la cuenta de servicio asignada al proyecto que se encuentra en la ruta:
+
+```https://console.cloud.google.com/iam-admin/serviceaccounts?project=fiuba-tp-1557094314545```
+
+3- Una vez asignado entramos en la carpeta y nos copiamos el ID de la misma que se encuenta en el link:
+  drive.google.com/drive/u/2/folders/**1tWYqI10Mus6252DEqZWleF6i6hdjE2tj**
+  
+4- Luego con este ID generamos una variable en el .env y la usamos para asignar files en el drive con el modulo de la API de Google.
+
 ## Como correr los test
 
 Si es la primera vez, se debe correr el script ```testRestartDB.sh``` de la carpeta scripts del proyecto docker.
