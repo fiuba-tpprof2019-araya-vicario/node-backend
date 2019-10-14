@@ -10,6 +10,9 @@ export function up (queryInterface, Sequelize) {
     updated_at: Sequelize.DATE,
     name: Sequelize.STRING,
     description: Sequelize.TEXT,
+    file_url: Sequelize.STRING,
+    file_name: Sequelize.STRING,
+    file_drive_id: Sequelize.STRING,
     status: {
       type: Sequelize.ENUM,
       values: ['inactive', 'active', 'requested', 'implemented', 'deleted']

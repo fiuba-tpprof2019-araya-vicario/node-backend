@@ -4,7 +4,7 @@ import UserRepository from '../user/userRepository'
 import RequestRepository from '../request/requestRepository'
 import { sendMail } from '../util/mailService'
 import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
-import { uploadFile, removeFile } from '../util/googleDriveService'
+import { uploadProposalFile, removeFile } from '../util/googleDriveService'
 
 export const getSpecificProject = async (projectId) => {
   return ProjectRepository.getProjectFullById(projectId)
@@ -166,7 +166,7 @@ export const uploadProposal = async (projectId, file) => {
     removeFile(project.proposal_drive_id)
     await RequestRepository.resetAcceptProposal(projectId)
   }
-  let fileResponse = await uploadFile(file.originalname, file.path)
+  let fileResponse = await uploadProposalFile(file.originalname, file.path)
   console.log('fileResponse: ', fileResponse)
   let response = await ProjectRepository.updateProposal(projectId, fileResponse.id, fileResponse.link, fileResponse.name)
   if (response !== null) return Promise.resolve(response)

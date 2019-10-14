@@ -15,19 +15,19 @@ jwtClient.authorize((authErr) => {
   console.log('Authorization drive account service successfully')
 })
 
-export const listFiles = () => {
-  // Make an authorized requests
-  // List Drive files.
-  drive.files.list({ auth: jwtClient }, (listErr, resp) => {
-    if (listErr) {
-      console.log(listErr)
-      return
-    }
-    resp.data.files.forEach((file) => {
-      console.log(`${file.name} (${file.mimeType})`)
-    })
-  })
-}
+// const listFiles = () => {
+//   // Make an authorized requests
+//   // List Drive files.
+//   drive.files.list({ auth: jwtClient }, (listErr, resp) => {
+//     if (listErr) {
+//       console.log(listErr)
+//       return
+//     }
+//     resp.data.files.forEach((file) => {
+//       console.log(`${file.name} (${file.mimeType})`)
+//     })
+//   })
+// }
 
 const getFileMetadata = (fileName, parentId) => {
   return {
@@ -43,10 +43,10 @@ const getFileMedia = (mimeType, filePath) => {
   }
 }
 
-const createFile = (fileName, filePath) => {
+const createFile = (fileName, filePath, folder) => {
   return drive.files.create({
     auth: jwtClient,
-    resource: getFileMetadata(fileName, process.env.FOLDER_FIUBA_DRIVE_ID),
+    resource: getFileMetadata(fileName, folder),
     media: getFileMedia('application/pdf', filePath)
   })
 }
@@ -59,8 +59,19 @@ const getSharedLink = (fileId) => {
   })
 }
 
-export const uploadFile = async (fileName, content) => {
-  let createResponse = await createFile(fileName, content)
+export const uploadProposalFile = async (fileName, content) => {
+  let createResponse = await createFile(fileName, content, process.env.PROPOSAL_FOLDER_FIUBA_DRIVE_ID)
+
+  if (createResponse === null) return Promise.reject(getBadRequest('No se pudo crear el archivo'))
+
+  let getLinkResponse = await getSharedLink(createResponse.data.id)
+  if (getLinkResponse === null) return Promise.reject(getBadRequest('No se pudo obtener el link a compartir'))
+
+  return Promise.resolve({ id: createResponse.data.id, link: getLinkResponse.data.webViewLink, name: fileName })
+}
+
+export const uploadRequirementFile = async (fileName, content) => {
+  let createResponse = await createFile(fileName, content, process.env.REQUIREMENT_FOLDER_FIUBA_DRIVE_ID)
 
   if (createResponse === null) return Promise.reject(getBadRequest('No se pudo crear el archivo'))
 

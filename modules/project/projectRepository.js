@@ -173,7 +173,7 @@ class ProjectRepository {
   }
 
   static async createWithRequirement (creatorId, data) {
-    console.log('ProjectRepository::createWithRequirement')
+    console.log('ProjectRepository::createWithRequirement ', creatorId, data)
     let requirement = await Requirement.findOne(
       {
         where: {
@@ -248,6 +248,7 @@ class ProjectRepository {
   }
 
   static create (creatorId, data) {
+    console.log('projectRepository::create ', creatorId, data)
     let projectId
     return sequelize.transaction(transaction => {
       return Project.create({

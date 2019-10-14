@@ -18,6 +18,20 @@ module.exports = (sequelize) => {
     status: {
       type: ENUM,
       values: ['inactive', 'active', 'requested', 'implemented', 'deleted']
+    },
+    file_url: {
+      type: STRING,
+      validate: {
+        isUrl: true,
+        is: /^https:\/\/drive.google.com\/*/i
+      }
+    },
+    file_drive_id: {
+      type: STRING
+    },
+    file_name: {
+      type: STRING,
+      isUnique: true
     }
   }, {
     timestamps: true,

@@ -94,6 +94,12 @@ export function up (queryInterface) {
     profile_id: 2,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    user_id: 7,
+    profile_id: 3,
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {

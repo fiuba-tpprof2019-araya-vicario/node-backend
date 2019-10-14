@@ -4,11 +4,16 @@ import app from '../app'
 import request from 'supertest'
 
 let TOKENS = {
-  CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIl0sImlhdCI6MTU2OTE4NDMyMywiZXhwIjoxNTcxNzc2MzIzfQ.J7Q4NmrvDHZOq7ZOgS7Xx4R-94ANkISjGb0ppUsaM3Y',
-  TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyJdLCJpYXQiOjE1NjkxODQzOTcsImV4cCI6MTU3MTc3NjM5N30.W5UNYWNXCs0BE17oH6wMaOD35JmAjdVsj1bX6IL2ySA',
-  STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJzdmljYXJpb0BjeXMuY29tLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1NjkxODQ0MzMsImV4cCI6MTU3MTc3NjQzM30.2F7VzxkzOkyAg4CQGt95BOFMfiTxKTJdcOq3KtOY5UQ',
-  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkVESVRfVVNFUlMiLCJHRVRfVVNFUlMiLCJFRElUX1BST0ZJTEVTIiwiR0VUX1BST0ZJTEVTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkFQUFJPVkVfUFJPSkVDVFMiLCJFRElUX1JFUVVJUkVNRU5UUyIsIkdFVF9SRVFVSVJFTUVOVFMiXSwiaWF0IjoxNTY5MTg0NDY5LCJleHAiOjE1NzE3NzY0Njl9.m85LzPtbfygs3qxeDcddJ6QH5V5OArz0_jUMsyP6kGs',
-  CURRICULAR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkVESVRfVVNFUlMiLCJHRVRfVVNFUlMiLCJFRElUX1BST0ZJTEVTIiwiR0VUX1BST0ZJTEVTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkFQUFJPVkVfUFJPSkVDVFMiLCJFRElUX1JFUVVJUkVNRU5UUyIsIkdFVF9SRVFVSVJFTUVOVFMiXSwiaWF0IjoxNTY5NDQzNTY4LCJleHAiOjE1NzIwMzU1Njh9.Vw2jJTQqij-gn-gnCbspXl5ScwsyMQCec25jARNmEKM'
+  // svicario@fi.uba.ar
+  CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIl0sImlhdCI6MTU3MTA4OTUwNSwiZXhwIjoxNTczNjgxNTA1fQ.CLTiKM6tQ05GUtlcGSCVeApCZTA8fjkbHaosEmpjxhw',
+  // vicario.sebastian@gmail.com
+  TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyJdLCJpYXQiOjE1NzEwODk1NjEsImV4cCI6MTU3MzY4MTU2MX0.mPz57Qa8ssE1BUDDyU-J0rkFcSs7hPorNfB3Snsm1dU',
+  // naraya@fi.uba.ar
+  STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJuYXJheWFAZmkudWJhLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1NzEwODk1OTgsImV4cCI6MTU3MzY4MTU5OH0.N7tFJkiWBDlskzln_-X5ICie6BL64Xlm2cx_nNKB0JI',
+  // arrowgamemaster@gmail.com
+  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1NzEwODk2MzgsImV4cCI6MTU3MzY4MTYzOH0.nUm-du2mrgAdbIWMzkOVhauZnRaZUjCHfb9FLZ6XWFA',
+  // arrowgamemaster@gmail.com
+  CURRICULAR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1NzEwODk2MzgsImV4cCI6MTU3MzY4MTYzOH0.nUm-du2mrgAdbIWMzkOVhauZnRaZUjCHfb9FLZ6XWFA'
 }
 
 let projectId
@@ -23,7 +28,7 @@ describe('Project /v0/api/projects/', () => {
       .send({ 'name': 'Little War Online',
         'description': 'MMORPG Game',
         'type_id': 1,
-        'students': [8],
+        'students': [2],
         'tutor_id': 9,
         'cotutors': [7],
         'careers': [1] })
@@ -52,8 +57,8 @@ describe('Project /v0/api/projects/', () => {
         assert.equal(response.body.data[0].Creator.email, 'svicario@fi.uba.ar')
         assert.equal(response.body.data[0].Tutor.id, 9)
         assert.equal(response.body.data[0].Tutor.email, 'vicario.sebastian@gmail.com')
-        assert.equal(response.body.data[0].Students[0].id, 8)
-        assert.equal(response.body.data[0].Students[0].email, 'svicario@cys.com.ar')
+        assert.equal(response.body.data[0].Students[0].id, 2)
+        assert.equal(response.body.data[0].Students[0].email, 'naraya@fi.uba.ar')
         assert.equal(response.body.data[0].Cotutors[0].id, 7)
         assert.equal(response.body.data[0].Cotutors[0].email, 'arrowgamemaster@gmail.com')
         assert.equal(response.body.data[0].ProjectCareers[0].Career.id, 1)
@@ -120,8 +125,8 @@ describe('Project /v0/api/projects/', () => {
         assert.equal(response.body.data.Tutor.email, 'vicario.sebastian@gmail.com')
         assert.equal(response.body.data.Tutor.TutorRequests[0].type, 'tutor')
         tutorRequestId = response.body.data.Tutor.TutorRequests[0].id
-        assert.equal(response.body.data.Students[0].id, 8)
-        assert.equal(response.body.data.Students[0].email, 'svicario@cys.com.ar')
+        assert.equal(response.body.data.Students[0].id, 2)
+        assert.equal(response.body.data.Students[0].email, 'naraya@fi.uba.ar')
         assert.equal(response.body.data.Students[0].StudentRequests.length, 1)
         studentRequestId = response.body.data.Students[0].StudentRequests[0].id
         assert.equal(response.body.data.Cotutors[0].id, 7)

@@ -9,14 +9,15 @@ const getRequirements = async function (req, res) {
 
 const createRequirement = async function (req, res) {
   let body = req.body
-  let response = await addRequirement(req.id, body.name, body.description)
+  console.log('requirementController::createRequirement ', body, req.file.name)
+  let response = await addRequirement(req.id, body.name, body.description, req.file)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
 const putRequirement = async function (req, res) {
   let body = req.body
-  let response = await editRequirement(req.id, req.params.id, body.name, body.description)
+  let response = await editRequirement(req.id, req.params.id, body.name, body.description, req.file)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
