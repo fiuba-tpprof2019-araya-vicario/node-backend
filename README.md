@@ -31,7 +31,7 @@
 ```https://console.cloud.google.com/iam-admin/serviceaccounts?project=fiuba-tp-1557094314545```
 
 3- Una vez asignado entramos en la carpeta y nos copiamos el ID de la misma que se encuenta en el link:
-  https://drive.google.com/drive/u/2/folders/**1tWYqI10Mus6252DEqZWleF6i6hdjE2tj**
+  drive.google.com/drive/u/2/folders/**1tWYqI10Mus6252DEqZWleF6i6hdjE2tj**
   
 4- Luego con este ID generamos una variable en el .env y la usamos para asignar files en el drive con el modulo de la API de Google.
 
