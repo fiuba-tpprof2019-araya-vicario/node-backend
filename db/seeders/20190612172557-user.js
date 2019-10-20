@@ -1,7 +1,7 @@
 
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Users', [{
-    // Estudiante
+    // Estudiante y Tutor
     name: 'Sebastian',
     surname: 'Vicario',
     email: 'svicario@fi.uba.ar',
@@ -76,7 +76,7 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
-    // Tutor
+    // Tutor y Admin
     name: 'Sebastian',
     surname: 'Main',
     email: 'vicario.sebastian@gmail.com',

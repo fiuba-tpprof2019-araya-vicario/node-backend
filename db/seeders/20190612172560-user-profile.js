@@ -12,6 +12,12 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    user_id: 1,
+    profile_id: 3,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
     user_id: 2,
     profile_id: 2,
     created_at: new Date(),

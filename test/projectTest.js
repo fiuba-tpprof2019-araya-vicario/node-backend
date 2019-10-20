@@ -260,6 +260,40 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
+  it('Obtain all projects commission before revision', (done) => {
+    request(app)
+      .get('/v0/api/projects/commissions')
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.length, 1)
+        assert.equal(response.body.data[0].ProjectCareers.length, 2)
+        done()
+      }).catch(done)
+  })
+
+  it('Obtain all projects approved before revision', (done) => {
+    request(app)
+      .get('/v0/api/projects/commissions?approved=1')
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.length, 0)
+        done()
+      }).catch(done)
+  })
+
+  it('Obtain all projects commission by career that dont match before revision', (done) => {
+    request(app)
+      .get('/v0/api/projects/commissions?career=3')
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.length, 0)
+        done()
+      }).catch(done)
+  })
+
   it('Curricular reject proposal of one career', (done) => {
     request(app)
       .put(`/v0/api/projects/${projectId}/assessments`)
@@ -309,6 +343,17 @@ describe('Project /v0/api/projects/', () => {
             assert.equal(response.body.data.State.name, 'Pendiente de propuesta')
             done()
           }).catch(done)
+      }).catch(done)
+  })
+
+  it('Obtain all projects commission after rejected', (done) => {
+    request(app)
+      .get('/v0/api/projects/commissions')
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.length, 0)
+        done()
       }).catch(done)
   })
 
@@ -408,6 +453,29 @@ describe('Project /v0/api/projects/', () => {
             assert.equal(response.body.data.State.name, 'Pendiente de presentación')
             done()
           }).catch(done)
+      }).catch(done)
+  })
+
+  it('Obtain all projects commission after approved', (done) => {
+    request(app)
+      .get('/v0/api/projects/commissions')
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.length, 0)
+        done()
+      }).catch(done)
+  })
+
+  it('Obtain all projects approved after approved', (done) => {
+    request(app)
+      .get('/v0/api/projects/commissions?approved=1')
+      .set({ 'Authorization': TOKENS.CURRICULAR, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.length, 1)
+        assert.equal(response.body.data[0].ProjectCareers.length, 2)
+        done()
       }).catch(done)
   })
 

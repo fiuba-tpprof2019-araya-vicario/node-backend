@@ -29,6 +29,15 @@ export const getAllStudentProjects = async (userId) => {
     })
 }
 
+export const getCommissionProjects = async (userId, filter) => {
+  let userCareers = await UserRepository.getCareers(userId)
+  let careersId = userCareers.Careers.map((career) => { return career.dataValues.id })
+  return ProjectRepository.getCommissionProjects(careersId, filter)
+    .then(projects => {
+      return Promise.resolve(projects)
+    })
+}
+
 export const getAllTutorProjects = async (userId) => {
   return UserRepository.getTutorProjects(userId)
     .then(projects => {

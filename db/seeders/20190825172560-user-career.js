@@ -48,6 +48,12 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
+    user_id: 7,
+    career_id: 3,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
     user_id: 8,
     career_id: 3,
     created_at: new Date(),

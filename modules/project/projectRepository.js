@@ -27,10 +27,65 @@ const TYPE_TUTOR_REQUEST = {
   COTUTOR: 'cotutor'
 }
 
+const getWhereForCommissionProjects = (filter) => {
+  let whereCondition = {}
+  if (filter.approved != null) whereCondition.state_id = { [Op.gte]: State.getMinStateApproveCommission() }
+  else whereCondition.state_id = State.pendingRevision()
+  return whereCondition
+}
+
 const getWhereForProjects = (filter) => {
   let whereCondition = {}
   if (filter.state != null) whereCondition.state_id = filter.state
   return whereCondition
+}
+
+const getIncludeCommissionProjectsData = (careersId, filter) => {
+  let careers
+  if (filter.career != null && careersId.includes(parseInt(filter.career))) careers = [parseInt(filter.career)]
+  else careers = careersId
+
+  return [{
+    model: User,
+    as: 'Creator',
+    attributes: { exclude: ['google_id'] }
+  },
+  {
+    model: User,
+    as: 'Tutor',
+    attributes: { exclude: ['google_id'] }
+  },
+  {
+    model: User,
+    as: 'Students',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] }
+  },
+  {
+    model: User,
+    as: 'Cotutors',
+    attributes: { exclude: ['google_id'] },
+    through: { attributes: [] }
+  },
+  {
+    model: ProjectType,
+    as: 'Type'
+  },
+  {
+    model: State,
+    as: 'State'
+  },
+  {
+    model: Requirement,
+    as: 'Requirement'
+  },
+  {
+    model: ProjectCareer,
+    required: true,
+    include: [
+      { model: Career, required: true, where: { id: { [Op.in]: careers } } },
+      { model: User, as: 'Judge', attributes: { exclude: ['google_id'] } }]
+  }]
 }
 
 const getFullIncludeProjectsData = () => {
@@ -149,6 +204,10 @@ class ProjectRepository {
 
   static getProjects (filter) {
     return Project.findAll({ include: getFullIncludeProjectsData(), where: getWhereForProjects(filter) })
+  }
+
+  static getCommissionProjects (careersId, filter) {
+    return Project.findAll({ include: getIncludeCommissionProjectsData(careersId, filter), where: getWhereForCommissionProjects(filter) })
   }
 
   static getProjectsTypes () {

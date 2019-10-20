@@ -120,6 +120,41 @@
 					"response": []
 				},
 				{
+					"name": "GetCommissionProjects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/projects/commissions?approved=1&career=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"commissions"
+							],
+							"query": [
+								{
+									"key": "approved",
+									"value": "1"
+								},
+								{
+									"key": "career",
+									"value": "1"
+								}
+							]
+						},
+						"description": "filtros:\n- approved: En 1 trae los proyectos que esten pendiente de presentacion y estados posteriores\n- career: Filtra por el id de carrera que se le pase, si no coincide con ninguna carrera del usuario de comision curricular trae de todas sus carreras"
+					},
+					"response": []
+				},
+				{
 					"name": "GetProjectTypes",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
