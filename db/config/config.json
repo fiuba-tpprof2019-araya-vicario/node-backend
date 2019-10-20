@@ -4,24 +4,21 @@
     "password": "postgres",
     "database": "postgres",
     "host": "database",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
     "database": "test",
     "host": "database",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "production": {
     "username": "aeredgxoxlxpwn",
     "password": "65f4a62e10b8d8c3ca2a00fed0b1947d9aa6daef4e117f943629b1c88462d2b0",
     "database": "d6a4e56vr1f6fb",
     "host": "ec2-54-83-33-14.compute-1.amazonaws.com",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "test_production": {
     "username": "aeredgxoxlxpwn",
@@ -29,11 +26,10 @@
     "database": "d6a4e56vr1f6fb",
     "host": "localhost",
     "dialect": "postgres",
-    "operatorsAliases": false,
     "ssl": true,
     "dialectOptions":{
       "ssl":{
-         "require":true
+        "require":true
       }
     }
   }
