@@ -11,6 +11,7 @@ import requestRoute from './modules/request/requestRoute'
 import requirementRoute from './modules/requirement/requirementRoute'
 import careerRoute from './modules/career/careerRoute'
 import profileRoute from './modules/profile/profileRoute'
+import dashboardRoute from './modules/dashboard/dashboardRoute'
 
 const app = express()
 
@@ -48,6 +49,7 @@ app.use('/v0/api/requests', requestRoute)
 app.use('/v0/api/requirements', requirementRoute)
 app.use('/v0/api/careers', careerRoute)
 app.use('/v0/api/profiles', profileRoute)
+app.use('/v0/api/dashboard', dashboardRoute)
 app.use('/v0/api/contacts', contactRoute)
 
 // error handler

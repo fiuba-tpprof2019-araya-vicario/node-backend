@@ -5,7 +5,7 @@ import UserRepository from '../user/userRepository'
 const getSpecificCareer = async (careerId) => {
   return CareerRepository.getCareerById(careerId)
     .then(career => {
-      if (career == null) return reject(getNotFound())
+      if (career == null) return Promise.reject(getNotFound())
       else return Promise.resolve(career)
     })
 }

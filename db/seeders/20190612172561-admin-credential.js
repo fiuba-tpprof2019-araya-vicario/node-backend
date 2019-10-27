@@ -10,6 +10,7 @@
 // 'EDIT_TUTOR_REQUESTS 8
 // 'EDIT_REQUIREMENTS 10
 // 'GET_REQUIREMENTS 11
+// 'GET_DASHBOARD 12
 
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Profile_credentials', [{
@@ -75,6 +76,12 @@ export function up (queryInterface) {
   {
     profile_id: 1,
     credential_id: 11,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    profile_id: 1,
+    credential_id: 12,
     created_at: new Date(),
     updated_at: new Date()
   }], {})

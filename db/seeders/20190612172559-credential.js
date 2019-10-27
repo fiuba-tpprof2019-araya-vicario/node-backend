@@ -87,6 +87,13 @@ export function up (queryInterface) {
     description: 'Posibilidad de obtener los requerimientos',
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    id: 12,
+    name: 'GET_DASHBOARD',
+    description: 'Posibilidad de obtener información sobre el dashboard',
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {

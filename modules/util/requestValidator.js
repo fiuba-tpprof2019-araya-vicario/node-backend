@@ -12,7 +12,7 @@ const validate = function (handler) {
         console.error('Internal error: ', e)
         e.status = 500
         e.msg = 'Hubo un error en el servidor. Intente más tarde nuevamente.'
-      }else{
+      } else {
         console.error('Bussiness error: ', e)
       }
       res.statusCode = e.status
@@ -27,10 +27,10 @@ const validateWithExpress = function (req, res, next) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     console.log('Error in validateWithExpress validator: ', errors.mapped())
-    console.log(errors.mapped()._error.nestedErrors[0])
+    console.log(errors.mapped()[Object.keys(errors.mapped())[0]])
     return res
       .status(codes.UNPROCESSABLE_ENTITY)
-      .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, errors.mapped()._error.nestedErrors[0].msg, null))
+      .json(createErrorResponse(codes.UNPROCESSABLE_ENTITY, errors.mapped()[Object.keys(errors.mapped())[0]].msg, null))
   }
   next()
 }

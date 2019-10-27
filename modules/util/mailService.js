@@ -23,7 +23,7 @@ const sendMail = async (mailOptions) => {
   let transporter = nodemailer.createTransport(getTransporter())
   return transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return reject(getServiceError(error))
+      return Promise.reject(getServiceError(error))
     } else {
       return Promise.resolve(info)
     }
