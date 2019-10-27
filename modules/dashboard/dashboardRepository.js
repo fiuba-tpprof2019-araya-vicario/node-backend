@@ -5,18 +5,18 @@ const State = require('../../db/models').State
 
 const getProjectsPerMonthStruct = () => {
   return [
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 },
-    { terminated: 0, progress: 0 }
+    { mes: 1, terminated: 0, progress: 0 },
+    { mes: 2, terminated: 0, progress: 0 },
+    { mes: 3, terminated: 0, progress: 0 },
+    { mes: 4, terminated: 0, progress: 0 },
+    { mes: 5, terminated: 0, progress: 0 },
+    { mes: 6, terminated: 0, progress: 0 },
+    { mes: 7, terminated: 0, progress: 0 },
+    { mes: 8, terminated: 0, progress: 0 },
+    { mes: 9, terminated: 0, progress: 0 },
+    { mes: 10, terminated: 0, progress: 0 },
+    { mes: 11, terminated: 0, progress: 0 },
+    { mes: 12, terminated: 0, progress: 0 }
   ]
 }
 
