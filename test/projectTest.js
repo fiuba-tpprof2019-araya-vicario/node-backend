@@ -479,6 +479,27 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
+  it('Tutor give access to upload presentation', (done) => {
+    request(app)
+      .post(`/v0/api/projects/${projectId}/presentations`)
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.State.id, 4)
+            assert.equal(response.body.data.State.name, 'Pendiente de presentación')
+            assert.equal(response.body.data.Presentation.status, 'created')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
   after((done) => {
     request(app)
       .delete(`/v0/api/projects/${projectId}`)

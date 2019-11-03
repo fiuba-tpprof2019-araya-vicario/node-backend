@@ -57,6 +57,15 @@ export function up (queryInterface, Sequelize) {
         model: 'Requirements',
         key: 'id'
       }
+    },
+    presentation_id: {
+      type: Sequelize.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+      references: {
+        model: 'Presentations',
+        key: 'id'
+      }
     }
   })
 }

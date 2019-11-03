@@ -27,5 +27,7 @@ module.exports = (sequelize) => {
 
   State.pendingRevision = () => { return STATES.PENDING_REV }
 
+  State.pendingPresentation = () => { return STATES.PENDING_REV }
+
   return State
 }

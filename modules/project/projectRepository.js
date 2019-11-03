@@ -13,6 +13,7 @@ const Requirement = require('../../db/models').Requirement
 const ProjectCareer = require('../../db/models').ProjectCareer
 const Career = require('../../db/models').Career
 const ProjectTypeTransaction = require('../../db/models').ProjectTypeTransaction
+const Presentation = require('../../db/models').Presentation
 
 const STATE_ID_START = 1
 
@@ -76,6 +77,10 @@ const getIncludeCommissionProjectsData = (careersId, filter) => {
     as: 'State'
   },
   {
+    model: Presentation,
+    as: 'Presentation'
+  },
+  {
     model: Requirement,
     as: 'Requirement'
   },
@@ -118,6 +123,10 @@ const getFullIncludeProjectsData = () => {
   {
     model: State,
     as: 'State'
+  },
+  {
+    model: Presentation,
+    as: 'Presentation'
   },
   {
     model: Requirement,
@@ -174,6 +183,10 @@ const getFullIncludeProjectData = (id) => {
   {
     model: State,
     as: 'State'
+  },
+  {
+    model: Presentation,
+    as: 'Presentation'
   },
   {
     model: Requirement,
@@ -754,6 +767,21 @@ class ProjectRepository {
       { where: { project_id: projectId } }
     )
     return ProjectRepository.setProjectStateAfter(projectId)
+  }
+
+  static canCreatePresentation (id) {
+    return Project.findByPk(id, { where: { state_id: State.pendingPresentation() } })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static async createPresentation (projectId) {
+    let presentation = await Presentation.create({ status: 'created' })
+    let result = await Project.update(
+      { presentation_id: presentation.dataValues.id },
+      { where: { id: projectId } })
+    return projectId
   }
 }
 
