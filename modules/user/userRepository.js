@@ -180,20 +180,24 @@ class UserRepository {
   }
 
   static async create (email, name, surname, token, padron, profilesId) {
-    let transaction = await sequelize.transaction()
-    let user = await User.create({
-      email: email,
-      name: name,
-      google_id: token,
-      surname: surname,
-      padron: padron
-    }, { transaction })
-
-    await user.setProfiles(profilesId, { transaction })
-
-    let userWithoutProfiles = await UserRepository.get(user.dataValues.id, transaction)
-
-    return userWithoutProfiles
+    return sequelize.transaction(transaction => {
+      return User.create({
+        email: email,
+        name: name,
+        google_id: token,
+        surname: surname,
+        padron: padron
+      }, { transaction })
+        .then(userWithoutProfiles => {
+          return userWithoutProfiles.setProfiles(profilesId, { transaction })
+            .then(userWithProfiles => {
+              return UserRepository.get(userWithProfiles.dataValues.id, transaction)
+            })
+        })
+    })
+      .then(user => {
+        return user
+      })
   }
 
   static existTutors (tutorsId) {
