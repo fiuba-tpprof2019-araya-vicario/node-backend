@@ -1,4 +1,4 @@
-import { STRING, INTEGER } from 'sequelize'
+import { STRING, INTEGER, FLOAT } from 'sequelize'
 
 module.exports = (sequelize) => {
   const User = sequelize.define('User', {
@@ -47,7 +47,8 @@ module.exports = (sequelize) => {
       }
     },
     padron: INTEGER,
-    google_id: STRING
+    google_id: STRING,
+    similarity: FLOAT
   }, {
     timestamps: true,
     underscored: true,
@@ -108,6 +109,11 @@ module.exports = (sequelize) => {
       through: {
         model: models.UserCareer
       }
+    })
+
+    User.hasMany(models.UserInterest, {
+      as: 'UserInterests',
+      foreignKey: 'user_id'
     })
   }
 

@@ -22,27 +22,6 @@ describe('GET /v0/api/users/', () => {
       }).catch(done)
   })
 
-  it('Obtain specific user by id', (done) => {
-    request(app)
-      .get('/v0/api/users/1')
-      .set({ 'Authorization': token, Accept: 'application/json' })
-      .expect(200)
-      .then(response => {
-        assert.equal(response.body.data.id, 1)
-        assert.equal(response.body.data.email, 'svicario@fi.uba.ar')
-        assert.equal(response.body.data.name, 'Sebastian')
-        assert.equal(response.body.data.surname, 'Vicario')
-        assert.equal(response.body.data.padron, 92223)
-        assert.equal(response.body.data.Profiles.length, 1)
-        assert.equal(response.body.data.Profiles[0].id, 2)
-        assert.equal(response.body.data.Profiles[0].name, 'Estudiante')
-        assert.equal(response.body.data.Profiles[0].description, 'Estudiante FIUBA')
-        assert.equal(response.body.data.Careers[0].id, 1)
-        assert.equal(response.body.data.Careers[0].name, 'Ingeniería en Informática')
-        done()
-      }).catch(done)
-  })
-
   it('Edit profiles / careers specific user by id', (done) => {
     request(app)
       .put('/v0/api/users/1')
@@ -74,6 +53,27 @@ describe('GET /v0/api/users/', () => {
           .catch(done)
       })
       .catch(done)
+  })
+
+  it('Obtain specific user by id', (done) => {
+    request(app)
+      .get('/v0/api/users/1')
+      .set({ 'Authorization': token, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, 1)
+        assert.equal(response.body.data.email, 'svicario@fi.uba.ar')
+        assert.equal(response.body.data.name, 'Sebastian')
+        assert.equal(response.body.data.surname, 'Vicario')
+        assert.equal(response.body.data.padron, 92223)
+        assert.equal(response.body.data.Profiles.length, 2)
+        assert.equal(response.body.data.Profiles[0].id, 2)
+        assert.equal(response.body.data.Profiles[0].name, 'Estudiante')
+        assert.equal(response.body.data.Profiles[0].description, 'Estudiante FIUBA')
+        assert.equal(response.body.data.Careers[0].id, 2)
+        assert.equal(response.body.data.Careers[0].name, 'Ingeniería Civil')
+        done()
+      }).catch(done)
   })
 
   after((done) => {
