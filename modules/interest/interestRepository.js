@@ -13,6 +13,11 @@ class InterestRepository {
       include: [ { model: Interest } ]
     })
   }
+
+  static async updateUserInterests (userId, interests) {
+    await UserInterest.destroy({ where: { user_id: userId } })
+    return UserInterest.bulkCreate(interests, { returning: true })
+  }
 }
 
 export default InterestRepository

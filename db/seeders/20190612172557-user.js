@@ -6,6 +6,7 @@ export function up (queryInterface) {
     surname: 'Vicario',
     email: 'svicario@fi.uba.ar',
     google_id: null,
+    norm_score: 2.82842712474619,
     created_at: new Date(),
     updated_at: new Date(),
     padron: 92223
@@ -16,6 +17,7 @@ export function up (queryInterface) {
     surname: 'Araya',
     email: 'naraya@fi.uba.ar',
     google_id: null,
+    norm_score: 2.82842712474619,
     created_at: new Date(),
     updated_at: new Date(),
     padron: 93203
@@ -26,6 +28,7 @@ export function up (queryInterface) {
     surname: 'Cavazzoli',
     email: 'mcavazzoli@fi.uba.ar',
     google_id: null,
+    norm_score: 2.82842712474619,
     created_at: new Date(),
     updated_at: new Date(),
     padron: 93203
@@ -36,6 +39,7 @@ export function up (queryInterface) {
     surname: 'Cosso',
     email: 'pcosso@fi.uba.ar',
     google_id: null,
+    norm_score: 2.82842712474619,
     created_at: new Date(),
     updated_at: new Date()
   },
@@ -45,6 +49,7 @@ export function up (queryInterface) {
     surname: 'Veiga',
     email: 'rveiga@fi.uba.ar',
     google_id: null,
+    norm_score: 2.82842712474619,
     created_at: new Date(),
     updated_at: new Date()
   },
@@ -54,6 +59,7 @@ export function up (queryInterface) {
     surname: 'Molinari',
     email: 'amolinari@fi.uba.ar',
     google_id: null,
+    norm_score: 2.82842712474619,
     created_at: new Date(),
     updated_at: new Date()
   },

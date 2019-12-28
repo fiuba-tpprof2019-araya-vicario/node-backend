@@ -13,7 +13,7 @@ export function up (queryInterface, Sequelize) {
     surname: Sequelize.STRING,
     padron: Sequelize.INTEGER,
     google_id: Sequelize.STRING,
-    similarity: Sequelize.FLOAT
+    norm_score: Sequelize.FLOAT
   }).then(function () {
     return queryInterface.addIndex('Users', ['email'])
   })

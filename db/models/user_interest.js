@@ -1,9 +1,9 @@
-import { INTEGER } from 'sequelize'
+import { FLOAT } from 'sequelize'
 
 module.exports = (sequelize) => {
   const UserInterest = sequelize.define('UserInterest', {
     score: {
-      type: INTEGER
+      type: FLOAT
     }
   }, {
     underscored: true,

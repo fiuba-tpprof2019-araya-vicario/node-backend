@@ -48,7 +48,7 @@ module.exports = (sequelize) => {
     },
     padron: INTEGER,
     google_id: STRING,
-    similarity: FLOAT
+    norm_score: FLOAT
   }, {
     timestamps: true,
     underscored: true,
