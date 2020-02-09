@@ -7,6 +7,7 @@ const STATE_ID_LAST = 7
 const STUDENT_PROFILE_ID = 2
 
 const getResponseUser = (user, token) => {
+  console.log('>>>', user.UserInterests);
   return {
     token: token,
     id: user.id,
@@ -21,7 +22,7 @@ const getResponseUser = (user, token) => {
 
 const getCareers = (user) => (user.Careers.map(({ id, name, description }) => ({ id, name, description })))
 
-const getInterests = (user) => (user.UserInterests.map(({ id, name, description }) => ({ id, name, description })))
+const getInterests = (user) => (user.UserInterests.map(({ interest_id, score }) => ({ id: interest_id, score })))
 
 const getCredentials = function (user) {
   let credentials = []
