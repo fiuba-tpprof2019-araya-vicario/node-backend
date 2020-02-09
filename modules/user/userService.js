@@ -14,11 +14,14 @@ const getResponseUser = (user, token) => {
     name: user.name,
     surname: user.surname,
     credentials: getCredentials(user),
-    careers: getCareers(user)
+    careers: getCareers(user),
+    interests: getInterests(user)
   }
 }
 
-const getCareers = (user) => (user.Careers.map((career) => ({ id: career.id, name: career.name })))
+const getCareers = (user) => (user.Careers.map(({ id, name, description }) => ({ id, name, description })))
+
+const getInterests = (user) => (user.UserInterests.map(({ id, name, description }) => ({ id, name, description })))
 
 const getCredentials = function (user) {
   let credentials = []
