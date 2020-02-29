@@ -1047,6 +1047,155 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Interests",
+			"item": [
+				{
+					"name": "GetInterests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/interests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserInterests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/interests/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interests",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditUserInterests",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"interests\": [\n\t\t{\n\t\t\t\"id\": 1,\n\t\t\t\"score\": 9\n\t\t},\n\t\t{\n\t\t\t\"id\": 2,\n\t\t\t\"score\": 5\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{url}}/interests/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interests",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSimilarUsers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/interests/users/similar",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interests",
+								"users",
+								"similar"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Presentations",
+			"item": [
+				{
+					"name": "CreateProject",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"project_id\": 4\n}"
+						},
+						"url": {
+							"raw": "{{url}}/presentations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Push Notification Prueba",
 			"request": {
 				"method": "POST",

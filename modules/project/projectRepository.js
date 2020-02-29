@@ -775,14 +775,6 @@ class ProjectRepository {
         return project != null
       })
   }
-
-  static async createPresentation (projectId) {
-    let presentation = await Presentation.create({ status: 'created' })
-    let result = await Project.update(
-      { presentation_id: presentation.dataValues.id },
-      { where: { id: projectId } })
-    return projectId
-  }
 }
 
 export default ProjectRepository
