@@ -76,3 +76,5 @@ URL_REQUEST_STUDENT=<Url de solicitudes de estudinate> Ej: "https://brain-search
 ACTIVE_MAILS=<Opcion para habilitar envio de mails> Ej: true
 PROPOSAL_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Propuestas>
 REQUIREMENT_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Requerimientos>
+PRESENTATION_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Presentaciones>
+DOCUMENTATION_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Documentación>
