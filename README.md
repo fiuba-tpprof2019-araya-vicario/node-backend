@@ -35,6 +35,8 @@
   
 4- Luego con este ID generamos una variable en el .env y la usamos para asignar files en el drive con el modulo de la API de Google.
 
+Guia Usada: https://medium.com/@abhimanyuPathania/google-drive-service-accounts-and-nodejs-a038b8ec482f 
+
 ## Como correr los test
 
 Si es la primera vez, se debe correr el script ```testRestartDB.sh``` de la carpeta scripts del proyecto docker.
