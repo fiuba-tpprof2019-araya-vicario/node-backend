@@ -17,6 +17,7 @@ let TOKENS = {
 }
 
 let projectId
+let presentationId
 let studentRequestId
 let tutorRequestId
 let cotutorRequestId
@@ -486,18 +487,44 @@ describe('Project /v0/api/projects/', () => {
       .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
       .expect(201)
       .then(response => {
-        assert.equal(response.body.data, projectId)
+        assert.equal(response.body.code, 201)
+        presentationId = response.body.data
         request(app)
           .get(`/v0/api/projects/${projectId}`)
           .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
           .expect(200)
           .then(response => {
             assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.Presentation.id, presentationId)
             assert.equal(response.body.data.State.id, 4)
             assert.equal(response.body.data.State.name, 'Pendiente de presentación')
             assert.equal(response.body.data.Presentation.status, 'created')
             done()
           }).catch(done)
+      }).catch(done)
+  })
+
+  it('Creator upload presentation', (done) => {
+    request(app)
+      .put(`/v0/api/presentations/${presentationId}/presentation`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .attach('file', './test/presentation.pdf', 'presentation.pdf')
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data[0], 1)
+        done()
+      }).catch(done)
+  })
+
+  it('Creator upload documentation', (done) => {
+    request(app)
+      .put(`/v0/api/presentations/${presentationId}/documentation`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .attach('file', './test/documentation.zip', 'documentation.zip')
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data[0], 1)
+        done()
       }).catch(done)
   })
 

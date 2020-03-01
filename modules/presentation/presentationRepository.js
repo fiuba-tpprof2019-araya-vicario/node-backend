@@ -48,7 +48,7 @@ class PresentationRepository {
     await Project.update(
       { presentation_id: presentation.dataValues.id },
       { where: { id: projectId } })
-    return projectId
+    return presentation.dataValues.id
   }
 
   static async isProjectCreator (presentationId, creatorId) {
