@@ -528,6 +528,26 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
+  it('Edit some fields presentation', (done) => {
+    request(app)
+      .put(`/v0/api/presentations/${presentationId}`)
+      .send({ 'description': 'new description' })
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data, presentationId)
+        request(app)
+          .get(`/v0/api/presentations/${presentationId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, presentationId)
+            assert.equal(response.body.data.description, 'new description')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
   after((done) => {
     request(app)
       .delete(`/v0/api/projects/${projectId}`)
