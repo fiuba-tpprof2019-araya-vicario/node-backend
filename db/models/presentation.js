@@ -47,7 +47,8 @@ module.exports = (sequelize) => {
   Presentation.associate = function (models) {
     Presentation.hasOne(models.Project, {
       as: 'Project',
-      foreignKey: 'presentation_id'
+      foreignKey: 'presentation_id',
+      onDelete: 'CASCADE'
     })
   }
   return Presentation

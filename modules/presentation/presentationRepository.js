@@ -1,12 +1,19 @@
 import { Op } from 'sequelize'
 
+
 const Project = require('../../db/models').Project
 const State = require('../../db/models').State
 const Presentation = require('../../db/models').Presentation
 
+const STATUS_PRESENTATION = {
+  CREATED: 'created',
+  UPLOADED: 'uploaded',
+  ACCEPTED: 'accepted'
+}
+
 class PresentationRepository {
   static getPresentationById (id) {
-    return Project.findByPk(id)
+    return Presentation.findByPk(id)
   }
 
   static existPresentation (id) {
@@ -46,7 +53,7 @@ class PresentationRepository {
   }
 
   static async createPresentation (projectId) {
-    let presentation = await Presentation.create({ status: 'created' })
+    let presentation = await Presentation.create({ status: STATUS_PRESENTATION.CREATED })
     await Project.update(
       { presentation_id: presentation.dataValues.id },
       { where: { id: projectId } })
@@ -61,10 +68,21 @@ class PresentationRepository {
   }
 
   static async canSubmitPresentation (presentationId) {
-    return Presentation.findOne({ where: { presentation_id: presentationId, presentation_url: { [Op.ne]: null }, documentation_url: { [Op.ne]: null }, state_id: State.pendingPresentation() } })
+    return Presentation.findOne({ where: { id: presentationId, presentation_url: { [Op.ne]: null }, documentation_url: { [Op.ne]: null }, status: STATUS_PRESENTATION.CREATED } })
       .then(presentation => {
         return presentation != null
       })
+  }
+
+  static acceptPresentation (presentationId) {
+    return Presentation.update(
+      { status: STATUS_PRESENTATION.ACCEPTED },
+      { where: { id: presentationId } }
+    )
+  }
+
+  static getProjectByPresentationId (presentationId) {
+    return Project.findOne({ where: { presentation_id: presentationId } })
   }
 }
 

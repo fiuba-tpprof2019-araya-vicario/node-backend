@@ -49,14 +49,17 @@ export const uploadDocumentation = async (presentationId, file) => {
   if (presentation != null && presentation.documentation_drive_id != null) removeFile(presentation.documentation_drive_id)
   let fileResponse = await uploadDocumentationFile(file.originalname, file.path)
   console.log('fileResponse: ', fileResponse)
-  let response = await PresentationRepository.updatePresentation(presentationId, fileResponse.id, fileResponse.link, fileResponse.name)
+  let response = await PresentationRepository.updateDocumentation(presentationId, fileResponse.id, fileResponse.link, fileResponse.name)
   if (response !== null) return Promise.resolve(response)
   else return Promise.reject(getBadRequest())
 }
 
 export const submitPresentation = async (presentationId) => {
+  console.log('presentationService::submitPresentation')
   if (!(await PresentationRepository.canSubmitPresentation(presentationId))) return Promise.reject(getBadRequest('Faltan campos a completar en la Presentación'))
-  let response = await PresentationRepository.submitPresentation(presentationId)
-  if (response !== null) return Promise.resolve(response)
-  else return Promise.reject(getBadRequest())
+  let response = await PresentationRepository.acceptPresentation(presentationId)
+  if (response == null) return Promise.reject(getBadRequest())
+  let project = await PresentationRepository.getProjectByPresentationId(presentationId);
+  await ProjectRepository.setProjectStateAfter(project.dataValues.id)
+  return Promise.resolve(presentationId)
 }

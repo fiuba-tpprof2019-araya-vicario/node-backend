@@ -385,12 +385,7 @@
 									"type": "file",
 									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/proposal",
@@ -442,7 +437,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Requests",
@@ -490,12 +486,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/requests/students/1",
@@ -556,12 +547,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/requests/tutors/1",
@@ -578,7 +564,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Requirements",
@@ -727,7 +714,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Careers",
@@ -844,7 +832,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Profiles",
@@ -981,12 +970,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2, 3],\n\t\"careers\": [1, 2]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"profiles\": [2, 3],\n\t\"careers\": [1, 2]\n}"
 						},
 						"url": {
 							"raw": "{{url}}/users/1",
@@ -1001,7 +985,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Dashboard",
@@ -1161,7 +1146,7 @@
 			"name": "Presentations",
 			"item": [
 				{
-					"name": "CreateProject",
+					"name": "CreatePresentation",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1178,7 +1163,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"project_id\": 4\n}"
+							"raw": "{\n\t\"project_id\": 4\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/presentations",
@@ -1187,6 +1175,157 @@
 							],
 							"path": [
 								"presentations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditPresentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"descripcion presentacion\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/presentations/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadPresentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presentations/1/presentation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1",
+								"presentation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadDocumentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presentation/1/documentation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentation",
+								"1",
+								"documentation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitPresentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/presentations/1/submit",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1",
+								"submit"
 							]
 						}
 					},
@@ -1231,5 +1370,6 @@
 			},
 			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
