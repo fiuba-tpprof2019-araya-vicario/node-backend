@@ -53,3 +53,10 @@ export const uploadDocumentation = async (presentationId, file) => {
   if (response !== null) return Promise.resolve(response)
   else return Promise.reject(getBadRequest())
 }
+
+export const submitPresentation = async (presentationId) => {
+  if (!(await PresentationRepository.canSubmitPresentation(presentationId))) return Promise.reject(getBadRequest('Faltan campos a completar en la Presentación'))
+  let response = await PresentationRepository.submitPresentation(presentationId)
+  if (response !== null) return Promise.resolve(response)
+  else return Promise.reject(getBadRequest())
+}

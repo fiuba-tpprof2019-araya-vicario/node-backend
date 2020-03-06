@@ -1,3 +1,5 @@
+import { Op } from 'sequelize'
+
 const Project = require('../../db/models').Project
 const State = require('../../db/models').State
 const Presentation = require('../../db/models').Presentation
@@ -55,6 +57,13 @@ class PresentationRepository {
     return Project.findOne({ where: { presentation_id: presentationId, creator_id: creatorId, state_id: State.pendingPresentation() } })
       .then(project => {
         return project != null
+      })
+  }
+
+  static async canSubmitPresentation (presentationId) {
+    return Presentation.findOne({ where: { presentation_id: presentationId, presentation_url: { [Op.ne]: null }, documentation_url: { [Op.ne]: null }, state_id: State.pendingPresentation() } })
+      .then(presentation => {
+        return presentation != null
       })
   }
 }

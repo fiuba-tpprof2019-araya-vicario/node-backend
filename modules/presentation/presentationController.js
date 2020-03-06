@@ -37,3 +37,11 @@ export const uploadDocumentation = async function (req, res) {
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
+
+export const submitPresentation = async function (req, res) {
+  console.log('presentationController::submitPresentation')
+  let presentationId = req.params.id
+  let response = await presentationService.submitPresentation(presentationId)
+  res.statusCode = codes.CREATED
+  res.json(createSuccessResponse(res.statusCode, response))
+}

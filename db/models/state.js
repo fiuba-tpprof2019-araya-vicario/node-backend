@@ -29,5 +29,7 @@ module.exports = (sequelize) => {
 
   State.pendingPresentation = () => { return STATES.PENDING_REV }
 
+  State.pendingSubmit = () => { return STATES.PENDING_REV }
+
   return State
 }

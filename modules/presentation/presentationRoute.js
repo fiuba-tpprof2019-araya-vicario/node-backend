@@ -12,5 +12,6 @@ router.put('/:id([0-9]+)?/presentation/', upload.single('file'), validate(presen
 router.put('/:id([0-9]+)?/documentation/', upload.single('file'), validate(presentationController.uploadDocumentation))
 router.put('/:id([0-9]+)?/', modifyValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(presentationController.putPresentation))
 router.get('/:id([0-9]+)?/', getValidations, validateWithExpress, checkIsLoggedWithCredentials('GET_PROJECTS'), validate(presentationController.getPresentation))
+router.put('/:id([0-9]+)?/submit/', getValidations, validateWithExpress, checkIsLoggedWithCredentials('APPROVE_PROJECTS'), validate(presentationController.submitPresentation))
 
 export default router
