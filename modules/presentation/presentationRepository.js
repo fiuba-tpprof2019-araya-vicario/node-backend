@@ -1,13 +1,11 @@
 import { Op } from 'sequelize'
 
-
 const Project = require('../../db/models').Project
 const State = require('../../db/models').State
 const Presentation = require('../../db/models').Presentation
 
 const STATUS_PRESENTATION = {
   CREATED: 'created',
-  UPLOADED: 'uploaded',
   ACCEPTED: 'accepted'
 }
 

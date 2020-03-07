@@ -59,7 +59,7 @@ export const submitPresentation = async (presentationId) => {
   if (!(await PresentationRepository.canSubmitPresentation(presentationId))) return Promise.reject(getBadRequest('Faltan campos a completar en la Presentación'))
   let response = await PresentationRepository.acceptPresentation(presentationId)
   if (response == null) return Promise.reject(getBadRequest())
-  let project = await PresentationRepository.getProjectByPresentationId(presentationId);
+  let project = await PresentationRepository.getProjectByPresentationId(presentationId)
   await ProjectRepository.setProjectStateAfter(project.dataValues.id)
   return Promise.resolve(presentationId)
 }

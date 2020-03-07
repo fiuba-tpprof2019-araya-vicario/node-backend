@@ -199,3 +199,13 @@ export const evaluateProposal = async (projectId, userId, careerId, status, reje
 
   return Promise.resolve(projectId)
 }
+
+export const publishProject = async (projectId, data) => {
+  if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+  if (!(await ProjectRepository.isPendingPublication(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra pendiente de publicación final'))
+
+  let response = await ProjectRepository.publishProject(projectId, data)
+  if (response === undefined) return Promise.reject(getBadRequest())
+
+  return Promise.resolve(response)
+}

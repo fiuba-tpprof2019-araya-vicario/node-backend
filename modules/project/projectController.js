@@ -95,3 +95,10 @@ export const evaluateProposal = async function (req, res) {
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
+
+export const publishProject = async function (req, res) {
+  let body = req.body
+  let response = await projectService.publishProject(req.params.id, body)
+  res.statusCode = codes.CREATED
+  res.json(createSuccessResponse(res.statusCode, response))
+}

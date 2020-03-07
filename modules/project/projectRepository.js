@@ -775,6 +775,45 @@ class ProjectRepository {
         return project != null
       })
   }
+
+  static isPendingPublication (id) {
+    return Project.findByPk(id, { where: { state_id: State.pendingPublication() } })
+      .then(project => {
+        return project != null
+      })
+  }
+
+  static async publishProject (projectId, data) {
+    let updateProjectObject = {}
+    let updatePresentationObject = {}
+    let updatePromises = []
+
+    if (data.proposal_visible !== undefined) updateProjectObject.proposal_visible = data.proposal_visible
+    if (Object.keys(updateProjectObject).length > 0) {
+      let p1 = Project.update(
+        updateProjectObject,
+        { where: { id: projectId } }
+      )
+      updatePromises.push(p1)
+    }
+
+    if (data.presentation_visible !== undefined) updatePresentationObject.presentation_visible = data.presentation_visible
+    if (data.documentation_visible !== undefined) updatePresentationObject.documentation_visible = data.documentation_visible
+    if (Object.keys(updatePresentationObject).length > 0) {
+      let project = await Project.findByPk(projectId)
+      let p2 = Presentation.update(
+        updatePresentationObject,
+        { where: { id: project.dataValues.presentation_id } }
+      )
+      updatePromises.push(p2)
+    }
+
+    let p3 = ProjectRepository.setProjectStateAfter(projectId)
+    updatePromises.push(p3)
+
+    await Promise.all(updatePromises)
+    return projectId
+  }
 }
 
 export default ProjectRepository

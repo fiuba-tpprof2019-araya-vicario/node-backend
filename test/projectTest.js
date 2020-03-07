@@ -569,6 +569,33 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
+  it('Edit some fiedls project', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/publish`)
+      .send({
+        'proposal_visible': 0,
+        'presentation_visible': 1,
+        'documentation_visible': 0
+      })
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.proposal_visible, false)
+            assert.equal(response.body.data.Presentation.presentation_visible, true)
+            assert.equal(response.body.data.Presentation.documentation_visible, false)
+            assert.equal(response.body.data.State.id, 6)
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
   after((done) => {
     request(app)
       .delete(`/v0/api/projects/${projectId}`)

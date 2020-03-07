@@ -385,7 +385,12 @@
 									"type": "file",
 									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
 								}
-							]
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/projects/1/proposal",
@@ -436,9 +441,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "PublishProject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"proposal_visible\": 1,\n\t\"presentation_visible\": 0,\n\t\"documentation_visible\": 0\n}"
+						},
+						"url": {
+							"raw": "{{url}}/projects/4/publish",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"4",
+								"publish"
+							]
+						}
+					},
+					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Requests",
@@ -486,7 +524,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/requests/students/1",
@@ -547,7 +590,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}"
+							"raw": "{\n\t\"accepted_proposal\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/requests/tutors/1",
@@ -564,8 +612,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Requirements",
@@ -714,8 +761,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Careers",
@@ -832,8 +878,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Profiles",
@@ -970,7 +1015,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"profiles\": [2, 3],\n\t\"careers\": [1, 2]\n}"
+							"raw": "{\n\t\"profiles\": [2, 3],\n\t\"careers\": [1, 2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/users/1",
@@ -985,8 +1035,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Dashboard",
@@ -1163,10 +1212,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"project_id\": 4\n}",
-							"options": {
-								"raw": {}
-							}
+							"raw": "{\n\t\"project_id\": 4\n}"
 						},
 						"url": {
 							"raw": "{{url}}/presentations",
@@ -1198,7 +1244,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"descripcion presentacion\"\n}"
+							"raw": "{\n\t\"description\": \"descripcion presentacion\"\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/presentations/1",
@@ -1240,7 +1289,9 @@
 								}
 							],
 							"options": {
-								"formdata": {}
+								"raw": {
+									"language": "json"
+								}
 							}
 						},
 						"url": {
@@ -1270,8 +1321,8 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -1280,11 +1331,13 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
+									"src": "/Users/svicario/Downloads/certificado_examen.zip"
 								}
 							],
 							"options": {
-								"formdata": {}
+								"raw": {
+									"language": "json"
+								}
 							}
 						},
 						"url": {
@@ -1370,6 +1423,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
