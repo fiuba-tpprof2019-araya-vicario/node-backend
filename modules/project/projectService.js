@@ -2,6 +2,7 @@ import { getNotFound, getBadRequest } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
 import RequestRepository from '../request/requestRepository'
+import PresentationRepository from '../presentation/presentationRepository'
 import { sendMail } from '../util/mailService'
 import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
 import { uploadProposalFile, removeFile } from '../util/googleDriveService'
@@ -184,8 +185,10 @@ export const uploadProposal = async (projectId, file) => {
 
 const checkProjectEvalution = async (projectId) => {
   if (!(await ProjectRepository.hasAllCareerEvaluated(projectId))) return
-  if ((await ProjectRepository.hasAllCareerEvaluationAccepted(projectId))) await ProjectRepository.setProjectStateAfter(projectId)
-  else await ProjectRepository.setProjectStateBefore(projectId)
+  if ((await ProjectRepository.hasAllCareerEvaluationAccepted(projectId))) {
+    await ProjectRepository.setProjectStateAfter(projectId)
+    await PresentationRepository.createPresentation(projectId)
+  } else await ProjectRepository.setProjectStateBefore(projectId)
 }
 
 export const evaluateProposal = async (projectId, userId, careerId, status, rejectReason) => {

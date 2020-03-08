@@ -445,13 +445,16 @@ describe('Project /v0/api/projects/', () => {
           .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
           .expect(200)
           .then(response => {
+            presentationId = response.body.data.Presentation.id
             assert.equal(response.body.data.ProjectCareers[0].status, 'accepted')
             assert.equal(response.body.data.ProjectCareers[0].Judge.id, 7)
             assert.equal(response.body.data.ProjectCareers[1].status, 'accepted')
             assert.equal(response.body.data.ProjectCareers[1].Judge.id, 7)
             assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.Presentation.id, presentationId)
             assert.equal(response.body.data.State.id, 4)
             assert.equal(response.body.data.State.name, 'Pendiente de presentación')
+            assert.equal(response.body.data.Presentation.status, 'created')
             done()
           }).catch(done)
       }).catch(done)
@@ -477,30 +480,6 @@ describe('Project /v0/api/projects/', () => {
         assert.equal(response.body.data.length, 1)
         assert.equal(response.body.data[0].ProjectCareers.length, 2)
         done()
-      }).catch(done)
-  })
-
-  it('Tutor give access to upload presentation', (done) => {
-    request(app)
-      .post(`/v0/api/presentations/`)
-      .send({ 'project_id': projectId })
-      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
-      .expect(201)
-      .then(response => {
-        assert.equal(response.body.code, 201)
-        presentationId = response.body.data
-        request(app)
-          .get(`/v0/api/projects/${projectId}`)
-          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
-          .expect(200)
-          .then(response => {
-            assert.equal(response.body.data.id, projectId)
-            assert.equal(response.body.data.Presentation.id, presentationId)
-            assert.equal(response.body.data.State.id, 4)
-            assert.equal(response.body.data.State.name, 'Pendiente de presentación')
-            assert.equal(response.body.data.Presentation.status, 'created')
-            done()
-          }).catch(done)
       }).catch(done)
   })
 
