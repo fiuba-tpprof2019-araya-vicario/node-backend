@@ -2,7 +2,6 @@ import { getNotFound, getBadRequest } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
 import RequestRepository from '../request/requestRepository'
-import PresentationRepository from '../presentation/presentationRepository'
 import { sendMail } from '../util/mailService'
 import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
 import { uploadProposalFile, removeFile } from '../util/googleDriveService'
@@ -185,10 +184,8 @@ export const uploadProposal = async (projectId, file) => {
 
 const checkProjectEvalution = async (projectId) => {
   if (!(await ProjectRepository.hasAllCareerEvaluated(projectId))) return
-  if ((await ProjectRepository.hasAllCareerEvaluationAccepted(projectId))) {
-    await ProjectRepository.setProjectStateAfter(projectId)
-    await PresentationRepository.createPresentation(projectId)
-  } else await ProjectRepository.setProjectStateBefore(projectId)
+  if ((await ProjectRepository.hasAllCareerEvaluationAccepted(projectId))) await ProjectRepository.setProjectStateAfter(projectId)
+  else await ProjectRepository.setProjectStateBefore(projectId)
 }
 
 export const evaluateProposal = async (projectId, userId, careerId, status, rejectReason) => {
@@ -205,7 +202,7 @@ export const evaluateProposal = async (projectId, userId, careerId, status, reje
 
 export const publishProject = async (projectId, data) => {
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
-  if (!(await ProjectRepository.isPendingPublication(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra pendiente de publicación final'))
+  if (!(await ProjectRepository.isPublish(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra pendiente de publicación final'))
 
   let response = await ProjectRepository.publishProject(projectId, data)
   if (response === undefined) return Promise.reject(getBadRequest())

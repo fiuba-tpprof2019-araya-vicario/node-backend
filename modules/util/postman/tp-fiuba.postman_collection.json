@@ -1195,6 +1195,38 @@
 			"name": "Presentations",
 			"item": [
 				{
+					"name": "CreatePresentation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"project_id\": 4\n}"
+						},
+						"url": {
+							"raw": "{{url}}/presentations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "EditPresentation",
 					"request": {
 						"method": "PUT",
@@ -1314,7 +1346,7 @@
 								"{{url}}"
 							],
 							"path": [
-								"presentation",
+								"presentations",
 								"1",
 								"documentation"
 							]

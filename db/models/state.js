@@ -5,7 +5,8 @@ const STATES = {
   PENDING_DOC: 2,
   PENDING_REV: 3,
   PENDING_PRES: 4,
-  PENDING_PUB: 5
+  PENDING_PUB: 5,
+  PUBLISH: 6
 }
 
 module.exports = (sequelize) => {
@@ -31,6 +32,8 @@ module.exports = (sequelize) => {
   State.pendingPresentation = () => { return STATES.PENDING_PRES }
 
   State.pendingPublication = () => { return STATES.PENDING_PUB }
+
+  State.isPublish = () => { return STATES.PUBLISH }
 
   return State
 }

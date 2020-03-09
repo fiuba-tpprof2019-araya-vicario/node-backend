@@ -783,6 +783,13 @@ class ProjectRepository {
       })
   }
 
+  static isPublish (id) {
+    return Project.findByPk(id, { where: { state_id: State.isPublish() } })
+      .then(project => {
+        return project != null
+      })
+  }
+
   static async publishProject (projectId, data) {
     let updateProjectObject = {}
     let updatePresentationObject = {}
@@ -806,10 +813,7 @@ class ProjectRepository {
         { where: { id: project.dataValues.presentation_id } }
       )
       updatePromises.push(p2)
-    }
-
-    let p3 = ProjectRepository.setProjectStateAfter(projectId)
-    updatePromises.push(p3)
+    } 
 
     await Promise.all(updatePromises)
     return projectId

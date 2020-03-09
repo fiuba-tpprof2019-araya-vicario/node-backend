@@ -1,6 +1,14 @@
 import * as presentationService from './presentationService'
 import { codes, createSuccessResponse } from '../util/responser'
 
+export const createPresentation = async function (req, res) {
+  let body = req.body
+  let response
+  response = await presentationService.createPresentation(body.project_id, req.id)
+  res.statusCode = codes.CREATED
+  res.json(createSuccessResponse(res.statusCode, response))
+}
+
 export const getPresentation = async function (req, res) {
   console.log('presentationController::getPresentation')
   let presentationId = req.params.id

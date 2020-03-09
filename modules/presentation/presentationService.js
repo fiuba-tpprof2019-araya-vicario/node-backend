@@ -3,6 +3,19 @@ import PresentationRepository from './presentationRepository'
 import ProjectRepository from '../project/projectRepository'
 import { uploadPresentationFile, uploadDocumentationFile, removeFile } from '../util/googleDriveService'
 
+export const createPresentation = async (projectId, userId) => {
+  if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
+  if (!(await ProjectRepository.canCreatePresentation(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra pendiente de presentación'))
+  if (!(await ProjectRepository.isProjectTutor(projectId, userId))) return Promise.reject(getBadRequest('Solo el tutor puede habilitar presentación'))
+
+  let response = await PresentationRepository.createPresentation(projectId)
+  await ProjectRepository.setProjectStateAfter(projectId)
+  
+  if (response === undefined) return Promise.reject(getBadRequest())
+
+  return Promise.resolve(response)
+}
+
 export const getPresentation = async (presentationId) => {
   return PresentationRepository.getPresentationById(presentationId)
     .then(presentation => {

@@ -59,7 +59,7 @@ class PresentationRepository {
   }
 
   static async isProjectCreator (presentationId, creatorId) {
-    return Project.findOne({ where: { presentation_id: presentationId, creator_id: creatorId, state_id: State.pendingPresentation() } })
+    return Project.findOne({ where: { presentation_id: presentationId, creator_id: creatorId, state_id: State.pendingPublication() } })
       .then(project => {
         return project != null
       })
