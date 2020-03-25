@@ -30,7 +30,8 @@ const TYPE_TUTOR_REQUEST = {
 
 const getWhereForCommissionProjects = (filter) => {
   let whereCondition = {}
-  if (filter.approved != null) whereCondition.state_id = { [Op.gte]: State.getMinStateApproveCommission() }
+  if (filter.approved) whereCondition.state_id = { [Op.gte]: State.getMinStateApproveCommission() }
+  else if (filter.terminated) whereCondition.state_id = { [Op.gte]: State.getMinStateTerminatedCommission() }
   else whereCondition.state_id = State.pendingRevision()
   return whereCondition
 }

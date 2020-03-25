@@ -27,6 +27,10 @@ module.exports = (sequelize) => {
     return STATES.PENDING_PRES
   }
 
+  State.getMinStateTerminatedCommission = function () {
+    return STATES.PUBLISH
+  }
+
   State.pendingRevision = () => { return STATES.PENDING_REV }
 
   State.pendingPresentation = () => { return STATES.PENDING_PRES }
