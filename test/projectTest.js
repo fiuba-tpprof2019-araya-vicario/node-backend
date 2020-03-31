@@ -5,15 +5,15 @@ import request from 'supertest'
 
 let TOKENS = {
   // svicario@fi.uba.ar
-  CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIl0sImlhdCI6MTU4MzAxODkwNSwiZXhwIjoxNTg1NjEwOTA1fQ.c_9cHIFmQh56Raf-fgR8N1IQpuUgUEwLUR438JWDaGA',
+  CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIl0sImlhdCI6MTU4NTY3NzA2MCwiZXhwIjoxNTg4MjY5MDYwfQ.DB7AZKHwjDxBFyRwPnA3qEq1lBRqQ6lHMSLI168g7QA',
   // vicario.sebastian@gmail.com
-  TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyIsIkdFVF9EQVNIQk9BUkQiXSwiaWF0IjoxNTgzMDE4ODI4LCJleHAiOjE1ODU2MTA4Mjh9.Zy6kNjGVHMgcKaIa8O714Y9ZW_rtws8_IKKMNuOtbig',
+  TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyIsIkdFVF9EQVNIQk9BUkQiXSwiaWF0IjoxNTg1Njc3MTA5LCJleHAiOjE1ODgyNjkxMDl9.F-U4hZdqU9Kjdb3QKfpVGoKTdq63xfeFeL_BT4SYxAw',
   // naraya@fi.uba.ar
-  STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJuYXJheWFAZmkudWJhLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1ODMwMTkwNTQsImV4cCI6MTU4NTYxMTA1NH0.NGF-te_kPK17D6OTv0GhgfW8zrcN8dwKiA9sW9lBWis',
+  STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJuYXJheWFAZmkudWJhLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1ODU2NzcxODUsImV4cCI6MTU4ODI2OTE4NX0.m-HHvVrZMeyjoCU1ZhMyjSMHlihMvAcPw26f1mEkTEc',
   // arrowgamemaster@gmail.com
-  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1ODMwMTkxMTYsImV4cCI6MTU4NTYxMTExNn0.n2ZoVc9dPli-NxnZ0ZYMB8DKBpYvVkDuAXPBNh4ziTs',
+  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1ODU2NzcyMjIsImV4cCI6MTU4ODI2OTIyMn0.I0J-BGD3wx0a2JSr08mRRDnBtLbZw5P_p5-Xw-dIF1w',
   // arrowgamemaster@gmail.com
-  CURRICULAR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1ODMwMTkxMTYsImV4cCI6MTU4NTYxMTExNn0.n2ZoVc9dPli-NxnZ0ZYMB8DKBpYvVkDuAXPBNh4ziTs'
+  CURRICULAR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1ODU2NzcyMjIsImV4cCI6MTU4ODI2OTIyMn0.I0J-BGD3wx0a2JSr08mRRDnBtLbZw5P_p5-Xw-dIF1w'
 }
 
 let projectId
@@ -593,6 +593,28 @@ describe('Project /v0/api/projects/', () => {
             assert.equal(response.body.data.State.id, 6)
             done()
           }).catch(done)
+      }).catch(done)
+  })
+
+  it('Obtain projects for portal', (done) => {
+    request(app)
+      .get('/v0/api/projects/portal')
+      .set({ Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data[0].id, projectId)
+        assert.equal(response.body.data[0].name, 'Little War Online')
+        assert.equal(response.body.data[0].Type.id, 2)
+        assert.equal(response.body.data[0].Type.name, 'Tesis')
+        assert.equal(response.body.data[0].State.id, 6)
+        assert.equal(response.body.data[0].State.name, 'Propuesta publicada')
+        assert.equal(response.body.data[0].Creator.id, 1)
+        assert.equal(response.body.data[0].Creator.email, 'svicario@fi.uba.ar')
+        assert.equal(response.body.data[0].Tutor.id, 9)
+        assert.equal(response.body.data[0].Tutor.email, 'vicario.sebastian@gmail.com')
+        assert.equal(response.body.data[0].Students[0].id, 2)
+        assert.equal(response.body.data[0].Students[0].email, 'naraya@fi.uba.ar')
+        done()
       }).catch(done)
   })
 

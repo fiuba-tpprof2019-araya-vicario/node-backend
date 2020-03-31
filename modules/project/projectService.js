@@ -209,3 +209,11 @@ export const publishProject = async (projectId, data) => {
 
   return Promise.resolve(response)
 }
+
+export const getPortalProjects = async () => {
+  return ProjectRepository.getPortalProjects()
+    .then(projects => {
+      if (projects == null) return Promise.reject(getNotFound())
+      else return Promise.resolve(projects)
+    })
+}

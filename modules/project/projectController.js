@@ -102,3 +102,10 @@ export const publishProject = async function (req, res) {
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
+
+export const getPortalProjects = async function (req, res) {
+  console.log('projectController::getPortalProjects')
+  let response = await projectService.getPortalProjects()
+  res.statusCode = codes.OK
+  res.json(createSuccessResponse(res.statusCode, response))
+}

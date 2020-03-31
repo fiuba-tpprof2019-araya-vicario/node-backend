@@ -817,10 +817,14 @@ class ProjectRepository {
         { where: { id: project.dataValues.presentation_id } }
       )
       updatePromises.push(p2)
-    } 
+    }
 
     await Promise.all(updatePromises)
     return projectId
+  }
+
+  static getPortalProjects () {
+    return Project.findAll({ include: getFullIncludeProjectsData(), where: { state_id: State.isPublish() } })
   }
 }
 

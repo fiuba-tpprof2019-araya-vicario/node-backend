@@ -46,6 +46,32 @@
 					"response": []
 				},
 				{
+					"name": "GetPortalProjects",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/projects/portal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"portal"
+							]
+						},
+						"description": "Filter url param: state"
+					},
+					"response": []
+				},
+				{
 					"name": "GetProjectById",
 					"request": {
 						"method": "GET",
@@ -1195,38 +1221,6 @@
 			"name": "Presentations",
 			"item": [
 				{
-					"name": "CreatePresentation",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{token}}"
-							},
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"project_id\": 4\n}"
-						},
-						"url": {
-							"raw": "{{url}}/presentations",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"presentations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "EditPresentation",
 					"request": {
 						"method": "PUT",
@@ -1335,13 +1329,11 @@
 								}
 							],
 							"options": {
-								"raw": {
-									"language": "json"
-								}
+								"formdata": {}
 							}
 						},
 						"url": {
-							"raw": "{{url}}/presentation/1/documentation",
+							"raw": "{{url}}/presentations/1/documentation",
 							"host": [
 								"{{url}}"
 							],
@@ -1379,6 +1371,45 @@
 								"presentations",
 								"1",
 								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreatePresentation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"project_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presentations/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1"
 							]
 						}
 					},
