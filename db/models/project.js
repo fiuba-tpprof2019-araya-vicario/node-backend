@@ -1,4 +1,4 @@
-import { STRING, TEXT } from 'sequelize'
+import { STRING, TEXT, BOOLEAN } from 'sequelize'
 
 module.exports = (sequelize) => {
   const Project = sequelize.define('Project', {
@@ -28,6 +28,11 @@ module.exports = (sequelize) => {
     proposal_name: {
       type: STRING,
       isUnique: true
+    },
+    proposal_visible: {
+      type: BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   }, {
     timestamps: true,

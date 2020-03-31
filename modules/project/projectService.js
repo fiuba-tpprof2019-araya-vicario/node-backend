@@ -200,13 +200,20 @@ export const evaluateProposal = async (projectId, userId, careerId, status, reje
   return Promise.resolve(projectId)
 }
 
-export const createPresentation = async (projectId, userId) => {
+export const publishProject = async (projectId, data) => {
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
-  if (!(await ProjectRepository.canCreatePresentation(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra pendiente de presentación'))
-  if (!(await ProjectRepository.isProjectTutor(projectId, userId))) return Promise.reject(getBadRequest('Solo el tutor puede habilitar presentación'))
+  if (!(await ProjectRepository.isPublish(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra pendiente de publicación final'))
 
-  let response = await ProjectRepository.createPresentation(projectId)
+  let response = await ProjectRepository.publishProject(projectId, data)
   if (response === undefined) return Promise.reject(getBadRequest())
 
   return Promise.resolve(response)
+}
+
+export const getPortalProjects = async () => {
+  return ProjectRepository.getPortalProjects()
+    .then(projects => {
+      if (projects == null) return Promise.reject(getNotFound())
+      else return Promise.resolve(projects)
+    })
 }

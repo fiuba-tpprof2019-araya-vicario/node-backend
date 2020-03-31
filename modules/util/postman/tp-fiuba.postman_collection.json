@@ -46,6 +46,32 @@
 					"response": []
 				},
 				{
+					"name": "GetPortalProjects",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/projects/portal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"portal"
+							]
+						},
+						"description": "Filter url param: state"
+					},
+					"response": []
+				},
+				{
 					"name": "GetProjectById",
 					"request": {
 						"method": "GET",
@@ -437,6 +463,40 @@
 								"1",
 								"assessments",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PublishProject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"proposal_visible\": 1,\n\t\"presentation_visible\": 0,\n\t\"documentation_visible\": 0\n}"
+						},
+						"url": {
+							"raw": "{{url}}/projects/4/publish",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"projects",
+								"4",
+								"publish"
 							]
 						}
 					},
@@ -1149,6 +1209,207 @@
 								"interests",
 								"users",
 								"similar"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Presentations",
+			"item": [
+				{
+					"name": "EditPresentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"descripcion presentacion\",\n\t\"presentation_visible\": 0,\n\t\"documentation_visible\": 1\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presentations/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadPresentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/CVSebastian.pdf"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presentations/1/presentation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1",
+								"presentation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadDocumentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/svicario/Downloads/certificado_examen.zip"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presentations/1/documentation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1",
+								"documentation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitPresentation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/presentations/1/submit",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreatePresentation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"project_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/presentations/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentations",
+								"1"
 							]
 						}
 					},

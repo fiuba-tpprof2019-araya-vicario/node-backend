@@ -12,12 +12,14 @@ export function up (queryInterface, Sequelize) {
     presentation_url: Sequelize.STRING,
     presentation_name: Sequelize.STRING,
     presentation_drive_id: Sequelize.STRING,
+    presentation_visible: Sequelize.BOOLEAN,
     documentation_url: Sequelize.STRING,
     documentation_name: Sequelize.STRING,
     documentation_drive_id: Sequelize.STRING,
+    documentation_visible: Sequelize.BOOLEAN,
     status: {
       type: Sequelize.ENUM,
-      values: ['created', 'uploaded', 'accepted']
+      values: ['created', 'accepted']
     }
   })
 }

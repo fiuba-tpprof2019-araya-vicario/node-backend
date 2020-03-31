@@ -5,18 +5,19 @@ import request from 'supertest'
 
 let TOKENS = {
   // svicario@fi.uba.ar
-  CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIl0sImlhdCI6MTU3NzEyNTkyMCwiZXhwIjoxNTc5NzE3OTIwfQ._us1_w7E0MibG3dVODaSUEJFDbkqLBGBJw3j_knk4jU',
+  CREATOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdmljYXJpb0BmaS51YmEuYXIiLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiR0VUX1VTRVJTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIl0sImlhdCI6MTU4NTY3NzA2MCwiZXhwIjoxNTg4MjY5MDYwfQ.DB7AZKHwjDxBFyRwPnA3qEq1lBRqQ6lHMSLI168g7QA',
   // vicario.sebastian@gmail.com
-  TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyIsIkdFVF9EQVNIQk9BUkQiXSwiaWF0IjoxNTc3MTI2MDQ0LCJleHAiOjE1Nzk3MTgwNDR9.5kk266gAqns5bQkYI3oHqyDChItylDxOCzKQc0l7y-4',
+  TUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyIsIkdFVF9EQVNIQk9BUkQiXSwiaWF0IjoxNTg1Njc3MTA5LCJleHAiOjE1ODgyNjkxMDl9.F-U4hZdqU9Kjdb3QKfpVGoKTdq63xfeFeL_BT4SYxAw',
   // naraya@fi.uba.ar
-  STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJuYXJheWFAZmkudWJhLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1NzcxMjYyNjcsImV4cCI6MTU3OTcxODI2N30.4w30RFjVzJKDsPYhGu6Sa9RWQdL66T31AdEQyrkYy64',
+  STUDENT: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJuYXJheWFAZmkudWJhLmFyIiwiY3JlZGVudGlhbHMiOlsiQ1JFQVRFX1BST0pFQ1RTIiwiRURJVF9QUk9KRUNUUyIsIkdFVF9QUk9KRUNUUyIsIkdFVF9VU0VSUyJdLCJpYXQiOjE1ODU2NzcxODUsImV4cCI6MTU4ODI2OTE4NX0.m-HHvVrZMeyjoCU1ZhMyjSMHlihMvAcPw26f1mEkTEc',
   // arrowgamemaster@gmail.com
-  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1NzcxMjYzMjcsImV4cCI6MTU3OTcxODMyN30.pB3QBerpmJj9cmNYJ_wpQEqvmFLPvJZvNr6BllHJf-E',
+  COTUTOR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1ODU2NzcyMjIsImV4cCI6MTU4ODI2OTIyMn0.I0J-BGD3wx0a2JSr08mRRDnBtLbZw5P_p5-Xw-dIF1w',
   // arrowgamemaster@gmail.com
-  CURRICULAR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1NzcxMjYzMjcsImV4cCI6MTU3OTcxODMyN30.pB3QBerpmJj9cmNYJ_wpQEqvmFLPvJZvNr6BllHJf-E'
+  CURRICULAR: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhcnJvd2dhbWVtYXN0ZXJAZ21haWwuY29tIiwiY3JlZGVudGlhbHMiOlsiR0VUX1BST0pFQ1RTIiwiRURJVF9UVVRPUl9SRVFVRVNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiQVBQUk9WRV9QUk9KRUNUUyJdLCJpYXQiOjE1ODU2NzcyMjIsImV4cCI6MTU4ODI2OTIyMn0.I0J-BGD3wx0a2JSr08mRRDnBtLbZw5P_p5-Xw-dIF1w'
 }
 
 let projectId
+let presentationId
 let studentRequestId
 let tutorRequestId
 let cotutorRequestId
@@ -456,6 +457,30 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
+  it('Tutor give access to upload presentation', (done) => {
+    request(app)
+      .post(`/v0/api/presentations/`)
+      .send({ 'project_id': projectId })
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.code, 201)
+        presentationId = response.body.data
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.Presentation.id, presentationId)
+            assert.equal(response.body.data.State.id, 5)
+            assert.equal(response.body.data.State.name, 'Pendiente de publicación final')
+            assert.equal(response.body.data.Presentation.status, 'created')
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
   it('Obtain all projects commission after approved', (done) => {
     request(app)
       .get('/v0/api/projects/commissions')
@@ -479,24 +504,123 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
-  it('Tutor give access to upload presentation', (done) => {
+  it('Creator upload presentation', (done) => {
     request(app)
-      .post(`/v0/api/projects/${projectId}/presentations`)
-      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .put(`/v0/api/presentations/${presentationId}/presentation`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .attach('file', './test/presentation.pdf', 'presentation.pdf')
       .expect(201)
       .then(response => {
-        assert.equal(response.body.data, projectId)
+        assert.equal(response.body.data[0], 1)
+        done()
+      }).catch(done)
+  })
+
+  it('Creator upload documentation', (done) => {
+    request(app)
+      .put(`/v0/api/presentations/${presentationId}/documentation`)
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .attach('file', './test/documentation.zip', 'documentation.zip')
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data[0], 1)
+        done()
+      }).catch(done)
+  })
+
+  it('Edit some fields presentation', (done) => {
+    request(app)
+      .put(`/v0/api/presentations/${presentationId}`)
+      .send({
+        'description': 'new description',
+        'presentation_visible': 0,
+        'documentation_visible': 1
+      })
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data, presentationId)
+        request(app)
+          .get(`/v0/api/presentations/${presentationId}`)
+          .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, presentationId)
+            assert.equal(response.body.data.description, 'new description')
+            assert.equal(response.body.data.presentation_visible, false)
+            assert.equal(response.body.data.documentation_visible, true)
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Creator submit presentation', (done) => {
+    request(app)
+      .put(`/v0/api/presentations/${presentationId}/submit`)
+      .send({})
+      .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data, presentationId)
         request(app)
           .get(`/v0/api/projects/${projectId}`)
           .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
           .expect(200)
           .then(response => {
             assert.equal(response.body.data.id, projectId)
-            assert.equal(response.body.data.State.id, 4)
-            assert.equal(response.body.data.State.name, 'Pendiente de presentación')
-            assert.equal(response.body.data.Presentation.status, 'created')
+            assert.equal(response.body.data.State.id, 6)
+            assert.equal(response.body.data.Presentation.status, 'accepted')
             done()
           }).catch(done)
+      }).catch(done)
+  })
+
+  it('Publish project', (done) => {
+    request(app)
+      .put(`/v0/api/projects/${projectId}/publish`)
+      .send({
+        'proposal_visible': 0,
+        'presentation_visible': 1,
+        'documentation_visible': 0
+      })
+      .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        assert.equal(response.body.data, projectId)
+        request(app)
+          .get(`/v0/api/projects/${projectId}`)
+          .set({ 'Authorization': TOKENS.TUTOR, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            assert.equal(response.body.data.id, projectId)
+            assert.equal(response.body.data.proposal_visible, false)
+            assert.equal(response.body.data.Presentation.presentation_visible, true)
+            assert.equal(response.body.data.Presentation.documentation_visible, false)
+            assert.equal(response.body.data.State.id, 6)
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Obtain projects for portal', (done) => {
+    request(app)
+      .get('/v0/api/projects/portal')
+      .set({ Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data[0].id, projectId)
+        assert.equal(response.body.data[0].name, 'Little War Online')
+        assert.equal(response.body.data[0].Type.id, 2)
+        assert.equal(response.body.data[0].Type.name, 'Tesis')
+        assert.equal(response.body.data[0].State.id, 6)
+        assert.equal(response.body.data[0].State.name, 'Propuesta publicada')
+        assert.equal(response.body.data[0].Creator.id, 1)
+        assert.equal(response.body.data[0].Creator.email, 'svicario@fi.uba.ar')
+        assert.equal(response.body.data[0].Tutor.id, 9)
+        assert.equal(response.body.data[0].Tutor.email, 'vicario.sebastian@gmail.com')
+        assert.equal(response.body.data[0].Students[0].id, 2)
+        assert.equal(response.body.data[0].Students[0].email, 'naraya@fi.uba.ar')
+        done()
       }).catch(done)
   })
 
