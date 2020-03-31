@@ -531,7 +531,11 @@ describe('Project /v0/api/projects/', () => {
   it('Edit some fields presentation', (done) => {
     request(app)
       .put(`/v0/api/presentations/${presentationId}`)
-      .send({ 'description': 'new description' })
+      .send({
+        'description': 'new description',
+        'presentation_visible': 0,
+        'documentation_visible': 1
+      })
       .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
       .expect(201)
       .then(response => {
@@ -543,6 +547,8 @@ describe('Project /v0/api/projects/', () => {
           .then(response => {
             assert.equal(response.body.data.id, presentationId)
             assert.equal(response.body.data.description, 'new description')
+            assert.equal(response.body.data.presentation_visible, false)
+            assert.equal(response.body.data.documentation_visible, true)
             done()
           }).catch(done)
       }).catch(done)
@@ -569,7 +575,7 @@ describe('Project /v0/api/projects/', () => {
       }).catch(done)
   })
 
-  it('Edit some fiedls project', (done) => {
+  it('Publish project', (done) => {
     request(app)
       .put(`/v0/api/projects/${projectId}/publish`)
       .send({

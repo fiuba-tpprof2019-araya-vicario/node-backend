@@ -1238,7 +1238,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"descripcion presentacion\"\n}",
+							"raw": "{\n\t\"description\": \"descripcion presentacion\",\n\t\"presentation_visible\": 0,\n\t\"documentation_visible\": 1\n}",
 							"options": {
 								"raw": {}
 							}

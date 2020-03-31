@@ -27,8 +27,13 @@ class PresentationRepository {
   }
 
   static edit (presentationId, data) {
+    let updatePresentationObject = {}
+
+    if (data.description !== undefined) updatePresentationObject.description = data.description
+    if (data.presentation_visible !== undefined) updatePresentationObject.presentation_visible = data.presentation_visible
+    if (data.documentation_visible !== undefined) updatePresentationObject.documentation_visible = data.documentation_visible
     return Presentation.update(
-      { description: data.description },
+      updatePresentationObject,
       { where: { id: presentationId } }
     )
       .then(() => {
