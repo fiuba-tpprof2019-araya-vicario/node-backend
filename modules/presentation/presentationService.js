@@ -24,11 +24,14 @@ export const getPresentation = async (presentationId) => {
     })
 }
 
-export const editPresentation = async (creatorId, presentationId, data) => {
+export const editPresentation = async (creatorId, presentationId, data, isAdmin) => {
   if (!(await PresentationRepository.existPresentation(presentationId))) return Promise.reject(getBadRequest('No existe el proyecto'))
-  if (!(await PresentationRepository.isProjectCreator(presentationId, creatorId))) return Promise.reject(getBadRequest('Solo el creador del proyecto puede editarlo'))
+  if (
+    !isAdmin ||
+    !(await PresentationRepository.isProjectCreator(presentationId, creatorId))
+  ) return Promise.reject(getBadRequest('Solo el creador del proyecto puede editarlo'))
 
-  let response = await PresentationRepository.edit(presentationId, data)
+  let response = await PresentationRepository.edit(presentationId, data, isAdmin)
   if (response === undefined) return Promise.reject(getBadRequest())
 
   return Promise.resolve(response)

@@ -19,7 +19,8 @@ export const getPresentation = async function (req, res) {
 
 export const putPresentation = async function (req, res) {
   let body = req.body
-  let response = await presentationService.editPresentation(req.id, req.params.id, body)
+  let isAdmin = req.credentials && req.credentials.includes('APPROVE_PROJECTS')
+  let response = await presentationService.editPresentation(req.id, req.params.id, body, isAdmin)
   res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
