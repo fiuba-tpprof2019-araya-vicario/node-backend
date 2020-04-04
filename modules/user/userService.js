@@ -4,10 +4,8 @@ import UserRepository from './userRepository'
 import { STATUS_REQUEST } from '../request/requestUtils'
 
 const STATE_ID_LAST = 7
-const STUDENT_PROFILE_ID = 2
 
 const getResponseUser = (user, token) => {
-  console.log('>>>', user.UserInterests);
   return {
     token: token,
     id: user.id,

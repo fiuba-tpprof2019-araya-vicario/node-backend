@@ -195,8 +195,8 @@ class UserRepository {
       }, { transaction })
         .then(userWithoutProfiles => {
           return userWithoutProfiles.setProfiles(profilesId, { transaction })
-            .then(userWithProfiles => {
-              return UserRepository.get(userWithProfiles.dataValues.id, transaction)
+            .then(() => {
+              return UserRepository.get(userWithoutProfiles.id, transaction)
             })
         })
     })
