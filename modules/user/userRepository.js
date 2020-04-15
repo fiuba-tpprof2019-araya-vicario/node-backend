@@ -88,6 +88,10 @@ class UserRepository {
       {
         model: Career,
         as: 'Careers'
+      },
+      {
+        model: UserInterest,
+        as: 'UserInterests'
       }]
     }
 
@@ -452,7 +456,7 @@ class UserRepository {
   static getRandomUsersForUser (userId) {
     return User.findAll({
       order: [sequelize.fn('RANDOM')],
-      limit: 6,
+      // limit: 6,
       where: { norm_score: { [Op.ne]: null }, id: { [Op.ne]: userId } },
       include: [{
         model: UserInterest,

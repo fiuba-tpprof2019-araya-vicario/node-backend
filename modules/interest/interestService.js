@@ -17,10 +17,10 @@ export const getUserInterests = async (userId) => {
 
 export const editUserInterests = async (userId, interests) => {
   console.log('InterestRepository::updateUserInterests')
-  let sum = interests.reduce((total, interest) => total + interest.score, 0)
-  let count = interests.length
+  let sum = interests.reduce((total, interest) => total + interest.original_score, 0)
+  let count = 4
   let prom = sum / count
-  let interestsAux = interests.map(interest => { return { user_id: userId, interest_id: interest.id, score: interest.score - prom } })
+  let interestsAux = interests.map(interest => { return { user_id: userId, interest_id: interest.id, score: interest.original_score - prom, original_score: interest.original_score } })
   let response = await InterestRepository.updateUserInterests(userId, interestsAux)
   let normScore = Math.sqrt(interestsAux.reduce((total, interestAux) => total + (interestAux.score * interestAux.score), 0))
   let updateResponse = await UserRepository.updateUserNormScore(userId, normScore)
@@ -32,7 +32,7 @@ export const editUserInterests = async (userId, interests) => {
 export const getSimilarUsers = async (userId) => {
   let usersRandom = await UserRepository.getRandomUsersForUser(userId)
   // console.log('usersRandom: ', usersRandom)
-  if (usersRandom.length < 4) return usersRandom
+  if (usersRandom.length < 3) return usersRandom
   let mainUser = await UserRepository.getUserWithInterest(userId)
   console.log('mainUser: ', mainUser)
   console.log('mainUser.dataValues.UserInterests: ', mainUser.dataValues.UserInterests)
@@ -49,7 +49,7 @@ export const getSimilarUsers = async (userId) => {
     console.log('similarity: ', result)
     if (result > 0.6) {
       usersMoreSimilar.push(user)
-      if (usersMoreSimilar.length === 3) break
+      if (usersMoreSimilar.length === 2) break
     }
   }
   // console.log('usersMoreSimilar: ', usersMoreSimilar)

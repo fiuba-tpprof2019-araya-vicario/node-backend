@@ -6,6 +6,9 @@ export async function up (queryInterface, Sequelize) {
       autoIncrement: true
     },
     score: {
+      type: Sequelize.FLOAT
+    },
+    original_score: {
       type: Sequelize.INTEGER
     },
     user_id: {
