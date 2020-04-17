@@ -11,7 +11,7 @@ export const editUserInterestValidations = [
   check('interests.*.id')
     .exists()
     .withMessage(MISS_INTEREST_ID),
-  check('interests.*.score')
+  check('interests.*.original_score')
     .exists()
     .withMessage(MISS_INTEREST_SCORE)
 ]
