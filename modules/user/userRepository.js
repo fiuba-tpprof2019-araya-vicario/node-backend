@@ -456,8 +456,8 @@ class UserRepository {
   static getRandomUsersForUser (userId) {
     return User.findAll({
       order: [sequelize.fn('RANDOM')],
-      // limit: 6,
-      where: { norm_score: { [Op.ne]: null }, id: { [Op.ne]: userId } },
+      limit: 6,
+      where: { id: { [Op.ne]: userId } },
       include: [{
         model: UserInterest,
         as: 'UserInterests'
