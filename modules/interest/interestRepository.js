@@ -18,6 +18,10 @@ class InterestRepository {
     await UserInterest.destroy({ where: { user_id: userId } })
     return UserInterest.bulkCreate(interests, { returning: true })
   }
+
+  static getInterestCount(){
+    return Interest.count()
+  }
 }
 
 export default InterestRepository

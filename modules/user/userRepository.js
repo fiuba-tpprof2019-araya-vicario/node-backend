@@ -15,6 +15,8 @@ const UserCareer = require('../../db/models').UserCareer
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
 
+const MAX_USERS_FOR_SIMILAR = 30
+
 const getWhereForAllUsers = (params) => {
   let whereCondition = {}
   if (params.name != null) {
@@ -453,15 +455,16 @@ class UserRepository {
       })
   }
 
-  static getRandomUsersForUser (userId) {
+  static getRandomUsersForUser (userId, type) {
+    let params = {}
+    params.type = type
+    let whereForType = getWhereForTypeOfUsers(params)
+    whereForType.push({ model: UserInterest, as: 'UserInterests' })
     return User.findAll({
       order: [sequelize.fn('RANDOM')],
-      // limit: 6,
+      limit: MAX_USERS_FOR_SIMILAR,
       where: { norm_score: { [Op.ne]: null }, id: { [Op.ne]: userId } },
-      include: [{
-        model: UserInterest,
-        as: 'UserInterests'
-      }]
+      include: whereForType
     })
   }
 

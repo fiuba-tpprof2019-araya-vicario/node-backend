@@ -1,6 +1,8 @@
 import InterestRepository from './interestRepository'
 import UserRepository from '../user/userRepository'
 
+const MAX_SIMILARS = 3
+
 export const getInterests = async () => {
   return InterestRepository.getInterests()
     .then(interests => {
@@ -18,7 +20,7 @@ export const getUserInterests = async (userId) => {
 export const editUserInterests = async (userId, interests) => {
   console.log('InterestRepository::updateUserInterests')
   let sum = interests.reduce((total, interest) => total + interest.original_score, 0)
-  let count = 4
+  let count = await InterestRepository.getInterestCount()
   let prom = sum / count
   let interestsAux = interests.map(interest => { return { user_id: userId, interest_id: interest.id, score: interest.original_score - prom, original_score: interest.original_score } })
   let response = await InterestRepository.updateUserInterests(userId, interestsAux)
@@ -29,10 +31,10 @@ export const editUserInterests = async (userId, interests) => {
   return Promise.resolve(response)
 }
 
-export const getSimilarUsers = async (userId) => {
-  let usersRandom = await UserRepository.getRandomUsersForUser(userId)
+export const getSimilarUsers = async (userId, type) => {
+  let usersRandom = await UserRepository.getRandomUsersForUser(userId, type)
   // console.log('usersRandom: ', usersRandom)
-  if (usersRandom.length < 3) return usersRandom
+  if (usersRandom.length < MAX_SIMILARS) return usersRandom
   let mainUser = await UserRepository.getUserWithInterest(userId)
   console.log('mainUser: ', mainUser)
   console.log('mainUser.dataValues.UserInterests: ', mainUser.dataValues.UserInterests)
@@ -49,7 +51,7 @@ export const getSimilarUsers = async (userId) => {
     console.log('similarity: ', result)
     if (result > 0.6) {
       usersMoreSimilar.push(user)
-      if (usersMoreSimilar.length === 2) break
+      if (usersMoreSimilar.length === MAX_SIMILARS) break
     }
   }
   // console.log('usersMoreSimilar: ', usersMoreSimilar)

@@ -26,7 +26,8 @@ const editUserInterests = async function (req, res) {
 const getSimilarUsers = async function (req, res) {
   console.log('interestController::getSimilarUsers')
   console.log('userId: ', req.id)
-  let response = await interestService.getSimilarUsers(req.id)
+
+  let response = await interestService.getSimilarUsers(req.id, eq.query.type)
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
