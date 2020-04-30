@@ -46,7 +46,7 @@ describe('GET /v0/api/interests/', () => {
       }).catch(done)
   })
 
-  it('Edit interests user', (done) => {
+  it('Edit interests user 1', (done) => {
     request(app)
       .put(`/v0/api/interests/users/`)
       .send({ 'interests': [
@@ -61,39 +61,18 @@ describe('GET /v0/api/interests/', () => {
           .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
           .expect(200)
           .then(response => {
-            console.log('edit interest: ', response)
+            // console.log('edit interest: ', response)
             assert.equal(response.body.data.length, 2)
             assert.equal(response.body.data[0].Interest.id, 1)
-            assert.equal(response.body.data[0].Interest.original_score, 9)
-            assert.equal(response.body.data[0].Interest.id, 2)
-            assert.equal(response.body.data[0].Interest.original_score, 5)
+            assert.equal(response.body.data[0].original_score, 9)
+            assert.equal(response.body.data[1].Interest.id, 2)
+            assert.equal(response.body.data[1].original_score, 5)
             done()
           }).catch(done)
       }).catch(done)
   })
 
   it('Edit interests user 2', (done) => {
-    request(app)
-      .put(`/v0/api/interests/users/`)
-      .send({ 'interests': [ { "id": 1, "score": 9, "original_score": 0 } ]})
-      .set({ 'Authorization': TOKENS.STUDENT1, Accept: 'application/json' })
-      .expect(201)
-      .then(response => {
-        request(app)
-          .get(`/v0/api/interests/users/`)
-          .set({ 'Authorization': TOKENS.STUDENT1, Accept: 'application/json' })
-          .expect(200)
-          .then(response => {
-            console.log('edit interest: ', response)
-            assert.equal(response.body.data.length, 1)
-            assert.equal(response.body.data[0].Interest.id, 1)
-            assert.equal(response.body.data[0].Interest.original_score, 9)
-            done()
-          }).catch(done)
-      }).catch(done)
-  })
-
-  it('Edit interests user 3', (done) => {
     request(app)
       .put(`/v0/api/interests/users/`)
       .send({ 'interests': [ { "id": 2, "score": 9, "original_score": 0 } ]})
@@ -105,10 +84,31 @@ describe('GET /v0/api/interests/', () => {
           .set({ 'Authorization': TOKENS.STUDENT, Accept: 'application/json' })
           .expect(200)
           .then(response => {
-            console.log('edit interest: ', response)
+            // console.log('edit interest: ', response)
             assert.equal(response.body.data.length, 1)
             assert.equal(response.body.data[0].Interest.id, 2)
-            assert.equal(response.body.data[0].Interest.original_score, 9)
+            assert.equal(response.body.data[0].original_score, 9)
+            done()
+          }).catch(done)
+      }).catch(done)
+  })
+
+  it('Edit interests user 3', (done) => {
+    request(app)
+      .put(`/v0/api/interests/users/`)
+      .send({ 'interests': [ { "id": 1, "score": 9, "original_score": 0 } ]})
+      .set({ 'Authorization': TOKENS.STUDENT1, Accept: 'application/json' })
+      .expect(201)
+      .then(response => {
+        request(app)
+          .get(`/v0/api/interests/users/`)
+          .set({ 'Authorization': TOKENS.STUDENT1, Accept: 'application/json' })
+          .expect(200)
+          .then(response => {
+            // console.log('edit interest: ', response)
+            assert.equal(response.body.data.length, 1)
+            assert.equal(response.body.data[0].Interest.id, 1)
+            assert.equal(response.body.data[0].original_score, 9)
             done()
           }).catch(done)
       }).catch(done)
@@ -126,10 +126,10 @@ describe('GET /v0/api/interests/', () => {
           .set({ 'Authorization': TOKENS.STUDENT2, Accept: 'application/json' })
           .expect(200)
           .then(response => {
-            console.log('edit interest: ', response)
+            // console.log('edit interest: ', response)
             assert.equal(response.body.data.length, 1)
             assert.equal(response.body.data[0].Interest.id, 1)
-            assert.equal(response.body.data[0].Interest.original_score, 9)
+            assert.equal(response.body.data[0].original_score, 9)
             done()
           }).catch(done)
       }).catch(done)
@@ -147,10 +147,10 @@ describe('GET /v0/api/interests/', () => {
           .set({ 'Authorization': TOKENS.STUDENT3, Accept: 'application/json' })
           .expect(200)
           .then(response => {
-            console.log('edit interest: ', response)
+            // console.log('edit interest: ', response)
             assert.equal(response.body.data.length, 1)
             assert.equal(response.body.data[0].Interest.id, 1)
-            assert.equal(response.body.data[0].Interest.original_score, 9)
+            assert.equal(response.body.data[0].original_score, 9)
             done()
           }).catch(done)
       }).catch(done)
@@ -162,7 +162,7 @@ describe('GET /v0/api/interests/', () => {
       .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
       .expect(200)
       .then(response => {
-        console.log('similars: ', response)
+        console.log('similars: ', response.body.data)
         assert.equal(response.body.data.length, 3)
         done()
       }).catch(done)

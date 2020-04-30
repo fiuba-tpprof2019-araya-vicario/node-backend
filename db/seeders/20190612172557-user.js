@@ -137,6 +137,15 @@ export function up (queryInterface) {
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    // Estudiante
+    name: 'Sebastian',
+    surname: 'Santander',
+    email: 'svicario@santanderteconologia.com.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {
