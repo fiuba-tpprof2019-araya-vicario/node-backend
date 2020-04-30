@@ -40,7 +40,6 @@ class DashboardRepository {
       where: { updatedAt: { [Op.and]: { [Op.gte]: initialDate, [Op.lt]: finalDate } } },
       include: [ { model: State, as: 'State' } ]
     })
-    console.log(result[0].dataValues.updatedAt.getMonth())
     let data = getProjectsPerMonth(result)
     return data
   }
