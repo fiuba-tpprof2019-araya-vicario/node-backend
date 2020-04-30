@@ -119,7 +119,25 @@ export function up (queryInterface) {
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
-  }], {})
+  },
+  {
+    // Estudiante
+    name: 'Sebastian',
+    surname: 'SantanderGmail',
+    email: 'svicario.santandertecnologia@gmail.com',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Estudiante
+    name: 'Mobileco',
+    surname: 'Studios',
+    email: 'mobilecostudios@gmail.com',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  ], {})
 }
 export function down () {
   /*
