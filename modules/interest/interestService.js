@@ -33,7 +33,7 @@ export const editUserInterests = async (userId, interests) => {
 
 export const getSimilarUsers = async (userId, type) => {
   let usersRandom = await UserRepository.getRandomUsersForUser(userId, type)
-  console.log('usersRandom: ', usersRandom)
+
   if (usersRandom.length < MAX_SIMILARS) return usersRandom
   let mainUser = await UserRepository.getUserWithInterest(userId)
   console.log('mainUser: ', mainUser)
