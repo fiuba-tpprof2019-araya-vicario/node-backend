@@ -19,7 +19,7 @@ const editUserInterests = async function (req, res) {
   console.log('userId: ', req.id)
   let body = req.body
   let response = await interestService.editUserInterests(req.id, body.interests)
-  res.statusCode = codes.OK
+  res.statusCode = codes.CREATED
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
