@@ -44,8 +44,8 @@ describe('GET /v0/api/interests/', () => {
     request(app)
       .put(`/v0/api/interests/users/`)
       .send({ 'interests': [
-        { "id": 1, "score": 9, "original_score": 0 },
-        { "id": 2, "score": 5, "original_score": 0 }
+        { "id": 1, "original_score": 9 },
+        { "id": 2, "original_score": 5 }
       ]})
       .set({ 'Authorization': TOKENS.CREATOR, Accept: 'application/json' })
       .expect(201)
@@ -69,7 +69,7 @@ describe('GET /v0/api/interests/', () => {
   it('Edit interests user 2', (done) => {
     request(app)
       .put(`/v0/api/interests/users/`)
-      .send({ 'interests': [ { "id": 2, "score": 9, "original_score": 0 } ]})
+      .send({ 'interests': [ { "id": 2, "original_score": 9 } ]})
       .set({ 'Authorization': TOKENS.STUDENT, Accept: 'application/json' })
       .expect(201)
       .then(response => {
@@ -90,7 +90,7 @@ describe('GET /v0/api/interests/', () => {
   it('Edit interests user 3', (done) => {
     request(app)
       .put(`/v0/api/interests/users/`)
-      .send({ 'interests': [ { "id": 1, "score": 9, "original_score": 0 } ]})
+      .send({ 'interests': [ { "id": 1, "original_score": 9 } ]})
       .set({ 'Authorization': TOKENS.STUDENT1, Accept: 'application/json' })
       .expect(201)
       .then(response => {
@@ -111,7 +111,7 @@ describe('GET /v0/api/interests/', () => {
   it('Edit interests user 4', (done) => {
     request(app)
       .put(`/v0/api/interests/users/`)
-      .send({ 'interests': [ { "id": 1, "score": 9, "original_score": 0 } ]})
+      .send({ 'interests': [ { "id": 1, "original_score": 9 } ]})
       .set({ 'Authorization': TOKENS.STUDENT2, Accept: 'application/json' })
       .expect(201)
       .then(response => {
@@ -132,7 +132,7 @@ describe('GET /v0/api/interests/', () => {
   it('Edit interests user 5', (done) => {
     request(app)
       .put(`/v0/api/interests/users/`)
-      .send({ 'interests': [ { "id": 1, "score": 9, "original_score": 0 } ]})
+      .send({ 'interests': [ { "id": 1, "original_score": 9 } ]})
       .set({ 'Authorization': TOKENS.STUDENT3, Accept: 'application/json' })
       .expect(201)
       .then(response => {
