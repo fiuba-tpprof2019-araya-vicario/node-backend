@@ -131,6 +131,15 @@ export function up (queryInterface) {
   },
   {
     // Estudiante
+    name: 'Sebastian',
+    surname: 'Santander',
+    email: 'svicario@santanderteconologia.com.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Estudiante
     name: 'Mobileco',
     surname: 'Studios',
     email: 'mobilecostudios@gmail.com',
@@ -139,10 +148,30 @@ export function up (queryInterface) {
     updated_at: new Date()
   },
   {
-    // Estudiante
-    name: 'Sebastian',
-    surname: 'Santander',
-    email: 'svicario@santanderteconologia.com.ar',
+    // Admin
+    name: 'Lucas',
+    surname: 'Macias',
+    email: 'lmacias@fi.uba.ar',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Admin
+    name: 'Chabeli',
+    surname: 'Rodriguez',
+    email: 'charodriguez@fi.uba.ar',
+
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Admin
+    name: 'Alejandro',
+    surname: 'Martinez',
+    email: 'amartine@fi.uba.ar',
+
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
