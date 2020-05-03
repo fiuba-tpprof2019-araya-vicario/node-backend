@@ -4,7 +4,6 @@ import UserRepository from './userRepository'
 import { STATUS_REQUEST } from '../request/requestUtils'
 
 const STATE_ID_LAST = 7
-const STUDENT_PROFILE_ID = 2
 
 const getResponseUser = (user, token) => {
   return {
@@ -14,11 +13,14 @@ const getResponseUser = (user, token) => {
     name: user.name,
     surname: user.surname,
     credentials: getCredentials(user),
-    careers: getCareers(user)
+    careers: getCareers(user),
+    interests: getInterests(user)
   }
 }
 
-const getCareers = (user) => (user.Careers.map((career) => ({ id: career.id, name: career.name })))
+const getCareers = (user) => (user.Careers.map(({ id, name, description }) => ({ id, name, description })))
+
+const getInterests = (user) => (user.UserInterests.map(({ interest_id, score }) => ({ id: interest_id, score })))
 
 const getCredentials = function (user) {
   let credentials = []

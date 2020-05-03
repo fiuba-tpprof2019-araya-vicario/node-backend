@@ -3,6 +3,7 @@ import { getServiceError, getBadRequest } from '../util/error'
 import { Op } from 'sequelize'
 
 const User = require('../../db/models').User
+const UserInterest = require('../../db/models').UserInterest
 const Profile = require('../../db/models').Profile
 const Credential = require('../../db/models').Credential
 const Project = require('../../db/models').Project
@@ -13,6 +14,8 @@ const ProjectCareer = require('../../db/models').ProjectCareer
 const UserCareer = require('../../db/models').UserCareer
 const ProjectRequestStudent = require('../../db/models').ProjectRequestStudent
 const ProjectRequestTutor = require('../../db/models').ProjectRequestTutor
+
+const MAX_USERS_FOR_SIMILAR = 30
 
 const getWhereForAllUsers = (params) => {
   let whereCondition = {}
@@ -87,6 +90,10 @@ class UserRepository {
       {
         model: Career,
         as: 'Careers'
+      },
+      {
+        model: UserInterest,
+        as: 'UserInterests'
       }]
     }
 
@@ -165,6 +172,10 @@ class UserRepository {
       {
         model: Career,
         as: 'Careers'
+      },
+      {
+        model: UserInterest,
+        as: 'UserInterests'
       }]
     })
   }
@@ -190,8 +201,8 @@ class UserRepository {
       }, { transaction })
         .then(userWithoutProfiles => {
           return userWithoutProfiles.setProfiles(profilesId, { transaction })
-            .then(userWithProfiles => {
-              return UserRepository.get(userWithProfiles.dataValues.id, transaction)
+            .then(() => {
+              return UserRepository.get(userWithoutProfiles.id, transaction)
             })
         })
     })
@@ -435,6 +446,31 @@ class UserRepository {
       .then(result => {
         return result != null
       })
+  }
+
+  static updateUserNormScore (id, normScore) {
+    return User.update({ norm_score: normScore }, { where: { id } })
+      .then((result) => {
+        return (result[0] > 0)
+      })
+  }
+
+  static getRandomUsersForUser (userId, type) {
+    let params = {}
+    params.type = type
+    let whereForType = getWhereForTypeOfUsers(params)
+    whereForType.push({ model: UserInterest, as: 'UserInterests' })
+    return User.findAll({
+      order: [sequelize.fn('RANDOM')],
+      limit: MAX_USERS_FOR_SIMILAR,
+      where: { norm_score: { [Op.ne]: null }, id: { [Op.ne]: userId } },
+      include: whereForType
+    })
+  }
+
+  static getUserWithInterest (id) {
+    return User.findByPk(id, { include: [{ model: UserInterest, as: 'UserInterests' }]
+    })
   }
 }
 

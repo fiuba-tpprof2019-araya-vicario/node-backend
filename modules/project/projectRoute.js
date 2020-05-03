@@ -20,6 +20,7 @@ router.delete('/:id([0-9]+)?/students/:user_id([0-9]+)?/', deleteUserProjectVali
 router.delete('/:id([0-9]+)?/tutors/:user_id([0-9]+)?/', deleteUserProjectValidations, validateWithExpress, checkIsLoggedWithCredentials('GET_PROJECTS'), validate(projectController.deleteTutorProject))
 router.put('/:id([0-9]+)?/proposal/', upload.single('file'), validate(projectController.uploadProposal))
 router.put('/:id([0-9]+)?/assessments/', evaluateValidations, validateWithExpress, checkIsLoggedWithCredentials('APPROVE_PROJECTS'), validate(projectController.evaluateProposal))
-router.post('/:id([0-9]+)?/presentations/', getValidations, validateWithExpress, checkIsLoggedWithCredentials('APPROVE_PROJECTS'), validate(projectController.createPresentation))
+router.put('/:id([0-9]+)?/publish/', modifyValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(projectController.publishProject))
+router.get('/portal', validate(projectController.getPortalProjects))
 
 export default router

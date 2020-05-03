@@ -4,7 +4,7 @@ import app from '../app'
 import request from 'supertest'
 
 // vicario.sebastian@gmail.com
-let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyIsIkdFVF9EQVNIQk9BUkQiXSwiaWF0IjoxNTc3MTI2MDQ0LCJleHAiOjE1Nzk3MTgwNDR9.5kk266gAqns5bQkYI3oHqyDChItylDxOCzKQc0l7y-4'
+let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJ2aWNhcmlvLnNlYmFzdGlhbkBnbWFpbC5jb20iLCJjcmVkZW50aWFscyI6WyJDUkVBVEVfUFJPSkVDVFMiLCJFRElUX1BST0pFQ1RTIiwiR0VUX1BST0pFQ1RTIiwiRURJVF9VU0VSUyIsIkdFVF9VU0VSUyIsIkVESVRfUFJPRklMRVMiLCJHRVRfUFJPRklMRVMiLCJFRElUX1RVVE9SX1JFUVVFU1RTIiwiQVBQUk9WRV9QUk9KRUNUUyIsIkVESVRfUkVRVUlSRU1FTlRTIiwiR0VUX1JFUVVJUkVNRU5UUyIsIkdFVF9EQVNIQk9BUkQiXSwiaWF0IjoxNTg1Njc3MTA5LCJleHAiOjE1ODgyNjkxMDl9.F-U4hZdqU9Kjdb3QKfpVGoKTdq63xfeFeL_BT4SYxAw'
 
 describe('GET /v0/api/users/', () => {
   it('Obtain all users by filter', (done) => {
@@ -18,27 +18,6 @@ describe('GET /v0/api/users/', () => {
         assert.equal(response.body.data[0].name, 'Sebastian')
         assert.equal(response.body.data[0].surname, 'Vicario')
         assert.equal(response.body.data[0].padron, 92223)
-        done()
-      }).catch(done)
-  })
-
-  it('Obtain specific user by id', (done) => {
-    request(app)
-      .get('/v0/api/users/1')
-      .set({ 'Authorization': token, Accept: 'application/json' })
-      .expect(200)
-      .then(response => {
-        assert.equal(response.body.data.id, 1)
-        assert.equal(response.body.data.email, 'svicario@fi.uba.ar')
-        assert.equal(response.body.data.name, 'Sebastian')
-        assert.equal(response.body.data.surname, 'Vicario')
-        assert.equal(response.body.data.padron, 92223)
-        assert.equal(response.body.data.Profiles.length, 1)
-        assert.equal(response.body.data.Profiles[0].id, 2)
-        assert.equal(response.body.data.Profiles[0].name, 'Estudiante')
-        assert.equal(response.body.data.Profiles[0].description, 'Estudiante FIUBA')
-        assert.equal(response.body.data.Careers[0].id, 1)
-        assert.equal(response.body.data.Careers[0].name, 'Ingeniería en Informática')
         done()
       }).catch(done)
   })
@@ -74,6 +53,27 @@ describe('GET /v0/api/users/', () => {
           .catch(done)
       })
       .catch(done)
+  })
+
+  it('Obtain specific user by id', (done) => {
+    request(app)
+      .get('/v0/api/users/1')
+      .set({ 'Authorization': token, Accept: 'application/json' })
+      .expect(200)
+      .then(response => {
+        assert.equal(response.body.data.id, 1)
+        assert.equal(response.body.data.email, 'svicario@fi.uba.ar')
+        assert.equal(response.body.data.name, 'Sebastian')
+        assert.equal(response.body.data.surname, 'Vicario')
+        assert.equal(response.body.data.padron, 92223)
+        assert.equal(response.body.data.Profiles.length, 2)
+        assert.equal(response.body.data.Profiles[0].id, 2)
+        assert.equal(response.body.data.Profiles[0].name, 'Estudiante')
+        assert.equal(response.body.data.Profiles[0].description, 'Estudiante FIUBA')
+        assert.equal(response.body.data.Careers[0].id, 2)
+        assert.equal(response.body.data.Careers[0].name, 'Ingeniería Civil')
+        done()
+      }).catch(done)
   })
 
   after((done) => {

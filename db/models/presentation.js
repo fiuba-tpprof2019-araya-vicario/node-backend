@@ -1,4 +1,4 @@
-import { STRING, TEXT, ENUM } from 'sequelize'
+import { STRING, TEXT, ENUM, BOOLEAN } from 'sequelize'
 
 module.exports = (sequelize) => {
   const Presentation = sequelize.define('Presentation', {
@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
     },
     status: {
       type: ENUM,
-      values: ['created', 'uploaded', 'accepted']
+      values: ['created', 'accepted']
     },
     presentation_url: {
       type: STRING,
@@ -23,6 +23,11 @@ module.exports = (sequelize) => {
       type: STRING,
       isUnique: true
     },
+    presentation_visible: {
+      type: BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
     documentation_url: {
       type: STRING,
       validate: {
@@ -36,6 +41,11 @@ module.exports = (sequelize) => {
     documentation_name: {
       type: STRING,
       isUnique: true
+    },
+    documentation_visible: {
+      type: BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   }, {
     timestamps: true,
@@ -47,7 +57,8 @@ module.exports = (sequelize) => {
   Presentation.associate = function (models) {
     Presentation.hasOne(models.Project, {
       as: 'Project',
-      foreignKey: 'presentation_id'
+      foreignKey: 'presentation_id',
+      onDelete: 'CASCADE'
     })
   }
   return Presentation

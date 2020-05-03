@@ -12,7 +12,8 @@ export function up (queryInterface, Sequelize) {
     name: Sequelize.STRING,
     surname: Sequelize.STRING,
     padron: Sequelize.INTEGER,
-    google_id: Sequelize.STRING
+    google_id: Sequelize.STRING,
+    norm_score: Sequelize.FLOAT
   }).then(function () {
     return queryInterface.addIndex('Users', ['email'])
   })

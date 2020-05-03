@@ -13,6 +13,7 @@ export function up (queryInterface, Sequelize) {
     proposal_name: Sequelize.STRING,
     proposal_drive_id: Sequelize.STRING,
     description: Sequelize.TEXT,
+    proposal_visible: Sequelize.BOOLEAN,
     type_id: {
       type: Sequelize.INTEGER,
       onUpdate: 'CASCADE',

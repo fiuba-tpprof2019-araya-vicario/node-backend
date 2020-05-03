@@ -6,6 +6,12 @@ import { getBadRequest } from '../util/error.js'
 const drive = google.drive('v3')
 const jwtClient = new google.auth.JWT(client_email, null, private_key, ['https://www.googleapis.com/auth/drive'], null)
 
+const MIME_TYPE = {
+  PDF: 'application/pdf',
+  ZIP: 'application/zip',
+  REJECTED: 'rejected'
+}
+
 jwtClient.authorize((authErr) => {
   if (authErr) {
     console.log(authErr)
@@ -43,11 +49,11 @@ const getFileMedia = (mimeType, filePath) => {
   }
 }
 
-const createFile = (fileName, filePath, folder) => {
+const createFile = (fileName, mimeType, filePath, folder) => {
   return drive.files.create({
     auth: jwtClient,
     resource: getFileMetadata(fileName, folder),
-    media: getFileMedia('application/pdf', filePath)
+    media: getFileMedia(mimeType, filePath)
   })
 }
 
@@ -60,7 +66,7 @@ const getSharedLink = (fileId) => {
 }
 
 export const uploadProposalFile = async (fileName, content) => {
-  let createResponse = await createFile(fileName, content, process.env.PROPOSAL_FOLDER_FIUBA_DRIVE_ID)
+  let createResponse = await createFile(fileName, MIME_TYPE.PDF, content, process.env.PROPOSAL_FOLDER_FIUBA_DRIVE_ID)
 
   if (createResponse === null) return Promise.reject(getBadRequest('No se pudo crear el archivo'))
 
@@ -71,7 +77,29 @@ export const uploadProposalFile = async (fileName, content) => {
 }
 
 export const uploadRequirementFile = async (fileName, content) => {
-  let createResponse = await createFile(fileName, content, process.env.REQUIREMENT_FOLDER_FIUBA_DRIVE_ID)
+  let createResponse = await createFile(fileName, MIME_TYPE.PDF, content, process.env.REQUIREMENT_FOLDER_FIUBA_DRIVE_ID)
+
+  if (createResponse === null) return Promise.reject(getBadRequest('No se pudo crear el archivo'))
+
+  let getLinkResponse = await getSharedLink(createResponse.data.id)
+  if (getLinkResponse === null) return Promise.reject(getBadRequest('No se pudo obtener el link a compartir'))
+
+  return Promise.resolve({ id: createResponse.data.id, link: getLinkResponse.data.webViewLink, name: fileName })
+}
+
+export const uploadPresentationFile = async (fileName, content) => {
+  let createResponse = await createFile(fileName, MIME_TYPE.PDF, content, process.env.PRESENTATION_FOLDER_FIUBA_DRIVE_ID)
+
+  if (createResponse === null) return Promise.reject(getBadRequest('No se pudo crear el archivo'))
+
+  let getLinkResponse = await getSharedLink(createResponse.data.id)
+  if (getLinkResponse === null) return Promise.reject(getBadRequest('No se pudo obtener el link a compartir'))
+
+  return Promise.resolve({ id: createResponse.data.id, link: getLinkResponse.data.webViewLink, name: fileName })
+}
+
+export const uploadDocumentationFile = async (fileName, content) => {
+  let createResponse = await createFile(fileName, MIME_TYPE.ZIP, content, process.env.DOCUMENTATION_FOLDER_FIUBA_DRIVE_ID)
 
   if (createResponse === null) return Promise.reject(getBadRequest('No se pudo crear el archivo'))
 

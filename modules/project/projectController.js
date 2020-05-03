@@ -96,10 +96,16 @@ export const evaluateProposal = async function (req, res) {
   res.json(createSuccessResponse(res.statusCode, response))
 }
 
-export const createPresentation = async function (req, res) {
-  let projectId = req.params.id
-  let userId = req.id
-  let response = await projectService.createPresentation(projectId, userId)
+export const publishProject = async function (req, res) {
+  let body = req.body
+  let response = await projectService.publishProject(req.params.id, body)
   res.statusCode = codes.CREATED
+  res.json(createSuccessResponse(res.statusCode, response))
+}
+
+export const getPortalProjects = async function (req, res) {
+  console.log('projectController::getPortalProjects')
+  let response = await projectService.getPortalProjects()
+  res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
