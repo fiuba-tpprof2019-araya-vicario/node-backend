@@ -124,6 +124,24 @@ export function up (queryInterface) {
     career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    user_id: 20,
+    career_id: 1,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    user_id: 21,
+    career_id: 1,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    user_id: 22,
+    career_id: 1,
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {
