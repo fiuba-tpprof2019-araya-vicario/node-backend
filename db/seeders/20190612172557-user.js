@@ -175,6 +175,35 @@ export function up (queryInterface) {
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    // Admin
+    name: 'Jazmin',
+    surname: 'Sofia',
+    email: 'jazminsofiaf@gmail.com',
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Admin
+    name: 'Tomas',
+    surname: 'Zemzo',
+    email: 'szemzotomas@gmail.com',
+
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    // Admin
+    name: 'Tomas',
+    surname: 'Pinto',
+    email: 'tomasp834@gmail.com',
+
+    google_id: null,
+    created_at: new Date(),
+    updated_at: new Date()
   }], {})
 }
 export function down () {
