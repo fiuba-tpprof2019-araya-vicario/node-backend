@@ -12,6 +12,7 @@ export function up (queryInterface, Sequelize) {
     proposal_url: Sequelize.STRING,
     proposal_name: Sequelize.STRING,
     proposal_drive_id: Sequelize.STRING,
+    tx_id: Sequelize.STRING,
     description: Sequelize.TEXT,
     proposal_visible: Sequelize.BOOLEAN,
     type_id: {

@@ -1,6 +1,7 @@
 import { getNotFound, getBadRequest } from '../util/error'
 import PresentationRepository from './presentationRepository'
 import ProjectRepository from '../project/projectRepository'
+import * as projectService from '../project/projectService'
 import { uploadPresentationFile, uploadDocumentationFile, removeFile } from '../util/googleDriveService'
 
 export const createPresentation = async (projectId, userId) => {
@@ -65,6 +66,9 @@ export const submitPresentation = async (presentationId) => {
   let response = await PresentationRepository.acceptPresentation(presentationId)
   if (response == null) return Promise.reject(getBadRequest())
   let project = await PresentationRepository.getProjectByPresentationId(presentationId)
+
   await ProjectRepository.setProjectStateAfter(project.dataValues.id)
+  await projectService.publishProjectBlockchain(project.dataValues.id)
+
   return Promise.resolve(presentationId)
 }

@@ -29,6 +29,9 @@ module.exports = (sequelize) => {
       type: STRING,
       isUnique: true
     },
+    tx_id: {
+      type: STRING
+    },
     proposal_visible: {
       type: BOOLEAN,
       allowNull: false,

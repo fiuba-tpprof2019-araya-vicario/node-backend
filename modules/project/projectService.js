@@ -1,3 +1,4 @@
+import rp from 'request-promise'
 import { getNotFound, getBadRequest } from '../util/error'
 import ProjectRepository from './projectRepository'
 import UserRepository from '../user/userRepository'
@@ -5,6 +6,12 @@ import RequestRepository from '../request/requestRepository'
 import { sendMail } from '../util/mailService'
 import { getRequestStudentMailOption, getRequestTutorMailOption, getRequestCotutorMailOption } from '../util/mailUtils'
 import { uploadProposalFile, removeFile } from '../util/googleDriveService'
+
+let rp_blockchain = {
+	uri: 'https://node-certificate.herokuapp.com/api/projects/seed',
+	method: 'POST',
+	json: true // Automatically parses the JSON string in the response
+}
 
 export const getSpecificProject = async (projectId) => {
   return ProjectRepository.getProjectFullById(projectId)
@@ -200,14 +207,72 @@ export const evaluateProposal = async (projectId, userId, careerId, status, reje
   return Promise.resolve(projectId)
 }
 
-export const publishProject = async (projectId, data) => {
+export const publishProjectBlockchain = async (projectId) => {
   if (!(await ProjectRepository.existProject(projectId))) return Promise.reject(getBadRequest('No existe el proyecto'))
   if (!(await ProjectRepository.isPublish(projectId))) return Promise.reject(getBadRequest('El proyecto no se encuentra pendiente de publicación final'))
 
-  let response = await ProjectRepository.publishProject(projectId, data)
-  if (response === undefined) return Promise.reject(getBadRequest())
+  let project = await ProjectRepository.getProjectFullById(projectId)
 
-  return Promise.resolve(response)
+  let reqBody = {
+    "project": {
+      "typeId": project.Type.id,
+      "name": project.name,
+      "proposal_url": project.proposal_url,
+      "proposal_drive_id": project.proposal_drive_id,
+      "proposal_name": project.proposal_name,
+    },
+    "oftype": {
+      "name": project.Type.name
+    },
+    "creator": {
+      "name": project.Creator.name,
+      "surname": project.Creator.surname,
+      "email": project.Creator.email,
+      "padron": project.Creator.padron,
+      "careers": project.Creator.Careers.map(career => { return { "name": career.name } })
+    },
+    "students": project.Students.map(student => { 
+      return { 
+        "name": student.name,
+        "surname": student.name,
+        "email": student.email,
+        "padron": student.padron,
+        "careers": student.Careers.map(career => { return { "name": career.name } })
+      } 
+    }),
+    "tutor": {
+      "name": project.Tutor.name,
+      "surname": project.Tutor.surname,
+      "email": project.Tutor.email
+    },
+    "cotutors": project.Cotutors.map(cotutor => { 
+      return { 
+        "name": cotutor.name,
+        "surname": cotutor.surname,
+        "email": cotutor.email,
+      } 
+    })
+  }
+
+  console.log("request blockchain body: ", reqBody)
+
+  rp_blockchain.body = reqBody
+  let apiBlockchainResponse = await rp(rp_blockchain)
+
+  console.log("request blockchain response: ", apiBlockchainResponse)
+
+  //TODO SACAR ESE HARDCODEO
+  apiBlockchainResponse = {
+    blockchain: {
+      txid: "0xafb043468c2a609f590161a3ab45ecb39be1446e93cdfeeabade0bc3686276b0"
+    }
+  }
+
+  if(apiBlockchainResponse.blockchain != null && apiBlockchainResponse.blockchain.txid != null){
+    await ProjectRepository.updateData(projectId, { tx_id: apiBlockchainResponse.blockchain.txid })
+  }
+
+  return Promise.resolve(apiBlockchainResponse)
 }
 
 export const getPortalProjects = async () => {

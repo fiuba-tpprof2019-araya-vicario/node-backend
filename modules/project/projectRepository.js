@@ -101,7 +101,11 @@ const getFullIncludeProjectsData = () => {
   return [{
     model: User,
     as: 'Creator',
-    attributes: { exclude: ['google_id'] }
+    attributes: { exclude: ['google_id'] },
+    include: [{
+      model: Career,
+      as: 'Careers'
+    }]
   },
   {
     model: User,
@@ -146,7 +150,11 @@ const getFullIncludeProjectData = (id) => {
   return [{
     model: User,
     as: 'Creator',
-    attributes: { exclude: ['google_id'] }
+    attributes: { exclude: ['google_id'] },
+    include: [{
+      model: Career,
+      as: 'Careers'
+    }]
   },
   {
     model: User,
@@ -167,6 +175,10 @@ const getFullIncludeProjectData = (id) => {
       model: ProjectRequestStudent,
       as: 'StudentRequests',
       where: { project_id: id }
+    },
+    {
+      model: Career,
+      as: 'Careers'
     }]
   },
   {
@@ -825,6 +837,10 @@ class ProjectRepository {
 
   static getPortalProjects () {
     return Project.findAll({ include: getFullIncludeProjectsData(), where: { state_id: State.isPublish() } })
+  }
+
+  static updateData(projectId, data){
+    return Project.update(data, { where: { id: projectId } });
   }
 }
 
