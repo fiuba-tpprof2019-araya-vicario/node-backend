@@ -71,7 +71,14 @@ const sendRequestMails = (data) => {
           to += student.email + ', '
         })
         sendMail(getRequestStudentMailOption({ name: data.name, to }))
+        .then(result => {
+          console.log("Envio mail satisfactorio")
+        })
+        .catch(err => {
+          console.error("Error envio mail ", err)
+        })
       })
+
   }
 
   if (data.cotutors !== undefined && data.cotutors.length > 0) {
@@ -82,6 +89,12 @@ const sendRequestMails = (data) => {
           to += student.email + ', '
         })
         sendMail(getRequestCotutorMailOption({ name: data.name, to }))
+        .then(result => {
+          console.log("Envio mail satisfactorio")
+        })
+        .catch(err => {
+          console.error("Error envio mail ", err)
+        })
       })
   }
 
@@ -89,6 +102,12 @@ const sendRequestMails = (data) => {
     UserRepository.getUser(data.tutor_id)
       .then(tutor => {
         sendMail(getRequestTutorMailOption({ name: data.name, to: tutor.email }))
+        .then(result => {
+          console.log("Envio mail satisfactorio")
+        })
+        .catch(err => {
+          console.error("Error envio mail ", err)
+        })
       })
   }
 }
