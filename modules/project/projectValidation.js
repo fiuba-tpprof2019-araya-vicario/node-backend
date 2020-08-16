@@ -12,6 +12,7 @@ const MISS_USER_ID = 'Falta el id del usuario'
 const MISS_STATUS = 'Falta el estado'
 const WRONG_STATUS_VALUE = 'Estado invalido'
 const MISS_CAREER = 'Falta la carrera'
+const MISS_TX = 'Falta transaction id'
 
 const createValidations = [
   check('name')
@@ -47,6 +48,13 @@ const modifyValidations = [
   ...getValidations
 ]
 
+const blockchainValidations = [
+  ...getValidations,
+  check('tx_id')
+    .not().isEmpty()
+    .withMessage(MISS_TX)
+]
+
 const deleteUserProjectValidations = [
   ...getValidations,
   param('user_id')
@@ -66,4 +74,4 @@ const evaluateValidations = [
     .withMessage(MISS_CAREER)
 ]
 
-export { createValidations, getValidations, modifyValidations, deleteUserProjectValidations, evaluateValidations }
+export { createValidations, getValidations, modifyValidations, deleteUserProjectValidations, evaluateValidations, blockchainValidations }

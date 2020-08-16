@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createValidations, getValidations, modifyValidations, deleteUserProjectValidations, evaluateValidations } from './projectValidation'
+import { createValidations, getValidations, modifyValidations, deleteUserProjectValidations, evaluateValidations, blockchainValidations } from './projectValidation'
 import * as projectController from './projectController'
 import { validate, validateWithExpress } from '../util/requestValidator'
 import { checkIsLoggedWithCredentials } from '../auth/authMiddleware'
@@ -22,5 +22,6 @@ router.put('/:id([0-9]+)?/proposal/', upload.single('file'), validate(projectCon
 router.put('/:id([0-9]+)?/assessments/', evaluateValidations, validateWithExpress, checkIsLoggedWithCredentials('APPROVE_PROJECTS'), validate(projectController.evaluateProposal))
 router.put('/:id([0-9]+)?/publish/', modifyValidations, validateWithExpress, checkIsLoggedWithCredentials('EDIT_PROJECTS'), validate(projectController.publishProject))
 router.get('/portal', validate(projectController.getPortalProjects))
+router.post('/:id([0-9]+)?/blockchain', blockchainValidations, validateWithExpress, validate(projectController.saveTransaction))
 
 export default router

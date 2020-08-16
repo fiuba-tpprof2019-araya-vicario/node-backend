@@ -234,7 +234,7 @@ export const publishProjectBlockchain = async (projectId) => {
 
   let reqBody = {
     "project": {
-      "typeId": project.Type.id,
+      "typeId": project.Type.id.toString(),
       "name": project.name,
       "proposal_url": project.proposal_url,
       "proposal_drive_id": project.proposal_drive_id,
@@ -247,16 +247,16 @@ export const publishProjectBlockchain = async (projectId) => {
       "name": project.Creator.name,
       "surname": project.Creator.surname,
       "email": project.Creator.email,
-      "padron": project.Creator.padron,
-      "careers": project.Creator.Careers.map(career => { return { "name": career.name } })
+      "padron": (project.Creator.padron != null) ? project.Creator.padron.toString() : "",
+      "careers": project.Creator.Careers.map(career => { return career.name })
     },
     "students": project.Students.map(student => { 
       return { 
         "name": student.name,
         "surname": student.name,
         "email": student.email,
-        "padron": student.padron,
-        "careers": student.Careers.map(career => { return { "name": career.name } })
+        "padron": (student.padron != null) ? student.padron.toString() : "",
+        "careers": student.Careers.map(career => { return career.name })
       } 
     }),
     "tutor": {
@@ -270,7 +270,8 @@ export const publishProjectBlockchain = async (projectId) => {
         "surname": cotutor.surname,
         "email": cotutor.email,
       } 
-    })
+    }),
+    "endpoint": `${process.env.URL_HOME}`
   }
 
   console.log("request blockchain body: ", reqBody)
@@ -281,15 +282,15 @@ export const publishProjectBlockchain = async (projectId) => {
   console.log("request blockchain response: ", apiBlockchainResponse)
 
   //TODO SACAR ESE HARDCODEO
-  apiBlockchainResponse = {
-    blockchain: {
-      txid: "0xafb043468c2a609f590161a3ab45ecb39be1446e93cdfeeabade0bc3686276b0"
-    }
-  }
+  // apiBlockchainResponse = {
+  //   blockchain: {
+  //     txid: "0xafb043468c2a609f590161a3ab45ecb39be1446e93cdfeeabade0bc3686276b0"
+  //   }
+  // }
 
-  if(apiBlockchainResponse.blockchain != null && apiBlockchainResponse.blockchain.txid != null){
-    await ProjectRepository.updateData(projectId, { tx_id: apiBlockchainResponse.blockchain.txid })
-  }
+  // if(apiBlockchainResponse != null){
+  //   await ProjectRepository.updateData(projectId, { tx_id: apiBlockchainResponse })
+  // }
 
   return Promise.resolve(apiBlockchainResponse)
 }
@@ -299,5 +300,12 @@ export const getPortalProjects = async () => {
     .then(projects => {
       if (projects == null) return Promise.reject(getNotFound())
       else return Promise.resolve(projects)
+    })
+}
+
+export const saveTransaction = async (projectId, txId) => {
+  return ProjectRepository.updateData(projectId, { tx_id: txId })
+    .then(result => {
+      return Promise.resolve(result)
     })
 }

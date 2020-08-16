@@ -109,3 +109,10 @@ export const getPortalProjects = async function (req, res) {
   res.statusCode = codes.OK
   res.json(createSuccessResponse(res.statusCode, response))
 }
+
+export const saveTransaction = async function (req, res) {
+  let body = req.body
+  let response = await projectService.saveTransaction(req.params.id, body.tx_id)
+  res.statusCode = codes.CREATED
+  res.json(createSuccessResponse(res.statusCode, response))
+}
