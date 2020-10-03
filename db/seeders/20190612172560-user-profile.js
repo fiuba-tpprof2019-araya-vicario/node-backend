@@ -5,12 +5,7 @@
 // INTERESADO 5
 
 export function up (queryInterface) {
-  return queryInterface.bulkInsert('User_profiles', [{
-    user_id: 1,
-    profile_id: 2,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
+  return queryInterface.bulkInsert('User_profiles', [
   {
     user_id: 1,
     profile_id: 3,
@@ -62,12 +57,6 @@ export function up (queryInterface) {
   {
     user_id: 9,
     profile_id: 1,
-    created_at: new Date(),
-    updated_at: new Date()
-  },
-  {
-    user_id: 9,
-    profile_id: 3,
     created_at: new Date(),
     updated_at: new Date()
   },
