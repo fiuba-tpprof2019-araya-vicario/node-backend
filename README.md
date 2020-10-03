@@ -80,3 +80,14 @@ PROPOSAL_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Propuestas>
 REQUIREMENT_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Requerimientos>
 PRESENTATION_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Presentaciones>
 DOCUMENTATION_FOLDER_FIUBA_DRIVE_ID=<ID de la carpeta del google drive de Documentación>
+```
+
+## Como limpiar DB en Heroku
+1. Entramos al dashboard de heroku, buscamos el proyecto brainsearch-api y vamos a la solapa de DB.
+2. Vamos a configuracion y eliminamos el contenido de la DB.
+3. Nos logueamos en heroku por terminal con el comando: ```heroku login```
+4. Nos posicionamos en la carpeta del proyecto node y corremos el comando de bash de heroku: ```heroku ps:exec```. Esto nos abre una consola bash en heroku.
+5. Corremos migrations con el comando ```sequelize db:migrate```.
+6. Corremos seeds con el comando ```sequelize db:seed:all```. Listo.
+
+
