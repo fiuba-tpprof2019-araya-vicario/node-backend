@@ -28,7 +28,7 @@ const requestHtml = (name, type, path) => {
   body += `Has sido invitado a participar como ${type} del proyecto <b>${name}</b>.`
   body += '<br>'
   body += '<br>'
-  body += `Ingrese a la aplicación para visualizarla haciendo <a href=${process.env.URL_HOME}/${path} target="_blank"> Click aquí </a>`
+  body += `Ingrese a la aplicación para visualizarla haciendo <a href=${process.env.URL_FRONTEND_HOME}/${path} target="_blank"> Click aquí </a>`
   return body
 }
 

@@ -271,7 +271,7 @@ export const publishProjectBlockchain = async (projectId) => {
         "email": cotutor.email,
       } 
     }),
-    "endpoint": `${process.env.URL_HOME}`,
+    "endpoint": `${process.env.URL_BACKEND_HOME}`,
     "project_id": projectId
   }
 
