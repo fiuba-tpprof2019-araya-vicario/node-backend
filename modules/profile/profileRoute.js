@@ -4,6 +4,6 @@ import { validate } from '../util/requestValidator'
 import { checkIsLoggedWithCredentials } from '../auth/authMiddleware'
 
 const router = Router()
-router.get('/', checkIsLoggedWithCredentials('GET_PROJECTS'), validate(getProfiles))
+router.get('/', checkIsLoggedWithCredentials('GET_USERS'), validate(getProfiles))
 
 export default router
