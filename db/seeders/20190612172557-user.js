@@ -2,9 +2,9 @@
 export function up (queryInterface) {
   return queryInterface.bulkInsert('Users', [{
     // Tutor
-    name: 'Sebastian',
-    surname: 'Vicario',
-    email: 'svicario@fi.uba.ar',
+    name: 'Tutor',
+    surname: 'FIUBA',
+    email: 'tutor.fiuba@gmail.com',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date(),
@@ -59,9 +59,9 @@ export function up (queryInterface) {
   },
   {
     // Comision Curricular
-    name: 'Arrow',
-    surname: 'GameMaster',
-    email: 'arrowgamemaster@gmail.com',
+    name: 'Comision',
+    surname: 'FIUBA',
+    email: 'comisioncurriciar.fiuba@gmail.com',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
@@ -122,9 +122,9 @@ export function up (queryInterface) {
   },
   {
     // Estudiante
-    name: 'Sebastian',
-    surname: 'SantanderGmail',
-    email: 'svicario.santandertecnologia@gmail.com',
+    name: 'Creador',
+    surname: 'FIUBA',
+    email: 'creador.fiuba@gmail.com',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
@@ -140,9 +140,9 @@ export function up (queryInterface) {
   },
   {
     // Estudiante
-    name: 'Mobileco',
-    surname: 'Studios',
-    email: 'mobilecostudios@gmail.com',
+    name: 'Participante',
+    surname: 'FIUBA',
+    email: 'alumno.invitado.fiuba@gmail.com',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
