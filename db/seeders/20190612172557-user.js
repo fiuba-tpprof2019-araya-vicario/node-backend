@@ -61,7 +61,7 @@ export function up (queryInterface) {
     // Comision Curricular
     name: 'Comision',
     surname: 'FIUBA',
-    email: 'comisioncurriciar.fiuba@gmail.com',
+    email: 'comisioncurricular.fiuba@gmail.com',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()
