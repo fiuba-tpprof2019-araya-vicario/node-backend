@@ -69,8 +69,8 @@ export function up (queryInterface) {
   {
     // Estudiante
     name: 'Sebastian',
-    surname: 'Cys',
-    email: 'svicario@cys.com.ar',
+    surname: 'FIUBA',
+    email: 'svicario@fi.uba.ar',
     google_id: null,
     created_at: new Date(),
     updated_at: new Date()

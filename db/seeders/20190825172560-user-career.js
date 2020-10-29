@@ -55,7 +55,7 @@ export function up (queryInterface) {
   },
   {
     user_id: 8,
-    career_id: 3,
+    career_id: 1,
     created_at: new Date(),
     updated_at: new Date()
   },
