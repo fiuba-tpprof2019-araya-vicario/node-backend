@@ -18,7 +18,13 @@
     "password": "76ae87a08cc4aff3fcc43760c6554798c5328c4e6134876a1749b00000f92113",
     "database": "dccum2as3q2r8a",
     "host": "ec2-23-21-70-39.compute-1.amazonaws.com",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "ssl": true,
+    "dialectOptions":{
+      "ssl":{
+        "require":true
+      }
+    }
   },
   "test_production": {
     "username": "aeredgxoxlxpwn",

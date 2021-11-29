@@ -3,7 +3,7 @@
 ## Como correr migrations y seed en el container de Node
 
 1- Ejecutar bash dentro del container:
-  
+
 * iOS / Linux:
 
   ```docker exec -it nodeBack bash```
@@ -11,7 +11,7 @@
 * Windows
 
   ```winpty docker exec -it nodeBack bash```
-  
+
 2- En la consola de bash correr el comando de migrations:
 
 ```sequelize db:migrate```
@@ -32,7 +32,7 @@
 
 3- Una vez asignado entramos en la carpeta y nos copiamos el ID de la misma que se encuenta en el link:
   drive.google.com/drive/u/2/folders/**1tWYqI10Mus6252DEqZWleF6i6hdjE2tj**
-  
+
 4- Luego con este ID generamos una variable en el .env y la usamos para asignar files en el drive con el modulo de la API de Google.
 
 Guia Usada: https://medium.com/@abhimanyuPathania/google-drive-service-accounts-and-nodejs-a038b8ec482f 
@@ -52,7 +52,7 @@ Si es la primera vez, se debe correr el script ```testRestartDB.sh``` de la carp
 * Windows
 
   ```winpty docker exec -it nodeBack bash```
-  
+
 3- Dentro de la consola de bash correr el comando:
 
   ```npm run test```
